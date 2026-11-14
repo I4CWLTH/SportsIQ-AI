@@ -1,0 +1,31 @@
+name: Capture NBA and NFL odds
+on:
+  schedule:
+    - cron: '23 14,21 * * *'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  capture:
+    runs-on: ubuntu-latest
+    env:
+      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
+    steps:
+      - name: Capture US moneylines, spreads and totals
+        if: env.ODDS_API_KEY != ''
+        run: |
+          python3 - <<'PY'
+          import datetime, json, os, pathlib, urllib.parse, urllib.request
+          snapshot = {'captured_at': datetime.datetime.now(datetime.timezone.utc).isoformat()}
+          for league in ('basketball_nba', 'americanfootball_nfl'):
+              query = urllib.parse.urlencode(dict(apiKey=os.environ['ODDS_API_KEY'],
+                  regions='us', markets='h2h,spreads,totals', oddsFormat='american'))
+              try:
+                  with urllib.request.urlopen('https://api.the-odds-api.com/v4/sports/' +
+                                              league + '/odds?' + query, timeout=25) as response:
+                      snapshot[league] = json.load(response)
+              except Exception:
+                  raise SystemExit('Odds request failed for ' + league) from None
+          games = sum(len(snapshot[league]) for league in ('basketball_nba', 'americanfootball_nfl'))
+          print(f'Captured odds for {games} games')
+          PY
