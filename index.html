@@ -35,7 +35,10 @@ function showTeams(game) {
 }
 
 async function showLines(game) {
-  const league = level === 'pro' && {Basketball: 'basketball/nba', Football: 'football/nfl'}[active];
+  const leagues = level === 'college'
+    ? {Basketball: 'basketball/mens-college-basketball', Football: 'football/college-football'}
+    : {Basketball: 'basketball/nba', Football: 'football/nfl'};
+  const league = leagues[active];
   if (!league) return;
   const panel = document.createElement('div');
   panel.className = 'evidence';
