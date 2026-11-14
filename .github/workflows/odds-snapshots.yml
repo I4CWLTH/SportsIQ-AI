@@ -1,4 +1,4 @@
-name: Capture NBA and NFL lines
+name: Capture pro and college lines
 on:
   schedule:
     - cron: '23 14,21 * * *'
@@ -22,10 +22,14 @@ jobs:
           archive = json.loads(file.read_text()) if file.exists() else {}
           now = dt.datetime.now(dt.timezone.utc)
           today = now.astimezone(ZoneInfo('America/Detroit')).date()
-          for league in ('basketball/nba', 'football/nfl'):
+          for league, group in (('basketball/nba', ''), ('football/nfl', ''),
+                                ('basketball/mens-college-basketball', '50'),
+                                ('football/college-football', '80')):
               for offset in (0, 1):
                   day = today + dt.timedelta(days=offset)
-                  url = f'https://site.api.espn.com/apis/site/v2/sports/{league}/scoreboard?dates={day:%Y%m%d}'
+                  url = f'https://site.api.espn.com/apis/site/v2/sports/{league}/scoreboard?dates={day:%Y%m%d}&limit=100'
+                  if group:
+                      url += '&groups=' + group
                   try:
                       with urllib.request.urlopen(url, timeout=20) as response:
                           events = json.load(response)['events']
