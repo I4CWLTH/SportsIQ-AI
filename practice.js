@@ -1,7 +1,7 @@
 import pg from 'pg';
 
 const pool = process.env.SPORTSIQ_DATABASE_URL &&
-  new pg.Pool({connectionString: process.env.SPORTSIQ_DATABASE_URL, max: 2});
+  new pg.Pool({connectionString: process.env.SPORTSIQ_DATABASE_URL, max: 2, connectionTimeoutMillis: 5000});
 const apiKey = process.env.FIREBASE_API_KEY;
 const projectId = process.env.FIREBASE_PROJECT_ID;
 const leagues = {
@@ -102,7 +102,7 @@ async function place(req, uid, games) {
   const existing = await pool.query('SELECT request_id FROM sportsiq.practice_bets WHERE uid=$1 AND request_id=$2',[uid,requestId]);
   if (existing.rowCount) return;
   const game = (await games(sport,day,level)).games.find(item => String(item.id)===id);
-  if (!game || game.score || Date.parse(game.date)<=Date.now()) throw failure(409,'Pregame betting has closed.');
+  if (!game || game.status !== 'Scheduled' || game.score || !(Date.parse(game.date)>Date.now())) throw failure(409,'Pregame betting has closed.');
   const quotes = await fetch('https://raw.githubusercontent.com/I4CWLTH/SportsIQ-AI/main/lines.json',
     {signal:AbortSignal.timeout(8000)});
   if (!quotes.ok) throw failure(503,'Saved sportsbook quotes unavailable.');
@@ -126,7 +126,11 @@ async function place(req, uid, games) {
 }
 export async function practice(req, path, send, games) {
   if (!pool || !apiKey || !projectId) return send(503,{error:'Practice bets are awaiting account and database setup.'});
-  if (path === '/api/practice/config') return send(200,{apiKey,projectId,authDomain:process.env.FIREBASE_AUTH_DOMAIN});
+  if (path === '/api/practice/config') {
+    try { await initialize(); }
+    catch { return send(503,{error:'Practice betting database is temporarily unavailable.'}); }
+    return send(200,{apiKey,projectId,authDomain:process.env.FIREBASE_AUTH_DOMAIN});
+  }
   if (path !== '/api/practice/bets' || !['GET','POST'].includes(req.method))
     return send(404,{error:'Unknown practice bet operation.'});
   try {
