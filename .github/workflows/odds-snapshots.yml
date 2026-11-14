@@ -1,31 +1,59 @@
-name: Capture NBA and NFL odds
+name: Capture NBA and NFL lines
 on:
   schedule:
     - cron: '23 14,21 * * *'
   workflow_dispatch:
+  push:
+    paths: ['.github/workflows/odds-snapshots.yml']
 permissions:
-  contents: read
+  contents: write
+concurrency: espn-lines
 jobs:
   capture:
     runs-on: ubuntu-latest
-    env:
-      ODDS_API_KEY: ${{ secrets.ODDS_API_KEY }}
     steps:
-      - name: Capture US moneylines, spreads and totals
-        if: env.ODDS_API_KEY != ''
-        run: |
+      - uses: actions/checkout@v4
+      - run: |
+          git pull --ff-only origin main
           python3 - <<'PY'
-          import datetime, json, os, pathlib, urllib.parse, urllib.request
-          snapshot = {'captured_at': datetime.datetime.now(datetime.timezone.utc).isoformat()}
-          for league in ('basketball_nba', 'americanfootball_nfl'):
-              query = urllib.parse.urlencode(dict(apiKey=os.environ['ODDS_API_KEY'],
-                  regions='us', markets='h2h,spreads,totals', oddsFormat='american'))
-              try:
-                  with urllib.request.urlopen('https://api.the-odds-api.com/v4/sports/' +
-                                              league + '/odds?' + query, timeout=25) as response:
-                      snapshot[league] = json.load(response)
-              except Exception:
-                  raise SystemExit('Odds request failed for ' + league) from None
-          games = sum(len(snapshot[league]) for league in ('basketball_nba', 'americanfootball_nfl'))
-          print(f'Captured odds for {games} games')
+          import datetime as dt, json, pathlib, urllib.request
+          from zoneinfo import ZoneInfo
+          file = pathlib.Path('lines.json')
+          archive = json.loads(file.read_text()) if file.exists() else {}
+          now = dt.datetime.now(dt.timezone.utc)
+          today = now.astimezone(ZoneInfo('America/Detroit')).date()
+          for league in ('basketball/nba', 'football/nfl'):
+              for offset in (0, 1):
+                  day = today + dt.timedelta(days=offset)
+                  url = f'https://site.api.espn.com/apis/site/v2/sports/{league}/scoreboard?dates={day:%Y%m%d}'
+                  try:
+                      with urllib.request.urlopen(url, timeout=20) as response:
+                          events = json.load(response)['events']
+                  except (OSError, ValueError, KeyError):
+                      print(f'Scoreboard unavailable: {league} {day}')
+                      continue
+                  for event in events:
+                      competition = event['competitions'][0]
+                      if competition.get('status', event.get('status', {})).get('type', {}).get('state') != 'pre':
+                          continue
+                      for quote in competition.get('odds', []):
+                          book = quote.get('provider', {}).get('name')
+                          if not book or not (quote.get('details') or quote.get('overUnder') is not None):
+                              continue
+                          moneyline = quote.get('moneyline') or {}
+                          row = dict(at=now.isoformat(), book=book, spread=quote.get('details'),
+                                     total=quote.get('overUnder'),
+                                     away=moneyline.get('away', {}).get('close', {}).get('odds'),
+                                     home=moneyline.get('home', {}).get('close', {}).get('odds'))
+                          key = league + '/' + str(event['id'])
+                          archive.setdefault(key, []).append(row)
+          cutoff = (now - dt.timedelta(days=30)).isoformat()
+          archive = {key: recent for key, rows in archive.items()
+                     if (recent := [row for row in rows if row['at'] >= cutoff])}
+          file.write_text(json.dumps(archive, sort_keys=True) + '\n')
           PY
+          git add lines.json
+          if git diff --cached --quiet; then exit 0; fi
+          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Save ESPN pregame lines'
+          git pull --rebase
+          git push origin HEAD:main
