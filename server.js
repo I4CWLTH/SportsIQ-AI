@@ -23,7 +23,10 @@ async function espnJson(url){
 }
 function normalizeInjury(item,league){
   const x=item?.injury||item||{}, athlete=x.athlete||item?.athlete||{};
-  const type=x.type||{}, injury=typeof type==='string'?type:type.description||type.name||x.location||x.bodyLocation||x.fantasy?.injuryType||'';
+  const details=x.details||{};
+  const injury=[details.type,details.detail].filter(Boolean).join(' ')||
+    x.location||x.bodyLocation||x.fantasy?.injuryType||
+    (typeof x.type==='string'?x.type:'');
   const rawHeadshot=athlete.headshot;
   const headshot=typeof rawHeadshot==='string'?rawHeadshot:rawHeadshot?.href||(athlete.id?'https://a.espncdn.com/i/headshots/'+league.split('/')[1]+'/players/full/'+encodeURIComponent(athlete.id)+'.png':'');
   const status=x.status?.description||x.status?.name||x.status||x.fantasy?.status||'Reported';
@@ -39,8 +42,8 @@ function extractInjuries(data,teamId,league){
   const rows=[];
   for(const group of raw){
     // League-wide reports group players by team; team-specific reports may be flat.
-    const owner=String(group.team?.id||group.teamId||'');
     const nested=Array.isArray(group.injuries)?group.injuries:Array.isArray(group.items)?group.items:null;
+    const owner=String(group.team?.id||group.teamId||(nested?group.id:'')||'');
     if(nested){
       if(owner!==String(teamId))continue;
       rows.push(...nested);
