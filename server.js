@@ -30,7 +30,18 @@ function seasonNotice(league,slug,date,hasGames){
   }
   return notice;
 }
-async function games(sport,date,level){const feeds=level==='college'?collegeConfig:config;if(!Object.hasOwn(feeds,sport))return {games:[],available:false,message:sport==='Cricket'?'Cricket feed not configured; no fixtures will be invented.':'Unsupported sport'};if(!/^\d{4}-\d{2}-\d{2}$/.test(date))throw Error('Invalid date');const key=level+sport+date;if(cache.has(key)&&Date.now()-cache.get(key).time<120000)return cache.get(key).value;const [kind,league,filter]=feeds[sport],ds=date.replaceAll('-','');const url='https://site.api.espn.com/apis/site/v2/sports/'+kind+'/'+league+'/scoreboard?dates='+ds+'&limit=100'+(filter?'&'+filter:'');const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),10000);let data;try{const res=await fetch(url,{signal:controller.signal,headers:{'user-agent':'SportsIQ-AI/1.0','accept':'application/json'}});if(!res.ok)throw Error('Provider returned '+res.status);data=await res.json()}finally{clearTimeout(timeout)}const mapped=(data.events||[]).map(e=>{const c=e.competitions?.[0]||{},home=c.competitors?.find(t=>t.homeAway==='home'),away=c.competitors?.find(t=>t.homeAway==='away');if(!home||!away)return null;const hr=record(home),ar=record(away),pre=e.status?.type?.state==='pre';return{id:e.id,date:e.date,state:e.status?.type?.state,status:e.status?.type?.description||'Scheduled',league:data.leagues?.[0]?.name||league,venue:c.venue?.fullName||'',home:{id:home.team?.id,name:home.team?.displayName||'Home',record:hr.text,color:home.team?.color||'',logo:home.team?.logo||''},away:{id:away.team?.id,name:away.team?.displayName||'Away',record:ar.text,color:away.team?.color||'',logo:away.team?.logo||''},probability:pre?probability(ar,hr):null,score:e.status?.type?.state==='pre'?'':away.score+' – '+home.score,source:e.links?.[0]?.href||'https://www.espn.com/'}}).filter(Boolean);const value={games:mapped,seasonNotice:seasonNotice(data.leagues?.[0],league,date,mapped.length>0),available:true,message:'ESPN public scoreboard · '+(data.leagues?.[0]?.name||league),fetchedAt:new Date().toISOString()};cache.set(key,{time:Date.now(),value});return value}
+const impactLeaderStats=new Set([
+  'pointsPerGame','reboundsPerGame','assistsPerGame','passingLeader','rushingLeader','receivingLeader',
+  'homeRuns','battingAverage','runsBattedIn','earnedRunAverage','strikeouts',
+]);
+function playerLeaders(competitor){
+  return (competitor.leaders||[]).filter(stat=>impactLeaderStats.has(stat.name)).flatMap(stat=>
+    (stat.leaders||[]).filter(leader=>leader.athlete?.displayName&&leader.displayValue).map(leader=>({
+      id:String(leader.athlete.id||''),name:leader.athlete.displayName,
+      category:stat.displayName,value:leader.displayValue,
+    })));
+}
+async function games(sport,date,level){const feeds=level==='college'?collegeConfig:config;if(!Object.hasOwn(feeds,sport))return {games:[],available:false,message:sport==='Cricket'?'Cricket feed not configured; no fixtures will be invented.':'Unsupported sport'};if(!/^\d{4}-\d{2}-\d{2}$/.test(date))throw Error('Invalid date');const key=level+sport+date;if(cache.has(key)&&Date.now()-cache.get(key).time<120000)return cache.get(key).value;const [kind,league,filter]=feeds[sport],ds=date.replaceAll('-','');const url='https://site.api.espn.com/apis/site/v2/sports/'+kind+'/'+league+'/scoreboard?dates='+ds+'&limit=100'+(filter?'&'+filter:'');const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),10000);let data;try{const res=await fetch(url,{signal:controller.signal,headers:{'user-agent':'SportsIQ-AI/1.0','accept':'application/json'}});if(!res.ok)throw Error('Provider returned '+res.status);data=await res.json()}finally{clearTimeout(timeout)}const mapped=(data.events||[]).map(e=>{const c=e.competitions?.[0]||{},home=c.competitors?.find(t=>t.homeAway==='home'),away=c.competitors?.find(t=>t.homeAway==='away');if(!home||!away)return null;const hr=record(home),ar=record(away),pre=e.status?.type?.state==='pre';return{id:e.id,date:e.date,state:e.status?.type?.state,status:e.status?.type?.description||'Scheduled',league:data.leagues?.[0]?.name||league,venue:c.venue?.fullName||'',home:{id:home.team?.id,name:home.team?.displayName||'Home',record:hr.text,leaders:pre?playerLeaders(home):[],color:home.team?.color||'',logo:home.team?.logo||''},away:{id:away.team?.id,name:away.team?.displayName||'Away',record:ar.text,leaders:pre?playerLeaders(away):[],color:away.team?.color||'',logo:away.team?.logo||''},probability:pre?probability(ar,hr):null,score:e.status?.type?.state==='pre'?'':away.score+' – '+home.score,source:e.links?.[0]?.href||'https://www.espn.com/'}}).filter(Boolean);const value={games:mapped,seasonNotice:seasonNotice(data.leagues?.[0],league,date,mapped.length>0),available:true,message:'ESPN public scoreboard · '+(data.leagues?.[0]?.name||league),fetchedAt:new Date().toISOString()};cache.set(key,{time:Date.now(),value});return value}
 
 const injuryCache=new Map();
 const injuryLeagues=new Map([
@@ -64,7 +75,7 @@ function normalizeInjury(item,league){
   if(!name)return null;
   const shortInjury=String(injury).replace(/[^a-zA-Z0-9 /-]/g,'').trim().split(/\s+/).slice(0,2).join(' ')||'Undisclosed';
   return {name,headshot:/^https:\/\//.test(headshot)?headshot:'',athleteId:String(athlete.id||''),
-    position:athlete.position?.abbreviation||x.position?.abbreviation||'',status:statusText,description,
+    position:athlete.position?.abbreviation||x.position?.abbreviation||'',status:statusText,out,description,
     injury:shortInjury==='Undisclosed'?'':shortInjury};
 }
 function extractInjuries(data,teamId,league){
