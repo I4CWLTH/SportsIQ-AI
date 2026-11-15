@@ -75,7 +75,7 @@
 <button class="sport" type="button" data-level="pro" aria-pressed="true">Professional</button>
 <button class="sport" type="button" data-level="college" aria-pressed="false">College</button>
 </div><nav class="bar" id="sports" aria-label="Choose sport"></nav><details id="practiceHistory" style="margin:8px 0 16px;border:1px solid #344768;border-radius:13px;background:#101b30"><summary style="cursor:pointer;padding:12px"><span class="practice-heading">Practice Bets <span id="practiceCountdown"></span></span></summary><div style="padding:0 12px 12px"><p class="practice-notice">🎰 Practice-only money. Not real wagers or cash payouts. Results update from official final scores. Pending bets remain green until graded.</p><div id="practiceTotals" class="practice-totals" aria-live="polite"></div><ul id="practiceEntries" class="practice-ledger" aria-live="polite"></ul></div></details><details id="daily" style="margin:8px 0 16px;border:1px solid #344768;border-radius:13px;background:#101b30"><summary style="cursor:pointer;padding:12px 16px;font-weight:650">Picks &amp; results</summary><div style="padding:0 16px 16px"><h2 style="font-size:16px"></h2><div data-daily aria-live="polite"></div></div></details><div class="ticker"><span>◈ DATA INTEGRITY FIRST &nbsp; · &nbsp; VERIFIED FIXTURES REQUIRED &nbsp; · &nbsp; INJURY &amp; FORM ANALYSIS COMING WITH DATA INTEGRATION &nbsp; · &nbsp; NO UNVERIFIED PREDICTIONS &nbsp; · &nbsp; </span></div><main class="layout"><section class="panel"><div class="label">01 / MATCHUP INTELLIGENCE</div><h2 id="title">Basketball command center</h2><div class="actions"><label for="day" class="meta">GAME DATE</label><input id="day" type="date" style="background:#172641;color:white;border:1px solid #4b6487;border-radius:9px;padding:10px;font-size:16px"><button id="refresh" type="button">↻ Refresh</button></div><p id="feedStatus" class="meta" aria-live="polite">Connecting to sports feeds…</p><div class="game-list" id="games"><div class="loading">Loading verified fixtures…</div></div><div class="grid"><div class="stat"><small>VERIFIED FIXTURES</small><strong id="count">—</strong><small>For selected date</small></div><div class="stat"><small>DATA PROVIDER</small><strong style="font-size:16px">ESPN</strong><small>Public scoreboard</small></div><div class="stat"><small>FEED STATUS</small><strong id="feedHealth" style="font-size:17px;color:#f4c16c">LOADING</strong><small>Source-dependent</small></div></div></section><aside class="panel"><div class="label">02 / AI EVIDENCE ENGINE</div><h2>Why would a team win?</h2><p class="muted" id="analysis">Select a verified upcoming matchup to inspect team records, available evidence, and an explicitly labeled baseline estimate. No unsupported claims about injuries or recent form.</p><div id="evidence"></div><section class="consensus" id="consensus" aria-label="External prediction consensus"><div class="label">EXTERNAL MODEL CONSENSUS</div><h2>What other models predict</h2><p class="muted" id="consensusStatus">Select a matchup to inspect external forecast sources. Picks are only displayed when verified.</p><div id="consensusSources"></div></section><div class="tag">Recent form</div><div class="tag">Injuries</div><div class="tag">Home advantage</div><div class="tag">Head-to-head</div><div class="tag">Rest &amp; travel</div><div class="tag">Team efficiency</div><div class="track" aria-label="Decorative spectrum, not a probability"></div><p class="muted" id="modelNote">An estimated probability is shown only when both teams have usable win-loss records. It is a simple baseline, not a trained AI model or betting advice.</p><hr style="border:0;border-top:1px solid #304260;margin:22px 0"><div class="label">03 / PERFORMANCE AUDIT</div><h2>Accountable predictions</h2><p class="muted" id="accuracy">No evaluated predictions yet. Accuracy is not claimed without saved pregame forecasts and official final results.</p></aside></main><footer>SPORTSIQ AI · Public sports feed from ESPN · Baseline estimates are not validated AI predictions</footer></div><script>
-const sports=['Basketball','Football','Baseball','Soccer','Hockey','Cricket'],nav=document.getElementById('sports'),title=document.getElementById('title'),day=document.getElementById('day'),games=document.getElementById('games'),status=document.getElementById('feedStatus'),analysis=document.getElementById('analysis'),evidence=document.getElementById('evidence');let active='Basketball',level='pro',items=[],loadVersion=0;
+const sports={pro:['Basketball','Football','Baseball','Soccer','Hockey'],college:['Baseball','Football','Basketball']},nav=document.getElementById('sports'),title=document.getElementById('title'),day=document.getElementById('day'),games=document.getElementById('games'),status=document.getElementById('feedStatus'),analysis=document.getElementById('analysis'),evidence=document.getElementById('evidence');let active='Basketball',level='pro',items=[],loadVersion=0;
 const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 day.value=new Date().toLocaleDateString('en-CA');function labelDate(s){return new Date(s).toLocaleString(undefined,{month:'short',day:'numeric',hour:'numeric',minute:'2-digit'})}
 async function load(){const version=++loadVersion;items=[];updateCountdown();document.getElementById('practiceForm')?.remove();window.currentConsensusKey=null;games.innerHTML='<div class="loading">Loading verified games…</div>';status.textContent='Checking public scoreboard…';document.getElementById('feedHealth').textContent='LOADING';document.getElementById('count').textContent='—';analysis.textContent='Select a matchup to see sourced evidence.';evidence.replaceChildren();try{const r=await fetch('/api/games?sport='+encodeURIComponent(active)+'&level='+level+'&date='+encodeURIComponent(day.value));const data=await r.json();if(version!==loadVersion)return;if(!r.ok)throw Error(data.error||'Feed error');items=data.games||[];updateCountdown();document.getElementById('count').textContent=items.length;document.getElementById('feedHealth').textContent=data.available?'CONNECTED':'UNAVAILABLE';status.textContent=data.message+(data.fetchedAt?' · Updated '+new Date(data.fetchedAt).toLocaleTimeString():'');if(!items.length){games.innerHTML='<div class="loading">No verified games returned for this sport and date.</div>';return}games.replaceChildren();items.forEach((g,i)=>{const b=document.createElement('button');b.className='game';b.type='button';b.innerHTML='<span><b>'+esc(g.away.name)+' <span style="color:#65dbe9">vs</span> '+esc(g.home.name)+'</b><small>'+esc(labelDate(g.date))+' · '+esc(g.status)+(g.score?' · '+esc(g.score):'')+'</small></span><span class="arrow">›</span>';b.dataset.gameId=g.id;b.addEventListener('click',()=>selectGame(i,b));games.append(b)});updateBetBadges()}catch(e){if(version!==loadVersion)return;status.textContent='Sports feed unavailable: '+e.message;games.innerHTML='<div class="loading">Unable to retrieve verified fixtures. Try again later.</div>';document.getElementById('feedHealth').textContent='OFFLINE'}}
@@ -409,6 +409,15 @@ async function loadDaily() {
   });
 }
 function updateView(){
+  if(!sports[level].includes(active))active=sports[level][0];
+  nav.replaceChildren(...sports[level].map(sport=>{
+    const button=document.createElement('button');
+    button.type='button';button.className='sport';button.textContent=sport;
+    button.classList.toggle('active',sport===active);
+    button.setAttribute('aria-pressed',String(sport===active));
+    button.onclick=()=>{active=sport;updateView();nav.querySelector('.active')?.focus()};
+    return button;
+  }));
   if (daily.open) loadDaily();
   const levelButtons=document.querySelectorAll('#levels button');
   levelButtons.forEach(button=>{
@@ -422,7 +431,9 @@ function updateView(){
 document.querySelectorAll('#levels button').forEach(button=>{
   button.onclick=()=>{level=button.dataset.level;updateView()};
 });
-sports.forEach(s=>{const b=document.createElement('button');b.className='sport';b.textContent=s;b.type='button';b.onclick=()=>{active=s;nav.querySelectorAll('button').forEach(x=>{x.classList.toggle('active',x===b);x.setAttribute('aria-pressed',String(x===b))});updateView()};nav.append(b)});day.addEventListener('change',load);document.getElementById('refresh').addEventListener('click',load);nav.firstChild.click();
+day.addEventListener('change',load);
+document.getElementById('refresh').addEventListener('click',load);
+updateView();
 
 
 const practiceKey = 'sportsiq.practiceBets.v1';
@@ -478,34 +489,51 @@ async function updatePracticeLedger(change){
   updateBetBadges();
   renderPracticeHistory();
 }
+async function fetchPracticeGame(bet){
+  if(!bet.gameId||!bet.sport||!bet.level)return null;
+  try{
+    const params=new URLSearchParams({id:bet.gameId,sport:bet.sport,level:bet.level});
+    const response=await fetch('/api/game-status?'+params,{cache:'no-store'});
+    return response.ok?await response.json():null;
+  }catch{return null}
+}
+function applyPracticeGame(bet,game){
+  if(!game)return;
+  bet.kickoff=game.date;
+  bet.gameStarted=game.state?game.state!=='pre':!/^(scheduled|pre-game)$/i.test(game.status);
+  if(!/^final/i.test(game.status)||!game.score)return;
+  const scores=game.score.split(/\s*[–-]\s*/);
+  if(scores.length!==2||scores.some(x=>!/^\d+$/.test(x)))return;
+  const [away,home]=scores.map(Number);
+  bet.result=away===home?'push':bet.pick===game[home>away?'home':'away'].name?'win':'loss';
+  bet.finalScore=game.score;
+}
 async function gradePracticeBets(bets){
   const groups=new Map();
   for(const bet of bets){
-    if(bet.canceledAt||!bet.gameId||!bet.date||!bet.sport||!bet.level)continue; // Preserve legacy tickets; no unsupported grading.
-    const key=[bet.sport,bet.level,bet.date].join('|');
+    if(bet.canceledAt||!bet.gameId||!bet.sport||!bet.level)continue;
+    const key=JSON.stringify([bet.sport,bet.level,bet.date||'']);
     if(!groups.has(key))groups.set(key,[]);
     groups.get(key).push(bet);
   }
   await Promise.all([...groups.entries()].map(async ([key,group])=>{
-    const [sport,level,date]=key.split('|');
-    try{
-      const url='/api/games?sport='+encodeURIComponent(sport)+'&level='+encodeURIComponent(level)+'&date='+encodeURIComponent(date);
-      const res=await fetch(url,{cache:'no-store'});if(!res.ok)return;
-      const data=await res.json();if(!data.available)return;
-      for(const bet of group){
-        const game=(data.games||[]).find(g=>String(g.id)===String(bet.gameId));
-        if(game){
-          bet.kickoff=game.date;
-          bet.gameStarted=!/^(scheduled|pre-game)$/i.test(game.status);
-        }
-        if(!game||!/^final/i.test(game.status)||!game.score)continue;
-        const scores=game.score.split(/\s*[–-]\s*/);
-        if(scores.length!==2||scores.some(x=>!/^\d+$/.test(x)))continue;
-        const [away,home]=scores.map(Number);
-        bet.result=away===home?'push':bet.pick===game[home>away?'home':'away'].name?'win':'loss';
-        bet.finalScore=game.score;
+    const [sport,level,date]=JSON.parse(key);
+    let matches=[];
+    if(date){
+      try{
+        const res=await fetch('/api/games?'+new URLSearchParams({sport,level,date}),{cache:'no-store'});
+        if(res.ok)matches=(await res.json()).games||[];
+      }catch{/* Use the matchup endpoint when the date scoreboard fails. */}
+    }
+    const lookups=new Map();
+    await Promise.all(group.map(async bet=>{
+      let game=matches.find(entry=>String(entry.id)===String(bet.gameId));
+      if(!game){
+        if(!lookups.has(bet.gameId))lookups.set(bet.gameId,fetchPracticeGame(bet));
+        game=await lookups.get(bet.gameId);
       }
-    }catch{/* Keep pending when an official result cannot be fetched */}
+      applyPracticeGame(bet,game);
+    }));
   }));
 }
 let practiceRender=0;
@@ -536,7 +564,7 @@ async function renderPracticeHistory(){
         const cancel=document.createElement('button');
         cancel.type='button';cancel.textContent='Cancel Bet';
         const lockReason=bet.canceledAt?'Already canceled':bet.result?'Bet settled':
-          !bet.gameId||!bet.kickoff?'Pregame status unavailable':
+          !bet.gameId?'Older ticket has no game ID':!Number.isFinite(Date.parse(bet.kickoff))?'Game time could not be verified':
           (bet.gameStarted||Date.parse(bet.kickoff)<=Date.now())?'Game already started':'';
         cancel.disabled=Boolean(lockReason);
         if(lockReason){
@@ -546,11 +574,14 @@ async function renderPracticeHistory(){
         cancel.onclick=async()=>{
           cancel.disabled=true;
           try{
+            const verified=await fetchPracticeGame(bet);
+            if(!verified)throw Error('Game status could not be verified. Try again shortly.');
+            if(verified.state!=='pre'||!(Date.parse(verified.date)>Date.now()))throw Error('This matchup is no longer open for cancellation.');
             await updatePracticeLedger(current=>{
               const ticket=current.find(b=>bet.ticketId?b.ticketId===bet.ticketId:
                 b.placedAt===bet.placedAt&&b.gameId===bet.gameId&&b.pick===bet.pick&&b.units===bet.units);
               if(!ticket||ticket.canceledAt)return;
-              if(bet.gameStarted||Date.parse(bet.kickoff)<=Date.now())throw Error('This matchup has already started.');
+              if(Date.parse(verified.date)<=Date.now())throw Error('This matchup has already started.');
               ticket.canceledAt=new Date().toISOString();
             });
           }catch(error){cancel.disabled=false;result.textContent=error.message}
