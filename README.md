@@ -19,3 +19,14 @@ null in snapshots. The models use zero as the neutral value during fitting.
 The availability feature measures reported absent scoring leaders. Replacement
 quality, opponent-adjusted efficiency, matchup style, travel, and rotation
 continuity require additional data. Pilot estimates do not select site picks.
+
+## Practice Bets accounts
+
+Install dependencies with `npm ci`. Set these values on the Sports IQ service before deploying the account feature:
+
+- `DATABASE_URL`: Sports IQ PostgreSQL internal connection string.
+- `PUBLIC_ORIGIN`: exact public HTTPS origin, with no trailing slash.
+- `RESEND_API_KEY`: sending key for the Sports IQ sign-in emails.
+- `PRACTICE_FROM_EMAIL`: sender on a domain verified in Resend.
+
+The service creates its practice tables on first use. Guest browsing works independently of account configuration. Practice sign-in uses a single-use 15-minute email link. Authenticated tickets and results are stored per account, and practice funds are calculated from the server ledger. A one-time browser import displays up to 200 historical tickets separately from server-verified balance and score totals.
