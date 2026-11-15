@@ -39,7 +39,7 @@ function extractInjuries(data,teamId){
   const rows=[];
   for(const group of raw){
     // League-wide reports group players by team; team-specific reports may be flat.
-    const owner=String(group.team?.id||group.teamId||group.id||'');
+    const owner=String(group.team?.id||group.teamId||'');
     const nested=Array.isArray(group.injuries)?group.injuries:Array.isArray(group.items)?group.items:null;
     if(nested){
       if(owner&&owner!==String(teamId))continue;
