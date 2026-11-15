@@ -59,6 +59,12 @@
 .practice-totals b{color:#58ffa3;font-size:18px}.practice-notice{color:#c3d4e3;font-size:12px}
 @media(max-width:650px){.injury-teams{grid-template-columns:1fr}.injury-team{padding:10px}}
 .injury-teams{grid-template-columns:1fr}
+.injury-row{border-bottom:1px solid #293a55}
+.injury-row:last-child{border-bottom:0}
+.injury-row .injury-player{width:100%;text-align:left;background:transparent;border:0;color:inherit;cursor:pointer}
+.injury-player::after{content:'+';margin-left:auto;color:#65dbe9}
+.injury-player[aria-expanded="true"]::after{content:'−'}
+.injury-description{padding:0 8px 10px;color:#d3dfef;line-height:1.45}
 .practice-heading{display:inline-flex;align-items:center;justify-content:space-between;gap:8px;width:calc(100% - 22px)}
 #practiceCountdown{color:#58ffa3;font-variant-numeric:tabular-nums;font-size:.8rem}
 .ticket-amount{display:grid;justify-items:end;gap:5px}
@@ -76,11 +82,27 @@ async function load(){const version=++loadVersion;items=[];updateCountdown();doc
 async function selectGame(i,b){games.querySelectorAll('.game').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');const g=items[i];showPracticeBet(g);const cs=document.getElementById('consensusStatus'),cl=document.getElementById('consensusSources');cs.textContent='External picks not yet verified for this matchup. No consensus score is calculated until provider data is available.';cl.replaceChildren();const providers=[['ESPN FPI','https://www.espn.com/nfl/fpi/'],['Dimers','https://www.dimers.com/'],['Machine Learning Ball','https://machinelearningball.com/'],['SlipTrack','https://sliptrack.bet/']];providers.forEach(([name,url])=>{const row=document.createElement('div');row.className='evidence';const label=document.createElement('b');label.textContent=name+' · Pick not verified';row.append(label);const link=document.createElement('a');link.href=url;link.target='_blank';link.rel='noopener noreferrer';link.textContent=' View provider ↗';row.append(link);cl.append(row)});const requestKey=String(g.id)+'-'+active;window.currentConsensusKey=requestKey;fetch('/api/consensus?sport='+encodeURIComponent(active)+'&level='+level+'&id='+encodeURIComponent(g.id)+'&home='+encodeURIComponent(g.home.name)+'&away='+encodeURIComponent(g.away.name)).then(r=>r.json()).then(data=>{if(window.currentConsensusKey!==requestKey)return;const verified=(data.providers||[]).filter(x=>x.verified&&(x.pick===g.home.name||x.pick===g.away.name));cl.replaceChildren();(data.providers||[]).forEach(x=>{const row=document.createElement('div');row.className='evidence';const label=document.createElement('b');label.textContent=x.name+' · '+(x.verified?x.pick+' ('+x.probability+'%)':'No verified pick available');row.append(label);if(x.url&&/^https:\/\//.test(x.url)){const a=document.createElement('a');a.href=x.url;a.target='_blank';a.rel='noopener noreferrer';a.textContent='Source ↗';row.append(a)}cl.append(row)});if(!verified.length){cs.textContent='No verified external picks available for this matchup. Consensus chart withheld.';return}const homeVotes=verified.filter(x=>x.pick===g.home.name).length,awayVotes=verified.length-homeVotes;cs.textContent=homeVotes+' of '+verified.length+' verified sources favor '+g.home.name+'; '+awayVotes+' favor '+g.away.name+'.';const wrap=document.createElement('div');wrap.className='consensus-visual';const pie=document.createElement('div');pie.className='consensus-pie';pie.setAttribute('role','img');pie.setAttribute('aria-label',homeVotes+' votes for '+g.home.name+' and '+awayVotes+' for '+g.away.name);pie.style.background='conic-gradient(#54e8f0 0 '+(homeVotes/verified.length*100)+'%,#ae8aff '+(homeVotes/verified.length*100)+'% 100%)';const legend=document.createElement('div');legend.className='consensus-legend';legend.textContent=g.home.name+': '+homeVotes+' · '+g.away.name+': '+awayVotes+' · '+verified.length+' verified';wrap.append(pie,legend);cl.prepend(wrap)}).catch(()=>{if(window.currentConsensusKey===requestKey)cs.textContent='External forecast service unavailable; no consensus shown.'});const p=g.probability===null?null:Math.round(g.probability*100);const pick=p===null?null:(p>=50?g.home.name:g.away.name);const confidence=p===null?null:Math.max(p,100-p);const other=pick===g.home.name?g.away.name:g.home.name;const winner=p===null?'<div class="winner"><small>SPORTSIQ AI FORECAST</small><strong>Checking historical results…</strong><small>Looking up completed games in ESPN team schedules.</small></div>':'<div class="winner" role="status"><small>SPORTSIQ AI PICK · RECORD-BASED BASELINE</small><strong>🏆 '+esc(pick)+'</strong><small>'+confidence+'% estimated win probability · '+(confidence>=65?'Moderate record-based edge':'Close matchup / low-confidence edge')+' · Not a trained AI model</small><div class="meter"><div style="width:'+confidence+'%"></div></div></div>';analysis.innerHTML=winner;showTeams(g);if(pick&&level!=='college'){const selected=pick===g.home.name?g.home:g.away;const visual=document.createElement('div');visual.className='winner-visual';const icon=document.createElement('span');icon.className='winner-gear';icon.textContent=({Football:'🏈',Basketball:'🏀',Baseball:'⚾',Hockey:'🏒',Soccer:'⚽',Cricket:'🏏'})[active]||'🏆';visual.append(icon);if(selected.logo&&/^https:\/\//.test(selected.logo)){const img=document.createElement('img');img.className='winner-emblem';img.src=selected.logo;img.alt=selected.name+' official team logo';img.loading='lazy';img.onerror=()=>img.remove();visual.append(img)}const card=analysis.querySelector('.winner');if(card)card.prepend(visual)}const narrative=document.createElement('div');narrative.className='commentary';if(p===null){narrative.textContent=g.score?'Final or live score: '+g.score:''}else{const home=g.home.name,away=g.away.name;const favoredHome=pick===home;const recordHome=g.home.record||'not available',recordAway=g.away.record||'not available';narrative.textContent='Here is the matchup: '+away+' travels to face '+home+'. The early numbers give '+pick+' the edge, but this is a baseline lean, not a lock. '+home+' comes in with a reported record of '+recordHome+', while '+away+' is listed at '+recordAway+'. '+(favoredHome?'The home-field adjustment also works in '+home+'’s favor.':'Even with a modest home-field adjustment for '+home+', the record-based estimate leans toward '+away+'.')+' The big question before kickoff or tipoff is who is actually available and how each side has performed lately. Those player-level facts have not been verified by this feed, so we are not going to manufacture an injury report or pretend we know the starting lineup. Bottom line: '+pick+' is the tentative pick at '+confidence+'%, with '+other+' still very much in the contest.'}analysis.append(narrative);showLines(g);showSavedPick(g);showMatchupHistory(g, analysis.querySelector('.winner'));if(level==='pro'&&['Football','Basketball'].includes(active)&&g.home.id&&g.away.id)showMatchupInjuries(g);const parts=[['Away record',g.away.record||'Not provided'],['Home record',g.home.record||'Not provided'],['Venue',g.venue||'Not provided'],['Competition',g.league||'Not provided'],['Player injuries / lineup changes',level==='pro'&&['Football','Basketball'].includes(active)?'See the two-team ESPN injury panel above. Not included in baseline forecast.':'Injury feed not configured for this league']];evidence.innerHTML=parts.map(([k,v])=>'<div class="evidence"><b>'+esc(k)+'</b><small>'+esc(v)+'</small></div>').join('');if(g.source){const a=document.createElement('a');a.href=g.source;a.target='_blank';a.rel='noopener noreferrer';a.className='source';a.textContent='Verify matchup on ESPN ↗';evidence.append(a)}}
 
 
+let expandedInjury=null;
+function closeInjury(){
+  if(!expandedInjury)return;
+  expandedInjury.toggle.setAttribute('aria-expanded','false');
+  expandedInjury.description.hidden=true;
+  expandedInjury=null;
+}
+document.addEventListener('click',event=>{
+  if(expandedInjury&&!expandedInjury.row.contains(event.target))closeInjury();
+});
+document.addEventListener('keydown',event=>{
+  if(event.key==='Escape'&&expandedInjury?.toggle.isConnected){
+    expandedInjury.toggle.focus();
+    closeInjury();
+  }
+});
 async function showMatchupInjuries(game){
   const league=active==='Basketball'?'nba':'nfl';
   const panel=document.createElement('section');panel.className='injury-matchup';panel.setAttribute('aria-label','Player injuries and lineup changes');
   const heading=document.createElement('h3');heading.textContent='🏥 Player injuries / lineup changes';panel.append(heading);
-  const note=document.createElement('p');note.className='meta';note.textContent='ESPN reported injuries · all returned entries · not a confirmed starting lineup';panel.append(note);
+  const note=document.createElement('p');note.className='meta';note.textContent='Players listed as out or with a reported injury · ESPN';panel.append(note);
   const grid=document.createElement('div');grid.className='injury-teams';panel.append(grid);
   const columns={};
   for(const side of ['away','home']){
@@ -100,18 +122,34 @@ async function showMatchupInjuries(game){
       if(!team?.available){msg.textContent='Injury report unavailable; no status assumed.';continue}
       const players=team.players||[];
       msg.textContent=players.length+' reported player'+(players.length===1?'':'s')+' · '+(report.fetchedAt?new Date(report.fetchedAt).toLocaleTimeString():'ESPN');
-      if(!players.length){const p=document.createElement('p');p.className='meta';p.textContent='No entries returned; this does not confirm a healthy roster.';col.append(p)}
+      if(!players.length){const p=document.createElement('p');p.className='meta';p.textContent='ESPN listed no players as out or injured.';col.append(p)}
       for(const player of players){
-        const card=document.createElement('div');card.className='injury-player';
+        const row=document.createElement('div');row.className='injury-row';
+        const card=document.createElement('button');card.className='injury-player';card.type='button';
+        card.setAttribute('aria-expanded','false');
         const avatar=document.createElement('span');avatar.className='injury-avatar';avatar.textContent=league==='nba'?'🏀':'🏈';
         if(typeof player.headshot==='string'&&/^https:\/\//.test(player.headshot)){
           const img=document.createElement('img');img.src=player.headshot;img.alt=player.name+' photo';img.loading='lazy';img.referrerPolicy='no-referrer';img.onerror=()=>img.replaceWith(avatar);card.append(img);
         }else card.append(avatar);
         const detail=document.createElement('div');detail.className='injury-player-text';
         const name=document.createElement('div');name.className='injury-player-name';name.textContent=player.name;
-        const injury=document.createElement('span');injury.className='injury-chip';injury.textContent=player.injury||'Undisclosed';
+        const injury=document.createElement('span');injury.className='injury-chip';injury.textContent=player.injury||'';
         const availability=document.createElement('small');availability.className='meta';availability.textContent=(player.position||'Player')+' · '+(player.status||'Status not reported');
-        detail.append(name,injury,availability);card.append(detail);col.append(card);
+        detail.append(name);
+        if(player.injury)detail.append(injury);
+        detail.append(availability);
+        const description=document.createElement('div');
+        description.className='injury-description';description.hidden=true;
+        description.textContent=player.description||'ESPN has not provided further details.';
+        card.addEventListener('click',()=>{
+          const reopen=expandedInjury?.toggle!==card;
+          closeInjury();
+          if(reopen){
+            expandedInjury={row,toggle:card,description};
+            card.setAttribute('aria-expanded','true');description.hidden=false;
+          }
+        });
+        card.append(detail);row.append(card,description);col.append(row);
       }
     }
   }catch{for(const {msg} of Object.values(columns))msg.textContent='ESPN report temporarily unavailable. No injuries inferred.'}
@@ -454,7 +492,10 @@ async function gradePracticeBets(bets){
       const data=await res.json();if(!data.available)return;
       for(const bet of group){
         const game=(data.games||[]).find(g=>String(g.id)===String(bet.gameId));
-        if(game)bet.kickoff=/^(scheduled|pre-game)$/i.test(game.status)?game.date:null;
+        if(game){
+          bet.kickoff=game.date;
+          bet.gameStarted=!/^(scheduled|pre-game)$/i.test(game.status);
+        }
         if(!game||!/^final/i.test(game.status)||!game.score)continue;
         const scores=game.score.split(/\s*[–-]\s*/);
         if(scores.length!==2||scores.some(x=>!/^\d+$/.test(x)))continue;
@@ -489,9 +530,17 @@ async function renderPracticeHistory(){
       const team=document.createElement('strong');team.textContent='🎟️ '+bet.pick+' to win';
       const amount=document.createElement('span');amount.className='practice-money';amount.textContent=usd(bet.units);
       const amountGroup=document.createElement('div');amountGroup.className='ticket-amount';amountGroup.append(amount);
-      if(bet.kickoff&&!bet.canceledAt&&!bet.result&&Date.parse(bet.kickoff)>Date.now()){
+      {
         const cancel=document.createElement('button');
         cancel.type='button';cancel.textContent='Cancel Bet';
+        const lockReason=bet.canceledAt?'Already canceled':bet.result?'Bet settled':
+          !bet.gameId||!bet.kickoff?'Pregame status unavailable':
+          (bet.gameStarted||Date.parse(bet.kickoff)<=Date.now())?'Game already started':'';
+        cancel.disabled=Boolean(lockReason);
+        if(lockReason){
+          const reason=document.createElement('small');reason.textContent=lockReason;
+          amountGroup.append(cancel,reason);
+        }else amountGroup.append(cancel);
         cancel.onclick=async()=>{
           cancel.disabled=true;
           try{
@@ -499,12 +548,11 @@ async function renderPracticeHistory(){
               const ticket=current.find(b=>bet.ticketId?b.ticketId===bet.ticketId:
                 b.placedAt===bet.placedAt&&b.gameId===bet.gameId&&b.pick===bet.pick&&b.units===bet.units);
               if(!ticket||ticket.canceledAt)return;
-              if(Date.parse(bet.kickoff)<=Date.now())throw Error('This matchup has already started.');
+              if(bet.gameStarted||Date.parse(bet.kickoff)<=Date.now())throw Error('This matchup has already started.');
               ticket.canceledAt=new Date().toISOString();
             });
           }catch(error){cancel.disabled=false;result.textContent=error.message}
         };
-        amountGroup.append(cancel);
       }
       header.append(team,amountGroup);row.append(header);
       const game=document.createElement('small');game.textContent=bet.matchup;row.append(game);

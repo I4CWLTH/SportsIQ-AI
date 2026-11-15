@@ -30,12 +30,18 @@ function normalizeInjury(item,league){
   const rawHeadshot=athlete.headshot;
   const headshot=typeof rawHeadshot==='string'?rawHeadshot:rawHeadshot?.href||(athlete.id?'https://a.espncdn.com/i/headshots/'+league.split('/')[1]+'/players/full/'+encodeURIComponent(athlete.id)+'.png':'');
   const status=x.status?.description||x.status?.name||x.status||x.fantasy?.status||'Reported';
+  const statusText=String(status);
+  const out=/^(out|inactive|suspended|suspension|injured reserve|ir|pup|nfi|physically unable to perform|non-football injury)(?:\b|$)/i.test(statusText);
+  const active=/^(active|available|healthy|cleared)$/i.test(statusText);
+  const hasInjury=Boolean(injury)&&!/^(undisclosed|unknown|personal|rest|suspension|not injury related|non-injury related|n\/a)(?:\b|$)/i.test(injury);
+  if(!out&&(active||!hasInjury))return null;
+  const description=[x.longComment,x.shortComment].find(comment=>typeof comment==='string'&&comment.trim())||'';
   const name=athlete.displayName||athlete.fullName||athlete.name||x.athleteName||'';
   if(!name)return null;
   const shortInjury=String(injury).replace(/[^a-zA-Z0-9 /-]/g,'').trim().split(/\s+/).slice(0,2).join(' ')||'Undisclosed';
   return {name,headshot:/^https:\/\//.test(headshot)?headshot:'',athleteId:String(athlete.id||''),
-    position:athlete.position?.abbreviation||x.position?.abbreviation||'',status:String(status),
-    injury:shortInjury};
+    position:athlete.position?.abbreviation||x.position?.abbreviation||'',status:statusText,description,
+    injury:shortInjury==='Undisclosed'?'':shortInjury};
 }
 function extractInjuries(data,teamId,league){
   const raw=Array.isArray(data?.injuries)?data.injuries:Array.isArray(data?.items)?data.items:[];
