@@ -69,7 +69,9 @@
 #practiceCountdown{color:#58ffa3;font-variant-numeric:tabular-nums;font-size:.8rem}
 .ticket-amount{display:grid;justify-items:end;gap:5px}
 .accuracy-highlight{padding:12px;border:1px solid #58ffa3;border-radius:10px;color:#9bffc7;font-size:1.15rem;font-weight:750}
-.pick-grade{color:#9bffc7;font-weight:700}
+.pick-grade{font-weight:750}
+.pick-grade.yes{color:#9bffc7}
+.pick-grade.no{color:#ff8796}
 .bet-badge{margin-left:6px;color:#58ffa3}
 .season-banner{grid-column:1/-1;display:flex;align-items:flex-start;gap:12px;padding:16px;border:1px solid #e9b754;border-radius:12px;background:#282219;color:#fff0cd}
 .season-icon{flex:none;font-size:1.6rem;line-height:1.15}
@@ -478,11 +480,16 @@ async function loadDaily() {
       if (grade === 'Yes' || grade === 'No') {
         dateGraded++;
         if (grade === 'Yes') dateCorrect++;
-        detail.className = 'pick-grade';
       }
       detail.textContent = (team ? (row ? 'Saved pick: ' : 'Projected winner: ') + team : 'No saved pregame pick') +
         (game.score ? ' · ' + game.status + ': ' + game.score : '') +
-        (grade ? ' · Correct? ' + grade : row ? ' · Pending final score' : '');
+        (grade ? ' · Correct? ' : row ? ' · Pending final score' : '');
+      if (grade) {
+        const verdict = document.createElement('span');
+        verdict.textContent = grade;
+        if (index && (grade === 'Yes' || grade === 'No')) verdict.className = 'pick-grade ' + grade.toLowerCase();
+        detail.append(verdict);
+      }
       card.append(label, detail);
       if (!index && team && !game.score) {
         const explanation = document.createElement('small');
