@@ -65,6 +65,17 @@
     ],
     "team": "Central Michigan Chippewas"
   },
+  "Basketball/college/401911017": {
+    "recorded": "2026-11-15T19:58:37.782398+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-15"
+    ],
+    "team": "Canisius Golden Griffins"
+  },
   "Basketball/college/401911188": {
     "recorded": "2026-11-14T23:55:54.205502+00:00",
     "result": "Yes",
@@ -164,6 +175,39 @@
     ],
     "team": "Minnesota Golden Gophers"
   },
+  "Basketball/college/401917175": {
+    "recorded": "2026-11-15T19:58:37.782392+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-15"
+    ],
+    "team": "Penn State Nittany Lions"
+  },
+  "Basketball/college/401917528": {
+    "recorded": "2026-11-15T19:58:37.782384+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-15"
+    ],
+    "team": "Seattle U Redhawks"
+  },
+  "Basketball/college/401917531": {
+    "recorded": "2026-11-15T19:58:37.782380+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-15"
+    ],
+    "team": "Chicago State Cougars"
+  },
   "Basketball/college/401917917": {
     "recorded": "2026-11-15T14:41:29.346870+00:00",
     "result": null,
@@ -229,6 +273,17 @@
       "2026-11-16"
     ],
     "team": "St. Thomas Tommies"
+  },
+  "Basketball/college/401919825": {
+    "recorded": "2026-11-15T19:58:37.782372+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-15"
+    ],
+    "team": "James Madison Dukes"
   },
   "Basketball/college/401920065": {
     "recorded": "2026-11-14T23:55:55.339373+00:00",
@@ -298,7 +353,7 @@
   },
   "Basketball/college/401920771": {
     "recorded": "2026-11-14T20:08:19.350975+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -439,6 +494,17 @@
     ],
     "team": "Old Dominion Monarchs"
   },
+  "Basketball/college/401923393": {
+    "recorded": "2026-11-15T19:58:37.782389+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-15"
+    ],
+    "team": "Western Michigan Broncos"
+  },
   "Basketball/college/401924265": {
     "recorded": "2026-11-15T14:41:29.346901+00:00",
     "result": null,
@@ -452,7 +518,7 @@
   },
   "Basketball/college/401924858": {
     "recorded": "2026-11-14T20:08:19.350971+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Basketball",
@@ -507,7 +573,7 @@
   },
   "Basketball/college/401925896": {
     "recorded": "2026-11-14T23:55:55.339339+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Basketball",
@@ -538,6 +604,17 @@
     ],
     "team": "Purdue Fort Wayne Mastodons"
   },
+  "Basketball/college/401926073": {
+    "recorded": "2026-11-15T19:58:37.782395+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-15"
+    ],
+    "team": "Oregon Ducks"
+  },
   "Basketball/college/401926143": {
     "recorded": "2026-11-15T14:41:29.346838+00:00",
     "result": null,
@@ -560,6 +637,17 @@
     ],
     "team": "Southeast Missouri State Redhawks"
   },
+  "Basketball/college/401926733": {
+    "recorded": "2026-11-15T19:58:37.782401+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-15"
+    ],
+    "team": "UT Martin Skyhawks"
+  },
   "Basketball/college/401927364": {
     "recorded": "2026-11-15T06:31:27.615382+00:00",
     "result": null,
@@ -581,6 +669,17 @@
       "2026-11-14"
     ],
     "team": "Northern Iowa Panthers"
+  },
+  "Basketball/college/401928353": {
+    "recorded": "2026-11-15T19:58:37.782307+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-15"
+    ],
+    "team": "UC Santa Barbara Gauchos"
   },
   "Basketball/college/401928789": {
     "recorded": "2026-11-15T14:41:30.307375+00:00",
@@ -1332,7 +1431,7 @@
   },
   "Football/pro/401873053": {
     "recorded": "2026-11-14T20:07:04.759041+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Football",
