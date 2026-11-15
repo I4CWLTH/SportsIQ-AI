@@ -450,7 +450,7 @@ function showPracticeBet(game){
     try{
       const bets=readPracticeBets();
       bets.unshift({pick:game[side.value].name,units:amount,matchup:game.away.name+' vs '+game.home.name,
-        gameId:String(game.id),sport:active,level,date:new Date(game.date).toISOString().slice(0,10),
+        gameId:String(game.id),sport:active,level,date:day.value,
         placedAt:new Date().toISOString()});
       localStorage.setItem(practiceKey,JSON.stringify(bets));
     }catch{message.textContent='The practice bet could not be saved. Check browser storage settings.';return}
