@@ -21,11 +21,11 @@ async function espnJson(url){
   if(!response.ok)throw Error('ESPN returned '+response.status);
   return response.json();
 }
-function normalizeNflInjury(item){
+function normalizeInjury(item,league){
   const x=item?.injury||item||{}, athlete=x.athlete||item?.athlete||{};
   const type=x.type||{}, injury=typeof type==='string'?type:type.description||type.name||x.location||x.bodyLocation||x.fantasy?.injuryType||'';
   const rawHeadshot=athlete.headshot;
-  const headshot=typeof rawHeadshot==='string'?rawHeadshot:rawHeadshot?.href||'';
+  const headshot=typeof rawHeadshot==='string'?rawHeadshot:rawHeadshot?.href||(athlete.id?'https://a.espncdn.com/i/headshots/'+league.split('/')[1]+'/players/full/'+encodeURIComponent(athlete.id)+'.png':'');
   const status=x.status?.description||x.status?.name||x.status||x.fantasy?.status||'Reported';
   const name=athlete.displayName||athlete.fullName||athlete.name||x.athleteName||'';
   if(!name)return null;
@@ -34,7 +34,7 @@ function normalizeNflInjury(item){
     position:athlete.position?.abbreviation||x.position?.abbreviation||'',status:String(status),
     injury:shortInjury};
 }
-function extractInjuries(data,teamId){
+function extractInjuries(data,teamId,league){
   const raw=Array.isArray(data?.injuries)?data.injuries:Array.isArray(data?.items)?data.items:[];
   const rows=[];
   for(const group of raw){
@@ -42,37 +42,39 @@ function extractInjuries(data,teamId){
     const owner=String(group.team?.id||group.teamId||'');
     const nested=Array.isArray(group.injuries)?group.injuries:Array.isArray(group.items)?group.items:null;
     if(nested){
-      if(owner&&owner!==String(teamId))continue;
+      if(owner!==String(teamId))continue;
       rows.push(...nested);
     }else if(!owner||owner===String(teamId))rows.push(group);
   }
   const found=new Map();
   for(const rawItem of rows){
-    const player=normalizeNflInjury(rawItem);
+    const player=normalizeInjury(rawItem,league);
     if(player)found.set(player.athleteId||player.name,player);
   }
   return [...found.values()];
 }
-let leagueInjuryCache=null;
-async function leagueNflInjuries(){
-  if(leagueInjuryCache&&Date.now()-leagueInjuryCache.time<300000)return leagueInjuryCache.data;
-  const data=await espnJson('https://site.api.espn.com/apis/site/v2/sports/football/nfl/injuries');
-  leagueInjuryCache={time:Date.now(),data};return data;
+const leagueInjuryCache=new Map();
+async function leagueInjuries(league){
+  const cached=leagueInjuryCache.get(league);
+  if(cached&&Date.now()-cached.time<300000)return cached.data;
+  const data=await espnJson('https://site.api.espn.com/apis/site/v2/sports/'+league+'/injuries');
+  leagueInjuryCache.set(league,{time:Date.now(),data});return data;
 }
-async function nflInjuries(id){
+async function teamInjuries(id,league){
   const key=String(id);if(!/^\d{1,5}$/.test(key))throw Error('Invalid team ID');
-  const old=injuryCache.get(key);if(old&&Date.now()-old.time<300000)return old.value;
+  const cacheKey=league+key;
+  const old=injuryCache.get(cacheKey);if(old&&Date.now()-old.time<300000)return old.value;
   let players=[],succeeded=false;
   try{
-    const report=await leagueNflInjuries();
-    if(Array.isArray(report?.injuries)||Array.isArray(report?.items)){players=extractInjuries(report,key);succeeded=true}
+    const report=await leagueInjuries(league);
+    if(Array.isArray(report?.injuries)||Array.isArray(report?.items)){players=extractInjuries(report,key,league);succeeded=true}
   }catch{/* Fall back to team report when ESPN league report is unavailable */}
   if(!succeeded){
-    const report=await espnJson('https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/'+key+'/injuries');
+    const report=await espnJson('https://site.api.espn.com/apis/site/v2/sports/'+league+'/teams/'+key+'/injuries');
     if(!Array.isArray(report?.injuries)&&!Array.isArray(report?.items))throw Error('No usable injury report');
-    players=extractInjuries(report,key);
+    players=extractInjuries(report,key,league);
   }
-  const value={available:true,players};injuryCache.set(key,{time:Date.now(),value});return value;
+  const value={available:true,players};injuryCache.set(cacheKey,{time:Date.now(),value});return value;
 }
 const scheduleCache = new Map();
 
@@ -141,7 +143,7 @@ async function matchupHistory(kind, league, game) {
 }
 
 async function externalConsensus(sport,id,home,away){const providers=[{name:'ESPN matchup predictor',url:sport==='Football'?'https://www.espn.com/nfl/game/_/gameId/'+id:'https://www.espn.com/',pick:null,probability:null,verified:false},{name:'Dimers',url:'https://www.dimers.com/',pick:null,probability:null,verified:false},{name:'Machine Learning Ball',url:'https://machinelearningball.com/',pick:null,probability:null,verified:false},{name:'SlipTrack',url:'https://sliptrack.bet/',pick:null,probability:null,verified:false}];if(sport==='Football'&&/^\d{7,12}$/.test(id)){const ctrl=new AbortController(),timer=setTimeout(()=>ctrl.abort(),7000);try{const r=await fetch('https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event='+id,{signal:ctrl.signal});if(r.ok){const data=await r.json(),v=Number(data.predictor?.homeTeam?.gameProjection);if(Number.isFinite(v)&&v>=0&&v<=100&&data.predictor?.homeTeam?.gameProjection!=null){providers[0].pick=v>=50?home:away;providers[0].probability=Math.round(Math.max(v,100-v)*10)/10;providers[0].verified=true;providers[0].checkedAt=new Date().toISOString()}}}catch{}finally{clearTimeout(timer)}}return {providers,checkedAt:new Date().toISOString(),note:'Only explicitly returned pregame predictions count; other providers require permitted data access.'}}
-http.createServer(async(req,res)=>{const u=new URL(req.url,'http://localhost');const send=(code,obj)=>{res.writeHead(code,{'content-type':'application/json; charset=utf-8','cache-control':'no-store'});res.end(JSON.stringify(obj))};if(u.pathname==='/api/nfl/injuries'){const ids=[u.searchParams.get('away'),u.searchParams.get('home')];if(ids.some(x=>!/^\d{1,5}$/.test(x||'')))return send(400,{error:'Invalid team IDs'});const teams=await Promise.all(ids.map(async id=>{try{return{id,...await nflInjuries(id)}}catch{return{id,available:false,players:[]}}}));return send(200,{teams:teams.map((t,i)=>({...t,name:i===0?'Away team':'Home team'})),source:'ESPN NFL injury reports',fetchedAt:new Date().toISOString()})}if(u.pathname==='/api/consensus'){const sport=u.searchParams.get('sport')||'',id=u.searchParams.get('id')||'',home=u.searchParams.get('home')||'',away=u.searchParams.get('away')||'';if(!sports.includes(sport)||!/^\d{1,12}$/.test(id)||!home||!away||home.length>100||away.length>100)return send(400,{error:'Invalid matchup'});return send(200,await externalConsensus(u.searchParams.get('level')==='college'?'':sport,id,home,away))}if(u.pathname==='/health')return send(200,{status:'ok'});if(u.pathname==='/api/sports')return send(200,{sports,liveData:true,provider:'ESPN public scoreboard',note:'Cricket unavailable'});if(u.pathname==='/api/matchup-history'){
+http.createServer(async(req,res)=>{const u=new URL(req.url,'http://localhost');const send=(code,obj)=>{res.writeHead(code,{'content-type':'application/json; charset=utf-8','cache-control':'no-store'});res.end(JSON.stringify(obj))};if(['/api/nfl/injuries','/api/nba/injuries'].includes(u.pathname)){const league=u.pathname.includes('/nba/')?'basketball/nba':'football/nfl';const ids=[u.searchParams.get('away'),u.searchParams.get('home')];if(ids.some(x=>!/^\d{1,5}$/.test(x||'')))return send(400,{error:'Invalid team IDs'});const teams=await Promise.all(ids.map(async id=>{try{return{id,...await teamInjuries(id,league)}}catch{return{id,available:false,players:[]}}}));return send(200,{teams:teams.map((t,i)=>({...t,name:i===0?'Away team':'Home team'})),source:'ESPN injury reports',fetchedAt:new Date().toISOString()})}if(u.pathname==='/api/consensus'){const sport=u.searchParams.get('sport')||'',id=u.searchParams.get('id')||'',home=u.searchParams.get('home')||'',away=u.searchParams.get('away')||'';if(!sports.includes(sport)||!/^\d{1,12}$/.test(id)||!home||!away||home.length>100||away.length>100)return send(400,{error:'Invalid matchup'});return send(200,await externalConsensus(u.searchParams.get('level')==='college'?'':sport,id,home,away))}if(u.pathname==='/health')return send(200,{status:'ok'});if(u.pathname==='/api/sports')return send(200,{sports,liveData:true,provider:'ESPN public scoreboard',note:'Cricket unavailable'});if(u.pathname==='/api/matchup-history'){
   const sport=u.searchParams.get('sport');
   const level=u.searchParams.get('level');
   const date=u.searchParams.get('date')||'';
