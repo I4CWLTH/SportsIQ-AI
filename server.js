@@ -19,6 +19,7 @@ const injuryCache=new Map();
 const injuryLeagues=new Map([
   ['/api/nfl/injuries','football/nfl'],
   ['/api/nba/injuries','basketball/nba'],
+  ['/api/mlb/injuries','baseball/mlb'],
   ['/api/college-football/injuries','football/college-football'],
   ['/api/mens-college-basketball/injuries','basketball/mens-college-basketball'],
 ]);
