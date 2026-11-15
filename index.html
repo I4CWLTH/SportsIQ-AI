@@ -140,6 +140,81 @@
 .prediction-factor{display:grid;grid-template-columns:minmax(0,1fr) auto;align-items:baseline;gap:3px 10px}
 .prediction-factor strong{color:#8ef6bf;font-variant-numeric:tabular-nums}
 .prediction-factor small{grid-column:1/-1}
+
+/* Practice Bets email sign-in and verification */
+#practiceAccount[data-view="auth"] {
+  box-sizing: border-box;
+  max-width: 620px;
+  padding: clamp(16px, 4vw, 28px);
+  margin: 14px 0;
+  border: 1px solid #405575;
+  border-radius: 16px;
+  background: linear-gradient(145deg, #1a2b47, #111d32 70%);
+  color: #f1f5ff;
+}
+#practiceAccount .practice-auth-title {
+  margin: 0 0 6px;
+  font-size: clamp(20px, 4vw, 25px);
+  letter-spacing: -.025em;
+}
+#practiceAccount .practice-auth-description {
+  margin: 0 0 18px;
+  color: #bccbe2;
+  font-size: 14px;
+  line-height: 1.5;
+}
+#practiceAccount[data-view="auth"] form {
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+#practiceAccount[data-view="auth"] label {
+  display: grid;
+  flex: 1 1 240px;
+  gap: 7px;
+  min-width: 0;
+  font-size: 14px;
+  font-weight: 650;
+}
+#practiceAccount[data-view="auth"] input,
+#practiceAccount[data-view="auth"] button {
+  box-sizing: border-box;
+  min-height: 46px;
+  border-radius: 9px;
+  padding: 10px 14px;
+  font: inherit;
+}
+#practiceAccount[data-view="auth"] input {
+  width: 100%;
+  border: 1px solid #627798;
+  color: #f1f5ff;
+  background: #0c1628;
+  font-size: 16px;
+}
+#practiceAccount[data-view="auth"] button {
+  border: 1px solid transparent;
+  background: #6cebbb;
+  color: #09251d;
+  font-weight: 750;
+  cursor: pointer;
+}
+#practiceAccount[data-view="auth"] button:hover:enabled { background: #9af5d2; }
+#practiceAccount[data-view="auth"] button:disabled { opacity: .65; cursor: wait; }
+#practiceAccount[data-view="auth"] :is(input, button):focus-visible {
+  outline: 2px solid #a6d9ff;
+  outline-offset: 3px;
+}
+#practiceAccount[data-view="auth"] [role="status"] {
+  margin: 14px 0 0;
+  color: #d8e5fa;
+  font-size: 14px;
+  line-height: 1.5;
+}
+#practiceAccount[data-view="auth"] [role="status"]:empty { margin: 0; }
+@media (max-width: 540px) {
+  #practiceAccount[data-view="auth"] button { width: 100%; }
+}
 </style></head><body><div class="shell"><header class="top"><div class="logo">SPORTSIQ <b>AI</b> <span style="font-size:11px;color:#9aabca;letter-spacing:2px">/ ARENA</span></div><div class="status"><i class="pulse"></i> INTELLIGENCE PLATFORM · PREVIEW</div></header><section class="hero"><div class="arena-hero-copy"><div class="eyebrow">THE NEXT GENERATION OF SPORTS INTELLIGENCE</div><h1>See beyond<br><span>the scoreboard.</span></h1><p class="sub">A new command center for matchup intelligence, evidence-backed forecasts, and transparent performance tracking. No invented games. No fictional odds.</p></div><div class="arena-reel" aria-label="Sports action photographs"><figure class="arena-shot active" aria-hidden="false" style="--focus:50% 30%"><img src="/arena-photos/basketball.webp" alt="Malcolm Thomas rises for a dunk" decoding="async" fetchpriority="high"><figcaption><strong>Basketball</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Malcolm_Thomas_dunking.jpg">SD Dirk</a> · <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:52% 45%"><img data-src="/arena-photos/football.webp" alt="Wayne Knight runs into the end zone" decoding="async" ><figcaption><strong>Football</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Wayne_Knight_touchdown_at_UCLA_Football_2026.jpg">Luis Ochea</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:50% 46%"><img data-src="/arena-photos/baseball.webp" alt="Kyle Schwarber swings at a pitch" decoding="async" ><figcaption><strong>Baseball</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:2023-04-08_kyle_schwarber_swinging.jpg">Zach McHoul</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:50% 42%"><img data-src="/arena-photos/soccer.webp" alt="Players challenge for the ball in a soccer match" decoding="async" ><figcaption><strong>Soccer</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Soccer_match.jpg">AngusConnaltyPhotos</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:53% 35%"><img data-src="/arena-photos/hockey.webp" alt="Trevor van Riemsdyk skates with the puck" decoding="async" ><figcaption><strong>Hockey</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Forward_Trevor_van_Riemsdyk.jpg">All-Pro Reels</a> · <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a> · resized and cropped</span></figcaption></figure><button type="button" class="arena-pause" aria-pressed="false" hidden>Pause photos</button></div></section><div class="bar" id="levels" role="group" aria-label="Competition level">
 <button class="sport" type="button" data-level="pro" aria-pressed="true">Professional</button>
 <button class="sport" type="button" data-level="college" aria-pressed="false">College</button>
@@ -750,6 +825,19 @@ async function practiceRequest(route,input){
 function renderPracticeAccount(){
   const code=new URLSearchParams(location.hash.slice(1)).get('practice-sign-in');
   practiceAccountBox.replaceChildren();
+  const showAuth = Boolean(code) || !practiceAccount;
+  practiceAccountBox.dataset.view = showAuth ? 'auth' : 'account';
+  if (showAuth) {
+    const heading = document.createElement('h2');
+    heading.className = 'practice-auth-title';
+    heading.textContent = code ? 'Complete your sign-in' : 'Sign in with your email';
+    const description = document.createElement('p');
+    description.className = 'practice-auth-description';
+    description.textContent = code
+      ? 'Continue to your Sports IQ Practice Bets account.'
+      : 'We’ll email you a link to create an account or sign in to Practice Bets.';
+    practiceAccountBox.append(heading, description);
+  }
   const message=document.createElement('p');message.setAttribute('role','status');
   const button=(label,action)=>{
     const control=document.createElement('button');control.type='button';control.textContent=label;
@@ -778,7 +866,7 @@ function renderPracticeAccount(){
     });
   }else{
     const form=document.createElement('form');
-    form.innerHTML='<label>Email <input name="email" type="email" autocomplete="email" required maxlength="254"></label> <button type="submit">Send sign-in link</button>';
+    form.innerHTML='<label>Email address <input name="email" type="email" autocomplete="email" required maxlength="254"></label> <button type="submit">Send sign-in link</button>';
     form.onsubmit=async event=>{
       event.preventDefault();
       const submit=form.querySelector('button');submit.disabled=true;
