@@ -114,6 +114,9 @@
 .daily-pick-chart figcaption{display:grid;gap:2px;font-size:.76rem;font-weight:750}
 .daily-pick-chart .yes{color:#9bffc7}.daily-pick-chart .no{color:#ff8796}
 @media(max-width:480px){.daily-result-list{grid-column:1/-1;grid-row:4}.daily-pick-chart{grid-row:3;margin-bottom:8px}}
+.miss-recap{display:block;margin-top:8px;padding:8px 10px;border-left:2px solid #ff8796;background:#1b2539;color:#dce6f3}
+.miss-recap strong{color:#ffabb6}
+.miss-note{display:block;margin-top:4px;color:#aabbd0;font-size:.78rem}
 </style></head><body><div class="shell"><header class="top"><div class="logo">SPORTSIQ <b>AI</b> <span style="font-size:11px;color:#9aabca;letter-spacing:2px">/ ARENA</span></div><div class="status"><i class="pulse"></i> INTELLIGENCE PLATFORM · PREVIEW</div></header><section class="hero"><div><div class="eyebrow">THE NEXT GENERATION OF SPORTS INTELLIGENCE</div><h1>See beyond<br><span>the scoreboard.</span></h1><p class="sub">A new command center for matchup intelligence, evidence-backed forecasts, and transparent performance tracking. No invented games. No fictional odds.</p></div><div class="orb" aria-hidden="true"></div></section><div class="bar" id="levels" role="group" aria-label="Competition level">
 <button class="sport" type="button" data-level="pro" aria-pressed="true">Professional</button>
 <button class="sport" type="button" data-level="college" aria-pressed="false">College</button>
@@ -426,6 +429,33 @@ function yesterdayPickChart(correct,total){
   legend.append(yes,no);chart.append(pie,legend);
   return chart;
 }
+function missedPickRecap(game,pick,sport,summary){
+  const score=(summary?.state==='post'&&summary.score?summary.score:game.score||'').split(/\s*[–-]\s*/);
+  if(score.length!==2||score.some(value=>!/^\d+$/.test(value))){
+    return 'The pick missed, and the final stat line is unavailable. There’s no verified turning point to call out.';
+  }
+  const [away,home]=score.map(Number);
+  const winner=game[home>away?'home':'away'];
+  const margin=Math.abs(home-away);
+  const overtime=/\b(?:\d+\s*)?OT\b|overtime/i.test(summary?.finish||game.status)||
+    (['Basketball','Football'].includes(sport)&&summary?.period>4);
+  const extraInnings=sport==='Baseball'&&(summary?.period>9||/final\s*\/\s*(?:[1-9]\d+)/i.test(summary?.finish||''));
+  const opening=overtime?'This one needed overtime. ':extraInnings?'This one needed extra innings. ':'';
+  const outcome='The pick leaned '+(pick||'the other way')+', but '+winner.name+' took it '+Math.max(away,home)+'–'+Math.min(away,home)+'.';
+  const leader=summary?.recapLeaders?.find(player=>player.teamId===String(winner.id));
+  if(leader)return opening+outcome+' '+leader.name+' led '+winner.name+' in '+leader.stat.toLowerCase()+' ('+leader.value+'), a standout line in the win.';
+  return opening+outcome+' The final margin was '+margin+(margin===1?' on the scoreboard.':' on the scoreboard; the available stats don’t identify a turning point.');
+}
+async function addMissedPickRecap(card,game,pick,sport,level){
+  const note=document.createElement('small');
+  note.className='miss-recap';
+  const label=document.createElement('strong');label.textContent='Why the pick missed';
+  const recap=document.createElement('span');recap.textContent=missedPickRecap(game,pick,sport,null);
+  const ai=document.createElement('span');ai.className='miss-note';ai.textContent='This result is flagged for future AI review.';
+  note.append(label,document.createElement('br'),recap,ai);card.append(note);
+  const summary=await fetchPracticeGame({gameId:game.id,sport,level});
+  if(summary?.state==='post')recap.textContent=missedPickRecap(game,pick,sport,summary);
+}
 async function loadDaily() {
   const version = ++dailyVersion;
   const sport = active, competition = level;
@@ -516,6 +546,7 @@ async function loadDaily() {
         detail.append(verdict);
       }
       card.append(label, detail);
+      if (index && grade === 'No') addMissedPickRecap(card,game,team,sport,competition);
       if (!index && team && !game.score) {
         const explanation = document.createElement('small');
         explanation.textContent = game.home.record && game.away.record && modelSide && (!row || row.side === modelSide) ?

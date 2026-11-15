@@ -220,7 +220,18 @@ http.createServer(async(req,res)=>{const u=new URL(req.url,'http://localhost');c
     const away=game?.competitors?.find(team=>team.homeAway==='away');
     const state=game?.status?.type?.state;
     if(!home||!away||!state||!Number.isFinite(Date.parse(game.date)))return send(502,{error:'ESPN matchup status unavailable'});
-    return send(200,{id,date:game.date,state,status:game.status.type.description,
+    const type=game.status.type;
+    const recapLeaders=state==='post'?(data.leaders||[]).flatMap(group=>{
+      const lead=(group.leaders||[]).find(stat=>['points','passingYards','rushingYards','receivingYards','hits','goals'].includes(stat.name));
+      const player=lead?.leaders?.[0];
+      return player?.athlete?.displayName&&player.displayValue?[{
+        teamId:String(group.team?.id||''),name:player.athlete.displayName,
+        stat:lead.displayName,value:player.displayValue,
+      }]:[];
+    }):[];
+    return send(200,{id,date:game.date,state,status:type.description,
+      finish:type.shortDetail||type.detail||'',period:game.status.period,recapLeaders,
+      homeId:String(home.team?.id||''),awayId:String(away.team?.id||''),
       home:{name:home.team?.displayName},away:{name:away.team?.displayName},
       score:state==='post'?away.score+' – '+home.score:''});
   }catch{return send(502,{error:'ESPN matchup status unavailable'})}
