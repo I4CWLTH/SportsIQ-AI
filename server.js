@@ -14,7 +14,66 @@ const cache=new Map();
 function record(t){const text=t?.records?.find(x=>x.type==='total')?.summary||t?.records?.[0]?.summary||'';const m=text.match(/^(\d+)-(\d+)/);return {text,w:m?+m[1]:null,l:m?+m[2]:null}}
 function probability(a,h){if(a.w===null||h.w===null||a.w+a.l<5||h.w+h.l<5)return null;const ap=(a.w+2)/(a.w+a.l+4),hp=(h.w+2)/(h.w+h.l+4);return Math.max(.05,Math.min(.95,.5+(hp-ap)*.65+.025))}
 async function games(sport,date,level){const feeds=level==='college'?collegeConfig:config;if(!Object.hasOwn(feeds,sport))return {games:[],available:false,message:sport==='Cricket'?'Cricket feed not configured; no fixtures will be invented.':'Unsupported sport'};if(!/^\d{4}-\d{2}-\d{2}$/.test(date))throw Error('Invalid date');const key=level+sport+date;if(cache.has(key)&&Date.now()-cache.get(key).time<120000)return cache.get(key).value;const [kind,league,filter]=feeds[sport],ds=date.replaceAll('-','');const url='https://site.api.espn.com/apis/site/v2/sports/'+kind+'/'+league+'/scoreboard?dates='+ds+'&limit=100'+(filter?'&'+filter:'');const controller=new AbortController();const timeout=setTimeout(()=>controller.abort(),10000);let data;try{const res=await fetch(url,{signal:controller.signal,headers:{'user-agent':'SportsIQ-AI/1.0','accept':'application/json'}});if(!res.ok)throw Error('Provider returned '+res.status);data=await res.json()}finally{clearTimeout(timeout)}const mapped=(data.events||[]).map(e=>{const c=e.competitions?.[0]||{},home=c.competitors?.find(t=>t.homeAway==='home'),away=c.competitors?.find(t=>t.homeAway==='away');if(!home||!away)return null;const hr=record(home),ar=record(away),pre=e.status?.type?.state==='pre';return{id:e.id,date:e.date,status:e.status?.type?.description||'Scheduled',league:data.leagues?.[0]?.name||league,venue:c.venue?.fullName||'',home:{id:home.team?.id,name:home.team?.displayName||'Home',record:hr.text,color:home.team?.color||'',logo:home.team?.logo||''},away:{id:away.team?.id,name:away.team?.displayName||'Away',record:ar.text,color:away.team?.color||'',logo:away.team?.logo||''},probability:pre?probability(ar,hr):null,score:e.status?.type?.state==='pre'?'':away.score+' – '+home.score,source:e.links?.[0]?.href||'https://www.espn.com/'}}).filter(Boolean);const value={games:mapped,available:true,message:'ESPN public scoreboard · '+(data.leagues?.[0]?.name||league),fetchedAt:new Date().toISOString()};cache.set(key,{time:Date.now(),value});return value}
-const injuryCache=new Map();async function nflInjuries(id){const key=String(id);if(!/^\d{1,5}$/.test(key))throw Error('Invalid team ID');const old=injuryCache.get(key);if(old&&Date.now()-old.time<300000)return old.value;const url='https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/'+key+'/injuries';const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),8000);try{const response=await fetch(url,{signal:controller.signal,headers:{accept:'application/json'}});if(!response.ok)throw Error('Provider returned '+response.status);const data=await response.json();const entries=Array.isArray(data.injuries)?data.injuries:Array.isArray(data.items)?data.items:[];const players=entries.flatMap(x=>Array.isArray(x.injuries)?x.injuries:[x]).map(x=>({name:x.athlete?.displayName||x.athlete?.fullName||x.athlete?.name||'',headshot:x.athlete?.headshot?.href||x.athlete?.headshot||'',athleteId:String(x.athlete?.id||''),position:x.athlete?.position?.abbreviation||'Unknown',status:x.status||x.type?.description||x.details?.type||'Reported'})).filter(x=>x.name);const value={available:true,players:players.slice(0,30)};injuryCache.set(key,{time:Date.now(),value});return value}finally{clearTimeout(timer)}}
+
+const injuryCache=new Map();
+async function espnJson(url){
+  const response=await fetch(url,{signal:AbortSignal.timeout(9000),headers:{accept:'application/json','user-agent':'SportsIQ-AI/1.0'}});
+  if(!response.ok)throw Error('ESPN returned '+response.status);
+  return response.json();
+}
+function normalizeNflInjury(item){
+  const x=item?.injury||item||{}, athlete=x.athlete||item?.athlete||{};
+  const type=x.type||{}, injury=typeof type==='string'?type:type.description||type.name||x.location||x.bodyLocation||x.fantasy?.injuryType||'';
+  const rawHeadshot=athlete.headshot;
+  const headshot=typeof rawHeadshot==='string'?rawHeadshot:rawHeadshot?.href||'';
+  const status=x.status?.description||x.status?.name||x.status||x.fantasy?.status||'Reported';
+  const name=athlete.displayName||athlete.fullName||athlete.name||x.athleteName||'';
+  if(!name)return null;
+  const shortInjury=String(injury).replace(/[^a-zA-Z0-9 /-]/g,'').trim().split(/\s+/).slice(0,2).join(' ')||'Undisclosed';
+  return {name,headshot:/^https:\/\//.test(headshot)?headshot:'',athleteId:String(athlete.id||''),
+    position:athlete.position?.abbreviation||x.position?.abbreviation||'',status:String(status),
+    injury:shortInjury};
+}
+function extractInjuries(data,teamId){
+  const raw=Array.isArray(data?.injuries)?data.injuries:Array.isArray(data?.items)?data.items:[];
+  const rows=[];
+  for(const group of raw){
+    // League-wide reports group players by team; team-specific reports may be flat.
+    const owner=String(group.team?.id||group.teamId||'');
+    const nested=Array.isArray(group.injuries)?group.injuries:Array.isArray(group.items)?group.items:null;
+    if(nested){
+      if(owner&&owner!==String(teamId))continue;
+      rows.push(...nested);
+    }else if(!owner||owner===String(teamId))rows.push(group);
+  }
+  const found=new Map();
+  for(const rawItem of rows){
+    const player=normalizeNflInjury(rawItem);
+    if(player)found.set(player.athleteId||player.name,player);
+  }
+  return [...found.values()];
+}
+let leagueInjuryCache=null;
+async function leagueNflInjuries(){
+  if(leagueInjuryCache&&Date.now()-leagueInjuryCache.time<300000)return leagueInjuryCache.data;
+  const data=await espnJson('https://site.api.espn.com/apis/site/v2/sports/football/nfl/injuries');
+  leagueInjuryCache={time:Date.now(),data};return data;
+}
+async function nflInjuries(id){
+  const key=String(id);if(!/^\d{1,5}$/.test(key))throw Error('Invalid team ID');
+  const old=injuryCache.get(key);if(old&&Date.now()-old.time<300000)return old.value;
+  let players=[],succeeded=false;
+  try{
+    const report=await leagueNflInjuries();
+    if(Array.isArray(report?.injuries)||Array.isArray(report?.items)){players=extractInjuries(report,key);succeeded=true}
+  }catch{/* Fall back to team report when ESPN league report is unavailable */}
+  if(!succeeded){
+    const report=await espnJson('https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/'+key+'/injuries');
+    if(!Array.isArray(report?.injuries)&&!Array.isArray(report?.items))throw Error('No usable injury report');
+    players=extractInjuries(report,key);
+  }
+  const value={available:true,players};injuryCache.set(key,{time:Date.now(),value});return value;
+}
 const scheduleCache = new Map();
 
 async function teamSchedule(kind, league, team, season) {
