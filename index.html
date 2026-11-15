@@ -75,6 +75,32 @@
 .season-icon{flex:none;font-size:1.6rem;line-height:1.15}
 .season-banner strong,.season-banner span{display:block}
 .season-banner a{color:#ffdf94}
+/* Practice winner ticket */
+.bet-slip{box-sizing:border-box;margin:16px 0;padding:clamp(14px,3vw,24px);border:1px solid #386251;border-top:3px solid #65ffc0;border-radius:16px;background:radial-gradient(ellipse at top right,#183d35,transparent 55%),#101c29;box-shadow:0 14px 35px #0005;color:#f2fbf8}
+.bet-slip-header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+.bet-slip-header h3{margin:0;font-size:clamp(1.15rem,3vw,1.55rem);font-weight:850;letter-spacing:-.03em}
+.bet-slip-mode{color:#9df7cd;border:1px solid #507a68;border-radius:999px;padding:4px 9px;font-size:.72rem;font-weight:700;white-space:nowrap}
+.bet-slip fieldset{margin:0;padding:0;border:0;min-inline-size:0}
+.bet-slip legend,.bet-slip-stake>label{color:#c6d8d2;font-size:.8rem;font-weight:750;margin-bottom:8px}
+.bet-slip-teams{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.bet-slip-team{position:relative;display:flex;align-items:center;gap:8px;min-width:0;min-height:58px;padding:8px;border:1px solid #3d5865;border-radius:10px;background:#162635;cursor:pointer}
+.bet-slip-team:has(input:checked){border-color:#65ffc0;background:#17382e;box-shadow:inset 0 0 0 1px #65ffc0}
+.bet-slip-team input{flex:none;margin:0;accent-color:#65ffc0}
+.bet-slip-team img{width:28px;height:28px;object-fit:contain;flex:none}
+.bet-slip-team span{font-size:.87rem;font-weight:750;overflow-wrap:anywhere}
+.bet-slip-actions{display:grid;grid-template-columns:minmax(105px,.75fr) minmax(0,1.25fr);align-items:end;gap:10px;margin-top:16px}
+.bet-slip-stake>label{display:block}
+.bet-slip-amount{display:flex;align-items:center;gap:6px;padding:0 10px;border:1px solid #527280;border-radius:9px;background:#0d1723;color:#8dfcc5;font-weight:800}
+.bet-slip-amount input{box-sizing:border-box;width:100%;min-width:0;min-height:44px;padding:0;border:0;background:transparent;color:#f2fbf8;font:inherit;font-size:1rem}
+.bet-slip-submit{min-height:46px;padding:8px;border:0;border-radius:9px;background:#65ffc0;color:#08271b;font-weight:850;cursor:pointer}
+.bet-slip-submit:hover{background:#a4ffda}
+.bet-slip-submit:disabled{opacity:.65;cursor:wait}
+.bet-slip :focus-visible{outline:2px solid #fff;outline-offset:3px}
+.bet-slip-note{margin:12px 0 0;color:#b2c5cc;font-size:.78rem}
+.bet-slip-message{color:#ffd295;font-weight:700;margin:10px 0 0}
+.bet-slip-message:empty{margin:0}
+.bet-slip-message[data-saved]{color:#94ffd1}
+@media(max-width:440px){.bet-slip-team img{display:none}.bet-slip-actions{grid-template-columns:1fr}.bet-slip-submit{width:100%}}
 </style></head><body><div class="shell"><header class="top"><div class="logo">SPORTSIQ <b>AI</b> <span style="font-size:11px;color:#9aabca;letter-spacing:2px">/ ARENA</span></div><div class="status"><i class="pulse"></i> INTELLIGENCE PLATFORM · PREVIEW</div></header><section class="hero"><div><div class="eyebrow">THE NEXT GENERATION OF SPORTS INTELLIGENCE</div><h1>See beyond<br><span>the scoreboard.</span></h1><p class="sub">A new command center for matchup intelligence, evidence-backed forecasts, and transparent performance tracking. No invented games. No fictional odds.</p></div><div class="orb" aria-hidden="true"></div></section><div class="bar" id="levels" role="group" aria-label="Competition level">
 <button class="sport" type="button" data-level="pro" aria-pressed="true">Professional</button>
 <button class="sport" type="button" data-level="college" aria-pressed="false">College</button>
@@ -667,15 +693,32 @@ async function renderPracticeHistory(){
 function showPracticeBet(game){
   document.getElementById('practiceForm')?.remove();
   if(!/^(scheduled|pre-game)$/i.test(game.status)||!(Date.parse(game.date)>Date.now()))return;
-  const form=document.createElement('form');form.id='practiceForm';form.className='evidence';
-  form.innerHTML='<fieldset><legend>🎰 Practice winner bet · pretend money</legend>'+
-    '<label>Team <select name="side" required></select></label> '+
-    '<label>Simulated $ <input name="units" type="number" min="1" max="1000" step="1" value="10" required></label> '+
-    '<button type="submit">🎟️ Place practice bet</button><p class="meta">For fun only · no real money. Win/loss display uses even-money simulated scoring, not sportsbook odds.</p><p role="status"></p></fieldset>';
-  const side=form.elements.namedItem('side'),units=form.elements.namedItem('units'),message=form.querySelector('[role="status"]');
-  for(const team of [game.away,game.home]){const option=document.createElement('option');option.value=team===game.home?'home':'away';option.textContent=team.name;side.append(option)}
+  const form=document.createElement('form');form.id='practiceForm';form.className='bet-slip';
+  form.innerHTML=
+    '<header class="bet-slip-header"><h3>Practice Winner Bet</h3><span class="bet-slip-mode">Pretend money</span></header>'+
+    '<fieldset><legend>Pick the winner</legend><div class="bet-slip-teams"></div></fieldset>'+
+    '<div class="bet-slip-actions"><div class="bet-slip-stake"><label for="practiceStake">Practice stake</label>'+
+    '<div class="bet-slip-amount"><span aria-hidden="true">$</span><input id="practiceStake" name="units" type="number" inputmode="numeric" min="1" max="1000" step="1" value="10" required></div></div>'+
+    '<button class="bet-slip-submit" type="submit">Place Practice Bet</button></div>'+
+    '<p class="bet-slip-note">Even-money scoring. No cash payouts.</p><p class="bet-slip-message" role="status"></p>';
+  const options=form.querySelector('.bet-slip-teams');
+  for(const [side,team] of Object.entries({away:game.away,home:game.home})){
+    const choice=document.createElement('label');choice.className='bet-slip-team';
+    const radio=document.createElement('input');
+    radio.type='radio';radio.name='side';radio.value=side;radio.required=true;radio.checked=side==='away';
+    choice.append(radio);
+    if(/^https:\/\//.test(team.logo||'')){
+      const logo=document.createElement('img');
+      logo.src=team.logo;logo.alt='';logo.onerror=()=>logo.remove();choice.append(logo);
+    }
+    const name=document.createElement('span');name.textContent=team.name;
+    choice.append(name);options.append(choice);
+  }
+  const side=form.elements.namedItem('side');
+  const units=form.elements.namedItem('units');
+  const message=form.querySelector('[role="status"]');
   form.addEventListener('submit',async event=>{
-    event.preventDefault();const amount=units.valueAsNumber;const sport=active,competition=level,slateDate=day.value;
+    event.preventDefault();delete message.dataset.saved;message.textContent='';const amount=units.valueAsNumber;const sport=active,competition=level,slateDate=day.value;
     if(!(Date.parse(game.date)>Date.now())){message.textContent='This matchup has already started.';return}
     if(!['home','away'].includes(side.value)||!Number.isInteger(amount)||amount<1||amount>1000)return;
     const submit=form.querySelector('button[type=submit]');
@@ -694,7 +737,7 @@ function showPracticeBet(game){
       });
     }catch(error){message.textContent=error.message;return}
     finally{submit.disabled=false}
-    document.getElementById('practiceHistory').open=true;message.textContent='🎉 Practice ticket saved!';
+    document.getElementById('practiceHistory').open=true;message.dataset.saved='';message.textContent='✓ Practice ticket saved!';
   });
   analysis.after(form);
 }
