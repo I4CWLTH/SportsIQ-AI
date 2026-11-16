@@ -157,6 +157,12 @@
 .practice-calendar-icon{position:relative;flex:none;width:18px;height:17px;border:2px solid currentColor;border-radius:4px;color:#90fae5;background:linear-gradient(currentColor,currentColor) 0 4px/100% 2px no-repeat}
 .practice-calendar-icon::before{content:"";position:absolute;top:-4px;left:3px;width:2px;height:5px;border-radius:1px;background:currentColor;box-shadow:6px 0 currentColor}
 .practice-calendar-icon::after{content:"";position:absolute;top:8px;left:3px;width:2px;height:2px;background:currentColor;box-shadow:5px 0 currentColor}
+
+.practice-day{margin-top:8px}
+.practice-day>summary{cursor:pointer;padding:14px;border:1px solid #438984;border-radius:10px;background:#142638;color:#e7fffa;font-weight:700}
+.practice-day>summary:focus-visible{outline:2px solid #90fae5;outline-offset:2px}
+.practice-day-net{margin-inline-start:.6em}
+.practice-day-net.win{color:#58ffa3}.practice-day-net.loss{color:#ff6b7e}
 </style></head><body><div class="shell"><header class="top"><div class="logo">SPORTSIQ <b>AI</b> <span style="font-size:11px;color:#9aabca;letter-spacing:2px">/ ARENA</span></div><div class="status"><i class="pulse"></i> INTELLIGENCE PLATFORM · PREVIEW</div></header><section class="hero"><div class="arena-hero-copy"><div class="eyebrow">THE NEXT GENERATION OF SPORTS INTELLIGENCE</div><h1>See beyond<br><span>the scoreboard.</span></h1><p class="sub">A new command center for matchup intelligence, evidence-backed forecasts, and transparent performance tracking. No invented games. No fictional odds.</p></div><div class="arena-reel" aria-label="Sports action photographs"><figure class="arena-shot active" aria-hidden="false" style="--focus:50% 30%"><img src="/arena-photos/basketball.webp" alt="Malcolm Thomas rises for a dunk" decoding="async" fetchpriority="high"><figcaption><strong>Basketball</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Malcolm_Thomas_dunking.jpg">SD Dirk</a> · <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:52% 45%"><img data-src="/arena-photos/football.webp" alt="Wayne Knight runs into the end zone" decoding="async" ><figcaption><strong>Football</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Wayne_Knight_touchdown_at_UCLA_Football_2026.jpg">Luis Ochea</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:50% 46%"><img data-src="/arena-photos/baseball.webp" alt="Kyle Schwarber swings at a pitch" decoding="async" ><figcaption><strong>Baseball</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:2023-04-08_kyle_schwarber_swinging.jpg">Zach McHoul</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:50% 42%"><img data-src="/arena-photos/soccer.webp" alt="Players challenge for the ball in a soccer match" decoding="async" ><figcaption><strong>Soccer</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Soccer_match.jpg">AngusConnaltyPhotos</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:53% 35%"><img data-src="/arena-photos/hockey.webp" alt="Trevor van Riemsdyk skates with the puck" decoding="async" ><figcaption><strong>Hockey</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Forward_Trevor_van_Riemsdyk.jpg">All-Pro Reels</a> · <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a> · resized and cropped</span></figcaption></figure><button type="button" class="arena-pause" aria-pressed="false" hidden>Pause photos</button></div></section><div class="bar" id="levels" role="group" aria-label="Competition level">
 <button class="sport" type="button" data-level="pro" aria-pressed="true">Professional</button>
 <button class="sport" type="button" data-level="college" aria-pressed="false">College</button>
@@ -918,10 +924,17 @@ for(const [id,offset] of [['calendarPrevious',-1],['calendarNext',1]]){
     renderPracticeCalendar();
   };
 }
+function isSettledPracticeBet(bet){
+  return ['win','loss','push'].includes(bet.result);
+}
+function practicePlacedDay(bet){
+  const placed=new Date(bet.placedAt);
+  return bet.placedAt&&Number.isFinite(+placed)?calendarDate.format(placed):calendarGameDay(bet);
+}
 let practiceRender=0;
 async function renderPracticeHistory(){
   const request=++practiceRender;
-  practiceEntries.textContent='🎰 Updating the practice ledger…';
+  if(!practiceEntries.children.length)practiceEntries.textContent='🎰 Updating the practice ledger…';
   const totals=document.getElementById('practiceTotals');
   try{
     const bets=readPracticeBets().filter(bet=>!bet.canceledAt);
@@ -931,6 +944,7 @@ async function renderPracticeHistory(){
     knownResults=new Map(bets.filter(b=>b.result).map(b=>[b.ticketId||b.placedAt,b.result]));
     calendarBets=bets;
     renderPracticeCalendar();
+    const expandedDays=new Set([...practiceEntries.querySelectorAll('.practice-day[open]')].map(group=>group.dataset.key));
     practiceEntries.replaceChildren();
     const stake=bets.reduce((n,b)=>n+b.units,0);
     const wins=bets.filter(b=>b.result==='win').length;
@@ -950,7 +964,39 @@ async function renderPracticeHistory(){
       const heading=document.createElement('h3');heading.textContent=sport;
       const list=document.createElement('ul');list.className='practice-ledger';
       section.append(heading,list);practiceEntries.append(section);
-      for(const bet of groups.get(sport))list.append(renderPracticeTicket(bet));
+      const settledDays=new Map();
+      for(const bet of groups.get(sport)){
+        if(!isSettledPracticeBet(bet)){
+          list.append(renderPracticeTicket(bet));
+          continue;
+        }
+        const day=practicePlacedDay(bet)||'';
+        if(!settledDays.has(day))settledDays.set(day,[]);
+        settledDays.get(day).push(bet);
+      }
+      if(!list.children.length)list.remove();
+      for(const day of [...settledDays.keys()].sort().reverse()){
+        const tickets=settledDays.get(day);
+        const group=document.createElement('details');
+        group.className='practice-day';
+        group.dataset.key=JSON.stringify([sport,day]);
+        group.open=expandedDays.has(group.dataset.key);
+        const summary=document.createElement('summary');
+        const wins=tickets.filter(bet=>bet.result==='win').length;
+        const losses=tickets.filter(bet=>bet.result==='loss').length;
+        const profit=tickets.reduce((total,bet)=>total+(bet.result==='win'?bet.units:bet.result==='loss'?-bet.units:0),0);
+        const dateLabel=day?new Intl.DateTimeFormat('en-US',{dateStyle:'medium',timeZone:'UTC'}).format(new Date(day+'T00:00:00Z')):'Date unavailable';
+        summary.textContent=dateLabel+' · '+wins+'W / '+losses+'L';
+        const net=document.createElement('span');
+        net.className='practice-day-net '+(profit>0?'win':profit<0?'loss':'');
+        net.textContent='Net '+calendarSigned(profit);
+        summary.append(net);
+        const history=document.createElement('ul');
+        history.className='practice-ledger';
+        for(const bet of tickets)history.append(renderPracticeTicket(bet));
+        group.append(summary,history);
+        section.append(group);
+      }
     }
     if(!bets.length)practiceEntries.textContent='No practice bets placed. Choose a future game to play.';
   }catch{
@@ -963,18 +1009,20 @@ function renderPracticeTicket(bet){
   const team=document.createElement('strong');team.textContent='🎟️ '+bet.pick+' to win';
   const amount=document.createElement('span');amount.className='practice-money';amount.textContent=usd(bet.units);
   const amountGroup=document.createElement('div');amountGroup.className='ticket-amount';amountGroup.append(amount);
-  const cancel=document.createElement('button');
-  cancel.type='button';cancel.textContent='Cancel Bet';amountGroup.append(cancel);
-  cancel.onclick=async()=>{
-    cancel.disabled=true;
-    try{
-      await updatePracticeLedger(current=>{
-        const ticket=current.find(b=>!b.canceledAt&&(bet.ticketId?b.ticketId===bet.ticketId:
-          b.placedAt===bet.placedAt&&b.gameId===bet.gameId&&b.pick===bet.pick&&b.units===bet.units&&b.matchup===bet.matchup));
-        if(ticket)ticket.canceledAt=new Date().toISOString();
-      });
-    }catch(error){cancel.disabled=false;result.textContent=error.message}
-  };
+  if(!isSettledPracticeBet(bet)){
+    const cancel=document.createElement('button');
+    cancel.type='button';cancel.textContent='Cancel Bet';amountGroup.append(cancel);
+    cancel.onclick=async()=>{
+      cancel.disabled=true;
+      try{
+        await updatePracticeLedger(current=>{
+          const ticket=current.find(b=>!b.canceledAt&&(bet.ticketId?b.ticketId===bet.ticketId:
+            b.placedAt===bet.placedAt&&b.gameId===bet.gameId&&b.pick===bet.pick&&b.units===bet.units&&b.matchup===bet.matchup));
+          if(ticket&&!isSettledPracticeBet(ticket)&&!knownResults.has(ticket.ticketId||ticket.placedAt))ticket.canceledAt=new Date().toISOString();
+        });
+      }catch(error){cancel.disabled=false;result.textContent=error.message}
+    };
+  }
   header.append(team,amountGroup);row.append(header);
   const game=document.createElement('small');game.textContent=bet.matchup;row.append(game);
   const result=document.createElement('div');
