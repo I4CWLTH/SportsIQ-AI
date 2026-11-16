@@ -170,6 +170,9 @@
 .roster-player-indicator::before{content:"+";color:#90fae5;font-weight:700}
 .roster-player[open]>.roster-player-indicator::before,.roster-player[open]>summary>.roster-player-indicator::before{content:"−"}
 .roster-player-stats{margin:0 4px 8px;padding:8px;border-radius:8px;background:#142638;color:#e7fffa;font-size:.85rem}
+
+.roster-player-identity{display:flex;align-items:center;gap:9px;min-width:0;overflow-wrap:anywhere}
+.roster-player-avatar{display:grid;place-items:center;width:34px;height:34px;flex:0 0 34px;border-radius:50%;background:#203550;object-fit:cover}
 </style></head><body><div class="shell"><header class="top"><div class="logo">SPORTSIQ <b>AI</b> <span style="font-size:11px;color:#9aabca;letter-spacing:2px">/ ARENA</span></div><div class="status"><i class="pulse"></i> INTELLIGENCE PLATFORM · PREVIEW</div></header><section class="hero"><div class="arena-hero-copy"><div class="eyebrow">THE NEXT GENERATION OF SPORTS INTELLIGENCE</div><h1>See beyond<br><span>the scoreboard.</span></h1><p class="sub">A new command center for matchup intelligence, evidence-backed forecasts, and transparent performance tracking. No invented games. No fictional odds.</p></div><div class="arena-reel" aria-label="Sports action photographs"><figure class="arena-shot active" aria-hidden="false" style="--focus:50% 30%"><img src="/arena-photos/basketball.webp" alt="Malcolm Thomas rises for a dunk" decoding="async" fetchpriority="high"><figcaption><strong>Basketball</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Malcolm_Thomas_dunking.jpg">SD Dirk</a> · <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:52% 45%"><img data-src="/arena-photos/football.webp" alt="Wayne Knight runs into the end zone" decoding="async" ><figcaption><strong>Football</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Wayne_Knight_touchdown_at_UCLA_Football_2026.jpg">Luis Ochea</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:50% 46%"><img data-src="/arena-photos/baseball.webp" alt="Kyle Schwarber swings at a pitch" decoding="async" ><figcaption><strong>Baseball</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:2023-04-08_kyle_schwarber_swinging.jpg">Zach McHoul</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:50% 42%"><img data-src="/arena-photos/soccer.webp" alt="Players challenge for the ball in a soccer match" decoding="async" ><figcaption><strong>Soccer</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Soccer_match.jpg">AngusConnaltyPhotos</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:53% 35%"><img data-src="/arena-photos/hockey.webp" alt="Trevor van Riemsdyk skates with the puck" decoding="async" ><figcaption><strong>Hockey</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Forward_Trevor_van_Riemsdyk.jpg">All-Pro Reels</a> · <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a> · resized and cropped</span></figcaption></figure><button type="button" class="arena-pause" aria-pressed="false" hidden>Pause photos</button></div></section><div class="bar" id="levels" role="group" aria-label="Competition level">
 <button class="sport" type="button" data-level="pro" aria-pressed="true">Professional</button>
 <button class="sport" type="button" data-level="college" aria-pressed="false">College</button>
@@ -370,7 +373,24 @@ function renderRosterPlayer(player,league){
   const summary=document.createElement('summary');
   const name=document.createElement('span');
   name.textContent=[player.jersey&&'#'+player.jersey,player.name,player.position].filter(Boolean).join(' · ');
-  summary.append(name);
+  const identity=document.createElement('span');
+  identity.className='roster-player-identity';
+  const avatar=document.createElement('span');
+  avatar.className='roster-player-avatar';
+  avatar.setAttribute('aria-hidden','true');
+  avatar.textContent='🏀';
+  identity.append(avatar,name);
+  if(typeof player.headshot==='string'&&/^https:\/\//.test(player.headshot)){
+    const photo=document.createElement('img');
+    photo.className='roster-player-avatar';
+    photo.alt='';
+    photo.loading='lazy';
+    photo.referrerPolicy='no-referrer';
+    photo.onerror=()=>photo.replaceWith(avatar);
+    avatar.replaceWith(photo);
+    photo.src=player.headshot;
+  }
+  summary.append(identity);
   const indicator=document.createElement('span');
   indicator.className='roster-player-indicator';
   indicator.setAttribute('aria-hidden','true');
