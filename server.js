@@ -200,14 +200,31 @@ if(arenaPhotos.has(u.pathname)){
   res.writeHead(200,{'content-type':'image/webp','cache-control':'public, max-age=86400'});
   return res.end(arenaPhotos.get(u.pathname));
 }
-const send=(code,obj)=>{res.writeHead(code,{'content-type':'application/json; charset=utf-8','cache-control':'no-store'});res.end(JSON.stringify(obj))};if(u.pathname==='/api/mens-college-basketball/roster'){
+const send=(code,obj)=>{res.writeHead(code,{'content-type':'application/json; charset=utf-8','cache-control':'no-store'});res.end(JSON.stringify(obj))};const basketballPlayers=u.pathname.match(/^\/api\/(nba|mens-college-basketball)\/(roster|player-stats)$/);
+if(basketballPlayers?.[2]==='player-stats'){
+  const id=u.searchParams.get('player')||'';
+  if(!/^\d{1,12}$/.test(id))return send(400,{error:'Invalid player ID'});
+  try{
+    const data=await espnJson('https://site.api.espn.com/apis/common/v3/sports/basketball/'+basketballPlayers[1]+'/athletes/'+id+'/overview');
+    const stats=data.statistics;
+    const split=stats?.splits?.find(row=>row.displayName==='Regular Season')||
+      stats?.splits?.filter(row=>/^\d{4}/.test(row.displayName)).sort((a,b)=>b.displayName.localeCompare(a.displayName))[0];
+    const labels=['GP','MIN','PTS','REB','AST','STL','BLK','FG%'];
+    return send(200,{period:split?.displayName||'',stats:labels.flatMap(label=>{
+      const value=split?.stats?.[stats.labels?.indexOf(label)];
+      return value==null?[]:[{label,value}];
+    })});
+  }catch{return send(502,{error:'ESPN player stats unavailable'})}
+}
+if(basketballPlayers?.[2]==='roster'){
   const id=u.searchParams.get('team')||'';
   if(!/^\d{1,8}$/.test(id))return send(400,{error:'Invalid team ID'});
   try{
-    const data=await espnJson('https://site.api.espn.com/apis/site/v2/sports/basketball/mens-college-basketball/teams/'+id+'/roster');
+    const data=await espnJson('https://site.api.espn.com/apis/site/v2/sports/basketball/'+basketballPlayers[1]+'/teams/'+id+'/roster');
     if(!Array.isArray(data.athletes))throw Error('Roster unavailable');
     const players=data.athletes.flatMap(player=>Array.isArray(player.items)?player.items:[player])
       .filter(player=>player.displayName||player.fullName).map(player=>({
+        id:String(player.id||''),
         name:player.displayName||player.fullName,
         position:player.position?.abbreviation||'',
         jersey:player.jersey||'',

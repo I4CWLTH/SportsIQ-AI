@@ -163,6 +163,13 @@
 .practice-day>summary:focus-visible{outline:2px solid #90fae5;outline-offset:2px}
 .practice-day-net{margin-inline-start:.6em}
 .practice-day-net.win{color:#58ffa3}.practice-day-net.loss{color:#ff6b7e}
+
+.roster-player{border-top:1px solid #ffffff22}
+.roster-player>summary{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:9px 4px;cursor:pointer;list-style:none}
+.roster-player>summary::-webkit-details-marker{display:none}
+.roster-player-indicator::before{content:"+";color:#90fae5;font-weight:700}
+.roster-player[open]>.roster-player-indicator::before,.roster-player[open]>summary>.roster-player-indicator::before{content:"−"}
+.roster-player-stats{margin:0 4px 8px;padding:8px;border-radius:8px;background:#142638;color:#e7fffa;font-size:.85rem}
 </style></head><body><div class="shell"><header class="top"><div class="logo">SPORTSIQ <b>AI</b> <span style="font-size:11px;color:#9aabca;letter-spacing:2px">/ ARENA</span></div><div class="status"><i class="pulse"></i> INTELLIGENCE PLATFORM · PREVIEW</div></header><section class="hero"><div class="arena-hero-copy"><div class="eyebrow">THE NEXT GENERATION OF SPORTS INTELLIGENCE</div><h1>See beyond<br><span>the scoreboard.</span></h1><p class="sub">A new command center for matchup intelligence, evidence-backed forecasts, and transparent performance tracking. No invented games. No fictional odds.</p></div><div class="arena-reel" aria-label="Sports action photographs"><figure class="arena-shot active" aria-hidden="false" style="--focus:50% 30%"><img src="/arena-photos/basketball.webp" alt="Malcolm Thomas rises for a dunk" decoding="async" fetchpriority="high"><figcaption><strong>Basketball</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Malcolm_Thomas_dunking.jpg">SD Dirk</a> · <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:52% 45%"><img data-src="/arena-photos/football.webp" alt="Wayne Knight runs into the end zone" decoding="async" ><figcaption><strong>Football</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Wayne_Knight_touchdown_at_UCLA_Football_2026.jpg">Luis Ochea</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:50% 46%"><img data-src="/arena-photos/baseball.webp" alt="Kyle Schwarber swings at a pitch" decoding="async" ><figcaption><strong>Baseball</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:2023-04-08_kyle_schwarber_swinging.jpg">Zach McHoul</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:50% 42%"><img data-src="/arena-photos/soccer.webp" alt="Players challenge for the ball in a soccer match" decoding="async" ><figcaption><strong>Soccer</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Soccer_match.jpg">AngusConnaltyPhotos</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:53% 35%"><img data-src="/arena-photos/hockey.webp" alt="Trevor van Riemsdyk skates with the puck" decoding="async" ><figcaption><strong>Hockey</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Forward_Trevor_van_Riemsdyk.jpg">All-Pro Reels</a> · <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a> · resized and cropped</span></figcaption></figure><button type="button" class="arena-pause" aria-pressed="false" hidden>Pause photos</button></div></section><div class="bar" id="levels" role="group" aria-label="Competition level">
 <button class="sport" type="button" data-level="pro" aria-pressed="true">Professional</button>
 <button class="sport" type="button" data-level="college" aria-pressed="false">College</button>
@@ -236,7 +243,7 @@ function showSeasonNotice(notice){
   banner.append(icon,copy);games.replaceChildren(banner);
 }
 async function load(){const version=++loadVersion;items=[];document.getElementById('matchupStake').hidden=true;updateCountdown();document.getElementById('practiceForm')?.remove();document.getElementById('factorRows').replaceChildren();document.getElementById('factorStatus').textContent='Select a matchup to see what drives its forecast.';games.innerHTML='<div class="loading">Loading verified games…</div>';status.textContent='Checking public scoreboard…';document.getElementById('feedHealth').textContent='LOADING';document.getElementById('count').textContent='—';analysis.textContent='Select a matchup to see sourced evidence.';evidence.replaceChildren();try{const r=await fetch('/api/games?sport='+encodeURIComponent(active)+'&level='+level+'&date='+encodeURIComponent(day.value));const data=await r.json();if(version!==loadVersion)return;if(!r.ok)throw Error(data.error||'Feed error');items=data.games||[];updateCountdown();document.getElementById('count').textContent=items.length;document.getElementById('feedHealth').textContent=data.available?'CONNECTED':'UNAVAILABLE';status.textContent=data.message+(data.fetchedAt?' · Updated '+new Date(data.fetchedAt).toLocaleTimeString():'');if(!items.length){if(data.seasonNotice){showSeasonNotice(data.seasonNotice);return}games.innerHTML='<div class="loading">No verified games returned for this sport and date.</div>';return}games.replaceChildren();items.forEach((g,i)=>{const b=document.createElement('button');b.className='game';b.type='button';b.innerHTML='<span><b>'+esc(g.away.name)+' <span style="color:#65dbe9">vs</span> '+esc(g.home.name)+'</b><small>'+esc(labelDate(g.date))+' · '+esc(g.status)+(g.score?' · '+esc(g.score):'')+'</small></span><span class="arrow">›</span>';b.dataset.gameId=g.id;b.addEventListener('click',()=>selectGame(i,b));games.append(b)});updateBetBadges()}catch(e){if(version!==loadVersion)return;status.textContent='Sports feed unavailable: '+e.message;games.innerHTML='<div class="loading">Unable to retrieve verified fixtures. Try again later.</div>';document.getElementById('feedHealth').textContent='OFFLINE'}}
-async function selectGame(i,b){games.querySelectorAll('.game').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');updateBetBadges();const g=items[i];showPracticeBet(g);showPredictionFactors(g);const p=g.probability===null?null:Math.round(g.probability*100);const pick=p===null?null:(p>=50?g.home.name:g.away.name);const confidence=p===null?null:Math.max(p,100-p);const other=pick===g.home.name?g.away.name:g.home.name;const winner=p===null?'<div class="winner"><small>SPORTSIQ AI FORECAST</small><strong>Checking historical results…</strong><small>Looking up completed games in ESPN team schedules.</small></div>':'<div class="winner" role="status"><small>SPORTSIQ AI PICK · RECORD-BASED BASELINE</small><strong>🏆 '+esc(pick)+'</strong><small>'+confidence+'% estimated win probability · '+(confidence>=65?'Moderate record-based edge':'Close matchup / low-confidence edge')+' · Not a trained AI model</small><div class="meter"><div style="width:'+confidence+'%"></div></div></div>';analysis.innerHTML=winner;showTeams(g);if(pick&&(level!=='college'||active==='Basketball')){const selected=pick===g.home.name?g.home:g.away;const visual=document.createElement('div');visual.className='winner-visual';const icon=document.createElement('span');icon.className='winner-gear';icon.textContent=({Football:'🏈',Basketball:'🏀',Baseball:'⚾',Hockey:'🏒',Soccer:'⚽',Cricket:'🏏'})[active]||'🏆';visual.append(icon);if(selected.logo&&/^https:\/\//.test(selected.logo)){const img=document.createElement('img');img.className='winner-emblem';img.src=selected.logo;img.alt=selected.name+' official team logo';img.loading='lazy';img.onerror=()=>img.remove();visual.append(img)}const card=analysis.querySelector('.winner');if(card)card.prepend(visual)}const narrative=document.createElement('div');narrative.className='commentary';if(p===null){narrative.textContent=g.score?'Final or live score: '+g.score:''}else{const home=g.home.name,away=g.away.name;const favoredHome=pick===home;const recordHome=g.home.record||'not available',recordAway=g.away.record||'not available';narrative.textContent='Here is the matchup: '+away+' travels to face '+home+'. The early numbers give '+pick+' the edge, but this is a baseline lean, not a lock. '+home+' comes in with a reported record of '+recordHome+', while '+away+' is listed at '+recordAway+'. '+(g.factors?.homeEdge===0?'This is a neutral-court matchup.':favoredHome?'The home-field adjustment also works in '+home+'’s favor.':'Even with a modest home-field adjustment for '+home+', the record-based estimate leans toward '+away+'.')+' The big question before kickoff or tipoff is who is actually available and how each side has performed lately. Bottom line: '+pick+' is the tentative pick at '+confidence+'%, with '+other+' still very much in the contest.'}analysis.append(narrative);showLines(g);showSavedPick(g);showMatchupHistory(g, analysis.querySelector('.winner'));if(level==='college'&&active==='Basketball')showCollegeBasketballRosters(g);if((['Football','Basketball'].includes(active)||(active==='Baseball'&&level==='pro'))&&g.home.id&&g.away.id)showMatchupInjuries(g,pick,narrative);const parts=[['Away record',g.away.record||'Not provided'],['Home record',g.home.record||'Not provided'],['Venue',g.venue||'Not provided'],['Competition',g.league||'Not provided'],['Player injuries / lineup changes',(['Football','Basketball'].includes(active)||(active==='Baseball'&&level==='pro'))?'See the two-team ESPN injury panel above. Not included in baseline forecast.':'Injury feed not configured for this league']];evidence.innerHTML=parts.map(([k,v])=>'<div class="evidence"><b>'+esc(k)+'</b><small>'+esc(v)+'</small></div>').join('');if(level==='college'&&active==='Baseball'){const report=document.createElement('a');report.href='https://www.secsports.com/reports';report.target='_blank';report.rel='noopener noreferrer';report.className='source';report.textContent='SEC baseball availability reports ↗';evidence.append(report)}if(g.source){const a=document.createElement('a');a.href=g.source;a.target='_blank';a.rel='noopener noreferrer';a.className='source';a.textContent='Verify matchup on ESPN ↗';evidence.append(a)}}
+async function selectGame(i,b){games.querySelectorAll('.game').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');updateBetBadges();const g=items[i];showPracticeBet(g);showPredictionFactors(g);const p=g.probability===null?null:Math.round(g.probability*100);const pick=p===null?null:(p>=50?g.home.name:g.away.name);const confidence=p===null?null:Math.max(p,100-p);const other=pick===g.home.name?g.away.name:g.home.name;const winner=p===null?'<div class="winner"><small>SPORTSIQ AI FORECAST</small><strong>Checking historical results…</strong><small>Looking up completed games in ESPN team schedules.</small></div>':'<div class="winner" role="status"><small>SPORTSIQ AI PICK · RECORD-BASED BASELINE</small><strong>🏆 '+esc(pick)+'</strong><small>'+confidence+'% estimated win probability · '+(confidence>=65?'Moderate record-based edge':'Close matchup / low-confidence edge')+' · Not a trained AI model</small><div class="meter"><div style="width:'+confidence+'%"></div></div></div>';analysis.innerHTML=winner;showTeams(g);if(pick&&(level!=='college'||active==='Basketball')){const selected=pick===g.home.name?g.home:g.away;const visual=document.createElement('div');visual.className='winner-visual';const icon=document.createElement('span');icon.className='winner-gear';icon.textContent=({Football:'🏈',Basketball:'🏀',Baseball:'⚾',Hockey:'🏒',Soccer:'⚽',Cricket:'🏏'})[active]||'🏆';visual.append(icon);if(selected.logo&&/^https:\/\//.test(selected.logo)){const img=document.createElement('img');img.className='winner-emblem';img.src=selected.logo;img.alt=selected.name+' official team logo';img.loading='lazy';img.onerror=()=>img.remove();visual.append(img)}const card=analysis.querySelector('.winner');if(card)card.prepend(visual)}const narrative=document.createElement('div');narrative.className='commentary';if(p===null){narrative.textContent=g.score?'Final or live score: '+g.score:''}else{const home=g.home.name,away=g.away.name;const favoredHome=pick===home;const recordHome=g.home.record||'not available',recordAway=g.away.record||'not available';narrative.textContent='Here is the matchup: '+away+' travels to face '+home+'. The early numbers give '+pick+' the edge, but this is a baseline lean, not a lock. '+home+' comes in with a reported record of '+recordHome+', while '+away+' is listed at '+recordAway+'. '+(g.factors?.homeEdge===0?'This is a neutral-court matchup.':favoredHome?'The home-field adjustment also works in '+home+'’s favor.':'Even with a modest home-field adjustment for '+home+', the record-based estimate leans toward '+away+'.')+' The big question before kickoff or tipoff is who is actually available and how each side has performed lately. Bottom line: '+pick+' is the tentative pick at '+confidence+'%, with '+other+' still very much in the contest.'}analysis.append(narrative);showLines(g);showSavedPick(g);showMatchupHistory(g, analysis.querySelector('.winner'));if((['Football','Basketball'].includes(active)||(active==='Baseball'&&level==='pro'))&&g.home.id&&g.away.id)showMatchupInjuries(g,pick,narrative);if(active==='Basketball')showBasketballRosters(g,level==='college'?'mens-college-basketball':'nba');const parts=[['Away record',g.away.record||'Not provided'],['Home record',g.home.record||'Not provided'],['Venue',g.venue||'Not provided'],['Competition',g.league||'Not provided'],['Player injuries / lineup changes',(['Football','Basketball'].includes(active)||(active==='Baseball'&&level==='pro'))?'See the two-team ESPN injury panel above. Not included in baseline forecast.':'Injury feed not configured for this league']];evidence.innerHTML=parts.map(([k,v])=>'<div class="evidence"><b>'+esc(k)+'</b><small>'+esc(v)+'</small></div>').join('');if(level==='college'&&active==='Baseball'){const report=document.createElement('a');report.href='https://www.secsports.com/reports';report.target='_blank';report.rel='noopener noreferrer';report.className='source';report.textContent='SEC baseball availability reports ↗';evidence.append(report)}if(g.source){const a=document.createElement('a');a.href=g.source;a.target='_blank';a.rel='noopener noreferrer';a.className='source';a.textContent='Verify matchup on ESPN ↗';evidence.append(a)}}
 
 
 function showPredictionFactors(game){
@@ -321,7 +328,7 @@ function addPlayerImpact(game,pick,narrative,teams){
     narrative.append(impact);
   }
 }
-async function showCollegeBasketballRosters(game){
+function showBasketballRosters(game,league){
   const panel=document.createElement('section');
   panel.className='injury-matchup';
   const heading=document.createElement('h3');
@@ -330,44 +337,68 @@ async function showCollegeBasketballRosters(game){
   grid.className='injury-teams';
   panel.append(heading,grid);
   analysis.append(panel);
-  await Promise.all([game.away,game.home].map(async team=>{
+  for(const team of [game.away,game.home]){
     const column=document.createElement('details');
     column.className='injury-team';
     const title=document.createElement('summary');
     title.textContent=team.name;
     const status=document.createElement('p');
     status.className='meta';
-    status.textContent='Loading ESPN roster…';
     column.append(title,status);
     grid.append(column);
+    column.addEventListener('toggle',async()=>{
+      if(!column.open||column.dataset.loaded||status.dataset.loading)return;
+      status.dataset.loading='true';
+      status.textContent='Loading ESPN roster…';
+      try{
+        if(!team.id)throw Error('Missing team ID');
+        const response=await fetch('/api/'+league+'/roster?team='+encodeURIComponent(team.id));
+        if(!response.ok)throw Error('Roster unavailable');
+        const {players}=await response.json();
+        status.textContent=players.length?players.length+' players listed':'ESPN has no roster listed for this team.';
+        for(const player of players)column.append(renderRosterPlayer(player,league));
+        column.dataset.loaded='true';
+      }catch{status.textContent='ESPN roster unavailable. Reopen to retry.'}
+      finally{delete status.dataset.loading}
+    });
+  }
+}
+
+function renderRosterPlayer(player,league){
+  const row=document.createElement('details');
+  row.className='roster-player';
+  const summary=document.createElement('summary');
+  const name=document.createElement('span');
+  name.textContent=[player.jersey&&'#'+player.jersey,player.name,player.position].filter(Boolean).join(' · ');
+  summary.append(name);
+  const indicator=document.createElement('span');
+  indicator.className='roster-player-indicator';
+  indicator.setAttribute('aria-hidden','true');
+  summary.append(indicator);
+  const box=document.createElement('div');
+  box.className='roster-player-stats';
+  box.setAttribute('aria-live','polite');
+  row.append(summary,box);
+  row.addEventListener('toggle',async()=>{
+    if(!row.open||box.dataset.loaded||box.dataset.loading)return;
+    box.dataset.loading='true';
+    box.textContent='Loading ESPN stats…';
     try{
-      if(!team.id)throw Error('Missing team ID');
-      const response=await fetch('/api/mens-college-basketball/roster?team='+encodeURIComponent(team.id));
-      if(!response.ok)throw Error('Roster unavailable');
-      const {players}=await response.json();
-      status.textContent=players.length?players.length+' players listed':'ESPN has no roster listed for this team.';
-      for(const player of players){
-        const row=document.createElement('div');
-        row.className='injury-player';
-        const avatar=document.createElement('span');
-        avatar.className='injury-avatar';
-        avatar.textContent='🏀';
-        row.append(avatar);
-        if(/^https:\/\//.test(player.headshot)){
-          const photo=document.createElement('img');
-          photo.src=player.headshot;
-          photo.alt='';
-          photo.loading='lazy';
-          photo.onerror=()=>photo.replaceWith(avatar);
-          avatar.replaceWith(photo);
-        }
-        const name=document.createElement('span');
-        name.textContent=[player.jersey&&'#'+player.jersey,player.name,player.position].filter(Boolean).join(' · ');
-        row.append(name);
-        column.append(row);
+      if(!player.id){box.textContent='ESPN stats unavailable for this player.';return}
+      const response=await fetch('/api/'+league+'/player-stats?player='+encodeURIComponent(player.id));
+      if(!response.ok)throw Error('Stats unavailable');
+      const {period,stats}=await response.json();
+      box.textContent=stats.length?period+' · ESPN':'ESPN has no season stats for this player.';
+      if(stats.length){
+        const values=document.createElement('div');
+        values.textContent=stats.map(({label,value})=>label+' '+value).join(' · ');
+        box.append(values);
       }
-    }catch{status.textContent='ESPN roster unavailable.'}
-  }));
+      box.dataset.loaded='true';
+    }catch{box.textContent='ESPN stats unavailable. Reopen to retry.'}
+    finally{delete box.dataset.loading}
+  });
+  return row;
 }
 
 async function showMatchupInjuries(game,pick,narrative){
