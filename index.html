@@ -383,11 +383,10 @@ factorGlobe.addEventListener('pointermove',event=>{
   scheduleFactorGlobe();
 });
 function showCallYourShot(game){
-  const start = {Basketball:'tip-off', Football:'kickoff', Baseball:'first pitch'}[active];
-  if(!start) return;
+  if(!['Basketball','Football','Baseball'].includes(active)) return;
   const box = document.createElement('section');
   box.className = 'call-shot';
-  box.innerHTML = '<h3>Call Your Shot</h3><p>Prove everybody wrong. Say it now, before '+start+'. Take the trophy.</p>';
+  box.innerHTML = '<h3>Call Your Shot</h3><p>Think you’re right? Say it now. Then take the trophy.</p>';
   const key = 'sportsiq.callYourShot.demo.' + (active === 'Basketball' && level === 'pro' ? '' : active + '.' + level + '.') + game.id;
   const form = document.createElement('form');
   const label = document.createElement('label');
