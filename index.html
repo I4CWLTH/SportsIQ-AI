@@ -186,7 +186,7 @@
   <p id="calendarTotals"></p>
   <div class="calendar-grid" id="calendarGrid"></div>
   <p id="calendarDay" aria-live="polite"></p>
-</dialog><details id="daily" style="margin:8px 0 16px;border:1px solid #344768;border-radius:13px;background:#101b30"><summary style="cursor:pointer;padding:12px 16px;font-weight:650">Picks &amp; results</summary><div style="padding:0 16px 16px"><h2 style="font-size:16px"></h2><div data-daily aria-live="polite"></div></div></details><div class="ticker"><span>◈ DATA INTEGRITY FIRST &nbsp; · &nbsp; VERIFIED FIXTURES REQUIRED &nbsp; · &nbsp; INJURY &amp; FORM ANALYSIS COMING WITH DATA INTEGRATION &nbsp; · &nbsp; NO UNVERIFIED PREDICTIONS &nbsp; · &nbsp; </span></div><main class="layout"><section class="panel"><div class="label">01 / MATCHUP INTELLIGENCE</div><h2 id="title">Basketball command center</h2><div class="actions"><label for="day" class="meta">GAME DATE</label><input id="day" type="date" style="background:#172641;color:white;border:1px solid #4b6487;border-radius:9px;padding:10px;font-size:16px"><button id="refresh" type="button">↻ Refresh</button></div><p id="feedStatus" class="meta" aria-live="polite">Connecting to sports feeds…</p><div class="game-list" id="games"><div class="loading">Loading verified fixtures…</div></div><div class="grid"><div class="stat"><small>VERIFIED FIXTURES</small><strong id="count">—</strong><small>For selected date</small></div><div class="stat"><small>DATA PROVIDER</small><strong style="font-size:16px">ESPN</strong><small>Public scoreboard</small></div><div class="stat"><small>FEED STATUS</small><strong id="feedHealth" style="font-size:17px;color:#f4c16c">LOADING</strong><small>Source-dependent</small></div></div></section><aside class="panel"><div class="label">02 / AI EVIDENCE ENGINE</div><div class="matchup-analysis-header"><h2>Why would a team win?</h2><span id="matchupStake" class="matchup-stake" role="status" hidden></span></div><p class="muted" id="analysis">Select a verified upcoming matchup to inspect team records, available evidence, and an explicitly labeled baseline estimate. No unsupported claims about injuries or recent form.</p><div id="evidence"></div><section class="consensus" aria-label="Prediction factors"><div class="label">PREDICTION FACTORS</div><h2>What drives the pick?</h2><p class="muted" id="factorStatus">Select a matchup to see what drives its forecast.</p><div id="factorRows"></div></section><hr style="border:0;border-top:1px solid #304260;margin:22px 0"><div class="label">03 / PERFORMANCE AUDIT</div><h2>Accountable predictions</h2><p class="muted" id="accuracy">No evaluated predictions yet. Accuracy is not claimed without saved pregame forecasts and official final results.</p></aside></main><footer>SPORTSIQ AI · Public sports feed from ESPN · Baseline estimates are not validated AI predictions</footer></div><script>
+</dialog><details id="daily" style="margin:8px 0 16px;border:1px solid #344768;border-radius:13px;background:#101b30"><summary style="cursor:pointer;padding:12px 16px;font-weight:650">Picks &amp; results</summary><div style="padding:0 16px 16px"><h2 style="font-size:16px"></h2><div data-daily aria-live="polite"></div></div></details><div class="ticker"><span>◈ DATA INTEGRITY FIRST &nbsp; · &nbsp; VERIFIED FIXTURES REQUIRED &nbsp; · &nbsp; INJURY &amp; FORM ANALYSIS COMING WITH DATA INTEGRATION &nbsp; · &nbsp; NO UNVERIFIED PREDICTIONS &nbsp; · &nbsp; </span></div><main class="layout"><section class="panel"><div class="label">01 / MATCHUP INTELLIGENCE</div><h2 id="title">Basketball command center</h2><div class="actions"><label for="day" class="meta">GAME DATE</label><input id="day" type="date" style="background:#172641;color:white;border:1px solid #4b6487;border-radius:9px;padding:10px;font-size:16px"><button id="refresh" type="button">↻ Refresh</button></div><p id="feedStatus" class="meta" aria-live="polite">Connecting to sports feeds…</p><div class="game-list" id="games"><div class="loading">Loading verified fixtures…</div></div><div class="grid"><div class="stat"><small>VERIFIED FIXTURES</small><strong id="count">—</strong><small>For selected date</small></div><div class="stat"><small>DATA PROVIDER</small><strong style="font-size:16px">ESPN</strong><small>Public scoreboard</small></div><div class="stat"><small>FEED STATUS</small><strong id="feedHealth" style="font-size:17px;color:#f4c16c">LOADING</strong><small>Source-dependent</small></div></div></section><aside class="panel"><div class="label">02 / AI EVIDENCE ENGINE</div><div class="matchup-analysis-header"><h2>Why would a team win?</h2><span id="matchupStake" class="matchup-stake" role="status" hidden></span></div><p class="muted" id="analysis">Select a verified upcoming matchup to inspect team records, available evidence, and an explicitly labeled baseline estimate. No unsupported claims about injuries or recent form.</p><div id="evidence"></div><section class="consensus" aria-label="Prediction factors"><div class="label">PREDICTION FACTORS</div><h2>What drives the pick?</h2><p class="muted" id="factorStatus">Select a matchup to see what drives its forecast.</p><canvas id="factorGlobe" aria-hidden="true" style="display:none;width:100%;height:220px;touch-action:pan-y"></canvas><div id="factorRows"></div></section><hr style="border:0;border-top:1px solid #304260;margin:22px 0"><div class="label">03 / PERFORMANCE AUDIT</div><h2>Accountable predictions</h2><p class="muted" id="accuracy">No evaluated predictions yet. Accuracy is not claimed without saved pregame forecasts and official final results.</p></aside></main><footer>SPORTSIQ AI · Public sports feed from ESPN · Baseline estimates are not validated AI predictions</footer></div><script>
 const reel=document.querySelector('.arena-reel');
 const shots=Array.from(reel.querySelectorAll('.arena-shot'));
 const pausePhotos=reel.querySelector('.arena-pause');
@@ -251,6 +251,88 @@ async function load(){const version=++loadVersion;items=[];document.getElementBy
 async function selectGame(i,b){games.querySelectorAll('.game').forEach(x=>x.classList.remove('selected'));b.classList.add('selected');updateBetBadges();const g=items[i];showPracticeBet(g);showPredictionFactors(g);const p=g.probability===null?null:Math.round(g.probability*100);const pick=p===null?null:(p>=50?g.home.name:g.away.name);const confidence=p===null?null:Math.max(p,100-p);const other=pick===g.home.name?g.away.name:g.home.name;const winner=p===null?'<div class="winner"><small>SPORTSIQ AI FORECAST</small><strong>Checking historical results…</strong><small>Looking up completed games in ESPN team schedules.</small></div>':'<div class="winner" role="status"><small>SPORTSIQ AI PICK · RECORD-BASED BASELINE</small><strong>🏆 '+esc(pick)+'</strong><small>'+confidence+'% estimated win probability · '+(confidence>=65?'Moderate record-based edge':'Close matchup / low-confidence edge')+' · Not a trained AI model</small><div class="meter"><div style="width:'+confidence+'%"></div></div></div>';analysis.innerHTML=winner;showTeams(g);if(pick&&(level!=='college'||active==='Basketball')){const selected=pick===g.home.name?g.home:g.away;const visual=document.createElement('div');visual.className='winner-visual';const icon=document.createElement('span');icon.className='winner-gear';icon.textContent=({Football:'🏈',Basketball:'🏀',Baseball:'⚾',Hockey:'🏒',Soccer:'⚽',Cricket:'🏏'})[active]||'🏆';visual.append(icon);if(selected.logo&&/^https:\/\//.test(selected.logo)){const img=document.createElement('img');img.className='winner-emblem';img.src=selected.logo;img.alt=selected.name+' official team logo';img.loading='lazy';img.onerror=()=>img.remove();visual.append(img)}const card=analysis.querySelector('.winner');if(card)card.prepend(visual)}const narrative=document.createElement('div');narrative.className='commentary';if(p===null){narrative.textContent=g.score?'Final or live score: '+g.score:''}else{const home=g.home.name,away=g.away.name;const favoredHome=pick===home;const recordHome=g.home.record||'not available',recordAway=g.away.record||'not available';narrative.textContent='Here is the matchup: '+away+' travels to face '+home+'. The early numbers give '+pick+' the edge, but this is a baseline lean, not a lock. '+home+' comes in with a reported record of '+recordHome+', while '+away+' is listed at '+recordAway+'. '+(g.factors?.homeEdge===0?'This is a neutral-court matchup.':favoredHome?'The home-field adjustment also works in '+home+'’s favor.':'Even with a modest home-field adjustment for '+home+', the record-based estimate leans toward '+away+'.')+' The big question before kickoff or tipoff is who is actually available and how each side has performed lately. Bottom line: '+pick+' is the tentative pick at '+confidence+'%, with '+other+' still very much in the contest.'}analysis.append(narrative);showLines(g);showSavedPick(g);showMatchupHistory(g, analysis.querySelector('.winner'));if((['Football','Basketball'].includes(active)||(active==='Baseball'&&level==='pro'))&&g.home.id&&g.away.id)showMatchupInjuries(g,pick,narrative);if(active==='Basketball')showBasketballRosters(g,level==='college'?'mens-college-basketball':'nba');const parts=[['Away record',g.away.record||'Not provided'],['Home record',g.home.record||'Not provided'],['Venue',g.venue||'Not provided'],['Competition',g.league||'Not provided'],['Player injuries / lineup changes',(['Football','Basketball'].includes(active)||(active==='Baseball'&&level==='pro'))?'See the two-team ESPN injury panel above. Not included in baseline forecast.':'Injury feed not configured for this league']];evidence.innerHTML=parts.map(([k,v])=>'<div class="evidence"><b>'+esc(k)+'</b><small>'+esc(v)+'</small></div>').join('');if(level==='college'&&active==='Baseball'){const report=document.createElement('a');report.href='https://www.secsports.com/reports';report.target='_blank';report.rel='noopener noreferrer';report.className='source';report.textContent='SEC baseball availability reports ↗';evidence.append(report)}if(g.source){const a=document.createElement('a');a.href=g.source;a.target='_blank';a.rel='noopener noreferrer';a.className='source';a.textContent='Verify matchup on ESPN ↗';evidence.append(a)}}
 
 
+const factorGlobe = document.getElementById('factorGlobe');
+const globeContext = factorGlobe.getContext('2d');
+let globeVisible = false, globeFrame = 0, globeTilt = 0, globeTurn = 0;
+const globeMotion = matchMedia('(prefers-reduced-motion: reduce)');
+function drawFactorGlobe(time){
+  globeFrame = 0;
+  const rows = [...document.querySelectorAll('#factorRows .evidence')];
+  factorGlobe.style.display = rows.length ? 'block' : 'none';
+  if (!rows.length || !globeContext || !globeVisible) return;
+  const width = factorGlobe.clientWidth, height = factorGlobe.clientHeight;
+  const ratio = devicePixelRatio || 1;
+  factorGlobe.width = width * ratio;
+  factorGlobe.height = height * ratio;
+  const ctx = globeContext;
+  ctx.scale(ratio, ratio);
+  ctx.font = '11px system-ui';
+  const radius = Math.min(49, width * .115);
+  const cx = width / 2, cy = height / 2;
+  const t = globeMotion.matches ? 0 : time / 1000;
+  const spin = t * .32 + globeTurn;
+  const tilt = .42 + globeTilt;
+  function project(lon, lat){
+    const x = Math.cos(lat)*Math.cos(lon+spin), y = Math.sin(lat);
+    const z = Math.cos(lat)*Math.sin(lon+spin);
+    return [cx + radius*x, cy + radius*(y*Math.cos(tilt)-z*Math.sin(tilt))];
+  }
+  function line(points, color){
+    ctx.beginPath();
+    points.forEach(([x,y], i) => i ? ctx.lineTo(x,y) : ctx.moveTo(x,y));
+    ctx.strokeStyle = color;
+    ctx.stroke();
+  }
+  for(let ring=0;ring<8;ring++){
+    line(Array.from({length:49}, (_,i)=>project(ring*Math.PI/8,i*Math.PI/24)), '#428bbc88');
+  }
+  for(let ring=-2;ring<=2;ring++){
+    line(Array.from({length:49}, (_,i)=>project(i*Math.PI/24,ring*Math.PI/8)), '#56b8e288');
+  }
+  rows.forEach((row,i)=>{
+    const left = i % 2 === 0;
+    const x = left ? 8 : width-8;
+    const y = 39 + Math.floor(i/2)*65;
+    const label = row.querySelector('b')?.textContent || '';
+    const weight = row.children[1]?.textContent || '';
+    ctx.textAlign = left ? 'left' : 'right';
+    ctx.fillStyle = '#edf6ff';
+    ctx.fillText(label,x,y,Math.max(48,cx-radius-14));
+    ctx.fillStyle = '#7ee4ff';
+    ctx.fillText(weight,x,y+15);
+    const start = project(i*2.4,.42*Math.sin(i));
+    const end = [left ? 12 : width-12,y+22];
+    line([start,end],'#65c9ef77');
+    const phase = (t+i*.73)%4;
+    if (!globeMotion.matches && phase<.8){
+      const p = phase/.8;
+      ctx.beginPath();
+      ctx.arc(start[0]+(end[0]-start[0])*p,start[1]+(end[1]-start[1])*p,2.8,0,2*Math.PI);
+      ctx.fillStyle = '#baf8ff';
+      ctx.shadowColor = '#50dbff';
+      ctx.shadowBlur = 12;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+    }
+  });
+  if (!globeMotion.matches) scheduleFactorGlobe();
+}
+function scheduleFactorGlobe(){
+  if (!globeFrame) globeFrame = requestAnimationFrame(drawFactorGlobe);
+}
+new IntersectionObserver(([entry])=>{
+  globeVisible = entry.isIntersecting;
+  if (globeVisible) scheduleFactorGlobe();
+}).observe(factorGlobe);
+new MutationObserver(scheduleFactorGlobe).observe(document.getElementById('factorRows'),{childList:true,subtree:true});
+globeMotion.addEventListener('change',scheduleFactorGlobe);
+window.addEventListener('resize',scheduleFactorGlobe);
+factorGlobe.addEventListener('pointermove',event=>{
+  const bounds = factorGlobe.getBoundingClientRect();
+  globeTurn = ((event.clientX-bounds.left)/bounds.width-.5)*2.4;
+  globeTilt = ((event.clientY-bounds.top)/bounds.height-.5)*1.5;
+  scheduleFactorGlobe();
+});
 function showPredictionFactors(game){
   const rows=document.getElementById('factorRows');
   const status=document.getElementById('factorStatus');
