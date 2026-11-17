@@ -283,12 +283,17 @@ function drawFactorGlobe(time){
     ctx.strokeStyle = color;
     ctx.stroke();
   }
-  for(let ring=0;ring<8;ring++){
-    line(Array.from({length:49}, (_,i)=>project(ring*Math.PI/8,i*Math.PI/24)), '#428bbc88');
-  }
-  for(let ring=-2;ring<=2;ring++){
-    line(Array.from({length:49}, (_,i)=>project(i*Math.PI/24,ring*Math.PI/8)), '#56b8e288');
-  }
+  const colors = ['#66e6ff','#c28aff','#ffad60','#77f4b8','#ff82c9'];
+  const nodes = Array.from({length:48}, (_,i) => project(i*2.399963, Math.asin(1-(2*i+1)/48)));
+  nodes.forEach((point,i)=>{
+    const color = colors[i%colors.length];
+    line([point,nodes[(i+13)%nodes.length]],color+'55');
+    line([point,nodes[(i+7)%nodes.length]],color+'40');
+    ctx.beginPath();
+    ctx.arc(point[0],point[1],i%5===0 ? 2.4 : 1.4,0,2*Math.PI);
+    ctx.fillStyle = color;
+    ctx.fill();
+  });
   rows.forEach((row,i)=>{
     const left = i % 2 === 0;
     const x = left ? 8 : width-8;
@@ -302,7 +307,7 @@ function drawFactorGlobe(time){
     ctx.fillText(weight,x,y+15);
     const start = project(i*2.4,.42*Math.sin(i));
     const end = [left ? 12 : width-12,y+22];
-    line([start,end],'#65c9ef77');
+    line([start,end],colors[i%colors.length]+'99');
     const phase = (t+i*.73)%4;
     if (!globeMotion.matches && phase<.8){
       const p = phase/.8;
