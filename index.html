@@ -387,7 +387,7 @@ function showCallYourShot(game){
   if(!start) return;
   const box = document.createElement('section');
   box.className = 'call-shot';
-  box.innerHTML = '<h3>Call Your Shot</h3><p>Say it now, before '+start+'. Prove everybody wrong.</p>';
+  box.innerHTML = '<h3>Call Your Shot</h3><p>Prove everybody wrong. Say it now, before '+start+'. Take the crown.</p>';
   const key = 'sportsiq.callYourShot.demo.' + (active === 'Basketball' && level === 'pro' ? '' : active + '.' + level + '.') + game.id;
   const form = document.createElement('form');
   const label = document.createElement('label');
