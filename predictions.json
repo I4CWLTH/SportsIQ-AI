@@ -837,7 +837,7 @@
   },
   "Basketball/college/401920962": {
     "recorded": "2026-11-15T06:31:27.615334+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -1021,6 +1021,17 @@
       "2026-11-14"
     ],
     "team": "Old Dominion Monarchs"
+  },
+  "Basketball/college/401922221": {
+    "recorded": "2026-11-17T00:30:50.551774+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-17"
+    ],
+    "team": "North Florida Ospreys"
   },
   "Basketball/college/401922251": {
     "recorded": "2026-11-16T06:28:39.368224+00:00",
@@ -1431,7 +1442,7 @@
   },
   "Basketball/college/401929371": {
     "recorded": "2026-11-15T06:31:27.615349+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -1442,7 +1453,7 @@
   },
   "Basketball/college/401929419": {
     "recorded": "2026-11-15T06:31:27.615355+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
