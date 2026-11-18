@@ -956,6 +956,28 @@
     ],
     "team": "West Virginia Mountaineers"
   },
+  "Basketball/college/401920513": {
+    "recorded": "2026-11-18T00:57:38.619473+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-18"
+    ],
+    "team": "Notre Dame Fighting Irish"
+  },
+  "Basketball/college/401920514": {
+    "recorded": "2026-11-18T00:57:38.619505+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-18"
+    ],
+    "team": "Florida Gators"
+  },
   "Basketball/college/401920567": {
     "recorded": "2026-11-14T20:08:19.410996+00:00",
     "result": "Yes",
@@ -1519,7 +1541,7 @@
   },
   "Basketball/college/401923325": {
     "recorded": "2026-11-16T06:28:39.368190+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -1904,7 +1926,7 @@
   },
   "Basketball/college/401927381": {
     "recorded": "2026-11-16T06:28:39.368167+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
