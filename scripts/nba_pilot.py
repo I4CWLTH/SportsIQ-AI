@@ -8,7 +8,7 @@ from zoneinfo import ZoneInfo
 from predictions import fetch, instant
 
 ARCHIVE = Path('nba-pilot.json')
-FEATURES = ('strength', 'form', 'availability', 'home_court', 'rest')
+FEATURES = ('strength', 'form', 'availability', 'home_court', 'rest', 'opponent_adjusted_margin', 'back_to_back')
 MIN_TRAIN = 100
 
 
@@ -18,7 +18,7 @@ def estimate(weights, features):
 
 
 def fit(rows, fields):
-    weights = [0.] * (len(fields) + 1)
+    weights = [0.] * (2 * len(fields) + 1)
     inputs = [(vector(row, fields), target) for row, target in rows]
     for _ in range(160):
         gradient = [0.] * len(weights)
@@ -32,7 +32,8 @@ def fit(rows, fields):
 
 
 def vector(row, fields):
-    return [1.] + [row['features'].get(key) or 0. for key in fields]
+    values = [row['features'].get(key) for key in fields]
+    return [1.] + [value if value is not None else 0. for value in values] + [float(value is None) for value in values]
 
 
 def moneyline(value):
@@ -73,11 +74,14 @@ def report(games, phase):
                                    market_only=.5 + market,
                                    pilot_with_market=estimate(market_model, vector(row, (*FEATURES, 'market'))))
             for name, probability in predictions.items():
-                count, correct, error = scores.get(name, (0, 0, 0.))
+                count, correct, error, log_loss = scores.get(name, (0, 0, 0., 0.))
+                outcome_probability = probability if target else 1 - probability
                 scores[name] = (count + 1, correct + int((probability >= .5) == target),
-                                error + (probability - target) ** 2)
-    return {name: dict(games=count, accuracy=round(correct/count, 4), brier=round(error/count, 4))
-            for name, (count, correct, error) in scores.items()}
+                                error + (probability - target) ** 2,
+                                log_loss - math.log(max(1e-15, outcome_probability)))
+    return {name: dict(games=count, accuracy=round(correct/count, 4), brier=round(error/count, 4),
+                      log_loss=round(log_loss/count, 4))
+            for name, (count, correct, error, log_loss) in scores.items()}
 
 
 def record_rate(text):
@@ -104,6 +108,24 @@ def team_history(team_id, completed, now):
     return margin/20, min(elapsed, 5)/5
 
 
+def adjusted_team_margin(team_id, completed, now):
+    prior = [game for game in completed.values() if instant(game['result_at']) < now]
+    history = sorted((game for game in prior if team_id in game['teams']),
+                     key=lambda game: game['tip'], reverse=True)[:10]
+    if not history:
+        return None
+    weighted_margin = total_weight = 0.
+    for index, game in enumerate(history):
+        side = game['teams'].index(team_id)
+        opponent = game['teams'][1 - side]
+        opponent_form, _ = team_history(opponent, completed, instant(game['tip']))
+        weight = .84 ** index
+        weighted_margin += weight * ((game['scores'][side] - game['scores'][1 - side])/20
+                                     + (opponent_form or 0.))
+        total_weight += weight
+    return weighted_margin / total_weight
+
+
 def unavailable_output(team, report):
     if not report or not report.get('available'):
         return None
@@ -126,6 +148,10 @@ def snapshot(game, reports, completed, odds, now):
                                 unavailable_output(home, reports.get(str(home['id'])))),
         home_court=None if game.get('neutralSite') is None else float(not game['neutralSite']),
         rest=difference(home_rest, away_rest), market=market,
+        opponent_adjusted_margin=difference(adjusted_team_margin(str(home['id']), completed, now),
+                                            adjusted_team_margin(str(away['id']), completed, now)),
+        back_to_back=difference(None if home_rest is None else float(home_rest < .25),
+                                None if away_rest is None else float(away_rest < .25)),
     )
     return dict(at=now.isoformat(), baseline=game['probability'], features=features,
                 odds=odds, teams=[away,home],
