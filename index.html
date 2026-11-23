@@ -1208,7 +1208,7 @@ async async function renderPracticeHistory(){
     renderPracticeCalendar();
     const expandedDays=new Set([...practiceEntries.querySelectorAll('.practice-day[open]')].map(group=>group.dataset.key));
     practiceEntries.replaceChildren();
-    const verified=bets.filter(b=>!bet.imported);
+    const verified=bets.filter(b=>!b.imported);
     const stake=verified.reduce((n,b)=>n+b.units,0);
     const wins=verified.filter(b=>b.result==='win').length;
     const losses=verified.filter(b=>b.result==='loss').length;
