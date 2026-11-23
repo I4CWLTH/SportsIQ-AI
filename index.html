@@ -1184,7 +1184,7 @@ function practicePlacedDay(bet){
   return bet.placedAt&&Number.isFinite(+placed)?calendarDate.format(placed):calendarGameDay(bet);
 }
 let practiceRender=0;
-async async function renderPracticeHistory(){
+async function renderPracticeHistory(){
   const request=++practiceRender;
   if(!practiceEntries.children.length)practiceEntries.textContent='🎰 Updating the practice ledger…';
   const totals=document.getElementById('practiceTotals');
