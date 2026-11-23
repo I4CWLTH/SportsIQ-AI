@@ -25,3 +25,15 @@ jobs:
           git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Save and grade pregame predictions'
           git pull --rebase origin main
           git push origin HEAD:main
+      - name: Mirror NBA pilot archive into Neon (optional)
+        # Failure must never interrupt or roll back existing Sports IQ updates.
+        continue-on-error: true
+        env:
+          SPORTSIQ_NEON_DATABASE_URL: ${{ secrets.SPORTSIQ_NEON_DATABASE_URL }}
+        run: |
+          if [ -z "$SPORTSIQ_NEON_DATABASE_URL" ]; then
+            echo "Neon pilot sync not configured; existing GitHub archive remains active."
+            exit 0
+          fi
+          python3 -m pip install --quiet 'psycopg[binary]>=3.2,<4'
+          python3 scripts/sync_nba_pilot_neon.py
