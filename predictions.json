@@ -276,7 +276,7 @@
   },
   "Basketball/college/401909556": {
     "recorded": "2026-11-21T08:17:18.631691+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -1178,7 +1178,7 @@
   },
   "Basketball/college/401917540": {
     "recorded": "2026-11-21T08:17:18.631679+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Basketball",
@@ -1189,7 +1189,7 @@
   },
   "Basketball/college/401917541": {
     "recorded": "2026-11-21T08:17:18.631720+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -1508,7 +1508,7 @@
   },
   "Basketball/college/401919020": {
     "recorded": "2026-11-21T08:17:18.631717+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Basketball",
@@ -1772,7 +1772,7 @@
   },
   "Basketball/college/401920159": {
     "recorded": "2026-11-21T08:17:18.631689+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Basketball",
@@ -2124,7 +2124,7 @@
   },
   "Basketball/college/401920708": {
     "recorded": "2026-11-21T08:17:18.631686+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -2300,7 +2300,7 @@
   },
   "Basketball/college/401920905": {
     "recorded": "2026-11-21T08:17:18.631715+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -2597,7 +2597,7 @@
   },
   "Basketball/college/401921176": {
     "recorded": "2026-11-21T08:17:18.631677+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Basketball",
@@ -2630,7 +2630,7 @@
   },
   "Basketball/college/401921205": {
     "recorded": "2026-11-21T08:17:18.631706+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -2729,7 +2729,7 @@
   },
   "Basketball/college/401921420": {
     "recorded": "2026-11-21T08:17:18.631712+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -3125,7 +3125,7 @@
   },
   "Basketball/college/401922293": {
     "recorded": "2026-11-21T08:17:18.631684+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -3169,7 +3169,7 @@
   },
   "Basketball/college/401923323": {
     "recorded": "2026-11-21T08:17:18.631666+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Basketball",
@@ -3356,7 +3356,7 @@
   },
   "Basketball/college/401925013": {
     "recorded": "2026-11-21T08:17:18.631681+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Basketball",
@@ -3862,7 +3862,7 @@
   },
   "Basketball/college/401926795": {
     "recorded": "2026-11-21T08:17:18.631674+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Basketball",
@@ -4170,7 +4170,7 @@
   },
   "Basketball/college/401928999": {
     "recorded": "2026-11-21T08:17:18.631709+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Basketball",
@@ -4258,7 +4258,7 @@
   },
   "Basketball/college/401929202": {
     "recorded": "2026-11-21T08:17:18.631663+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -4313,7 +4313,7 @@
   },
   "Basketball/college/401929387": {
     "recorded": "2026-11-21T08:17:18.631671+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -4390,7 +4390,7 @@
   },
   "Basketball/college/401929595": {
     "recorded": "2026-11-21T08:17:18.631725+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -5094,7 +5094,7 @@
   },
   "Basketball/pro/401910029": {
     "recorded": "2026-11-21T08:17:06.126508+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -5105,7 +5105,7 @@
   },
   "Basketball/pro/401910030": {
     "recorded": "2026-11-21T08:17:06.126553+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -5116,7 +5116,7 @@
   },
   "Basketball/pro/401910031": {
     "recorded": "2026-11-21T08:17:06.126562+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Basketball",
@@ -5127,7 +5127,7 @@
   },
   "Basketball/pro/401910032": {
     "recorded": "2026-11-21T08:17:06.126567+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Basketball",
@@ -5138,7 +5138,7 @@
   },
   "Basketball/pro/401910033": {
     "recorded": "2026-11-21T08:17:06.126570+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Basketball",
@@ -6645,7 +6645,7 @@
   },
   "Football/pro/401873069": {
     "recorded": "2026-11-21T08:17:06.431010+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Football",
@@ -6700,7 +6700,7 @@
   },
   "Football/pro/401873074": {
     "recorded": "2026-11-21T08:17:06.431003+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Football",
@@ -6711,7 +6711,7 @@
   },
   "Football/pro/401873075": {
     "recorded": "2026-11-21T08:17:06.431006+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Football",
@@ -6766,7 +6766,7 @@
   },
   "Hockey/college/401904350": {
     "recorded": "2026-11-21T08:17:07.030543+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Hockey",
@@ -8306,7 +8306,7 @@
   },
   "Hockey/pro/401892769": {
     "recorded": "2026-11-21T08:17:07.327227+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Hockey",
@@ -8317,7 +8317,7 @@
   },
   "Hockey/pro/401892770": {
     "recorded": "2026-11-21T08:17:07.327232+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Hockey",
@@ -8328,7 +8328,7 @@
   },
   "Hockey/pro/401892771": {
     "recorded": "2026-11-21T08:17:07.327236+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Hockey",
@@ -8878,7 +8878,7 @@
   },
   "Soccer/college/401932595": {
     "recorded": "2026-11-21T08:17:07.845391+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Soccer",
@@ -8889,7 +8889,7 @@
   },
   "Soccer/college/401932596": {
     "recorded": "2026-11-21T08:17:07.845376+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Soccer",
@@ -8900,7 +8900,7 @@
   },
   "Soccer/college/401932597": {
     "recorded": "2026-11-21T08:17:07.845379+00:00",
-    "result": null,
+    "result": "Draw",
     "side": "home",
     "slate": [
       "Soccer",
@@ -8911,7 +8911,7 @@
   },
   "Soccer/college/401932598": {
     "recorded": "2026-11-21T08:17:07.845385+00:00",
-    "result": null,
+    "result": "Draw",
     "side": "home",
     "slate": [
       "Soccer",
@@ -8955,7 +8955,7 @@
   },
   "Soccer/college/401932602": {
     "recorded": "2026-11-21T08:17:07.845363+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Soccer",
@@ -8999,7 +8999,7 @@
   },
   "Soccer/college/401932606": {
     "recorded": "2026-11-21T08:17:07.845394+00:00",
-    "result": null,
+    "result": "Draw",
     "side": "home",
     "slate": [
       "Soccer",
