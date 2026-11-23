@@ -22,10 +22,11 @@ jobs:
           if python3 scripts/nba_pilot.py; then git add nba-pilot.json; fi
           python3 scripts/predictions.py
           git add predictions.json
-          if git diff --cached --quiet; then exit 0; fi
-          git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Save and grade pregame predictions'
-          git pull --rebase origin main
-          git push origin HEAD:main
+          if ! git diff --cached --quiet; then
+            git -c user.name='github-actions[bot]' -c user.email='41898282+github-actions[bot]@users.noreply.github.com' commit -m 'Save and grade pregame predictions'
+            git pull --rebase origin main
+            git push origin HEAD:main
+          fi
       - name: Mirror NBA pilot archive into Neon (optional)
         # Failure must never interrupt or roll back existing Sports IQ updates.
         continue-on-error: true
