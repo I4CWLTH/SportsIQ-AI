@@ -12,6 +12,7 @@ concurrency:
   group: sportsiq-predictions
 jobs:
   predictions:
+    if: github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     timeout-minutes: 12
     steps:
