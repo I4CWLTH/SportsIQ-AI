@@ -2828,7 +2828,7 @@
   },
   "Basketball/college/401920819": {
     "recorded": "2026-11-23T12:36:39.319999+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Basketball",
@@ -5270,7 +5270,7 @@
   },
   "Basketball/college/401927398": {
     "recorded": "2026-11-23T12:36:39.319986+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Basketball",
@@ -5325,7 +5325,7 @@
   },
   "Basketball/college/401928358": {
     "recorded": "2026-11-23T12:36:39.320002+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -5391,7 +5391,7 @@
   },
   "Basketball/college/401928791": {
     "recorded": "2026-11-23T12:36:39.319993+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Basketball",
@@ -5479,7 +5479,7 @@
   },
   "Basketball/college/401928835": {
     "recorded": "2026-11-24T00:23:18.949274+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Basketball",
@@ -5487,6 +5487,17 @@
       "2026-11-24"
     ],
     "team": "Belmont Bruins"
+  },
+  "Basketball/college/401928836": {
+    "recorded": "2026-11-24T20:53:04.650218+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-25"
+    ],
+    "team": "Akron Zips"
   },
   "Basketball/college/401928841": {
     "recorded": "2026-11-15T06:31:27.615365+00:00",
