@@ -175,6 +175,19 @@
 .roster-player-avatar{display:grid;place-items:center;width:34px;height:34px;flex:0 0 34px;border-radius:50%;background:#203550;object-fit:cover}
 
 .roster-player-stats>.roster-player-avatar{width:84px;height:84px;margin:0 auto 10px}
+
+.signal-map{margin-top:24px;padding:clamp(14px,3vw,24px);border:1px solid #35516c;border-radius:16px;background:radial-gradient(ellipse at 50% 32%,#113552 0,#0a182c 45%,#080f1d 75%);min-width:0}
+.signal-map h3{margin:6px 0;font-size:clamp(20px,3vw,28px)}
+.signal-map header{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.signal-map button{align-self:center}
+.signal-map p{margin:6px 0 14px}
+.signal-orb{display:block;width:100%;height:clamp(190px,29vw,320px);background:repeating-linear-gradient(0deg,transparent 0 23px,#699cc51b 23px 24px),repeating-linear-gradient(90deg,transparent 0 23px,#699cc51b 23px 24px);border:1px solid #294055;border-radius:12px}
+.signal-cards{list-style:none;padding:0;margin:12px 0 0;display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,175px),1fr));gap:8px}
+.signal-cards li{--signal:#79e9ff;border:1px solid #2e465c;border-left:3px solid var(--signal);border-radius:8px;background:#0d1a2a;padding:9px 10px;overflow-wrap:anywhere}
+.signal-cards li[data-pilot]{--signal:#ffcb7c}
+.signal-cards strong,.signal-cards small{display:block}
+.signal-cards small{color:#adbed5;line-height:1.4;margin-top:4px}
+.signal-cards .signal-source{color:var(--signal);font-size:11px;font-weight:650;letter-spacing:.035em}
 </style></head><body><div class="shell"><header class="top"><div class="logo">SPORTSIQ <b>AI</b> <span style="font-size:11px;color:#9aabca;letter-spacing:2px">/ ARENA</span></div><div class="status"><i class="pulse"></i> INTELLIGENCE PLATFORM · PREVIEW</div></header><section class="hero"><div class="arena-hero-copy"><div class="eyebrow">THE NEXT GENERATION OF SPORTS INTELLIGENCE</div><h1>See beyond<br><span>the scoreboard.</span></h1><p class="sub">A new command center for matchup intelligence, evidence-backed forecasts, and transparent performance tracking. No invented games. No fictional odds.</p></div><div class="arena-reel" aria-label="Sports action photographs"><figure class="arena-shot active" aria-hidden="false" style="--focus:50% 30%"><img src="/arena-photos/basketball.webp" alt="Malcolm Thomas rises for a dunk" decoding="async" fetchpriority="high"><figcaption><strong>Basketball</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Malcolm_Thomas_dunking.jpg">SD Dirk</a> · <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:52% 45%"><img data-src="/arena-photos/football.webp" alt="Wayne Knight runs into the end zone" decoding="async" ><figcaption><strong>Football</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Wayne_Knight_touchdown_at_UCLA_Football_2026.jpg">Luis Ochea</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:50% 46%"><img data-src="/arena-photos/baseball.webp" alt="Kyle Schwarber swings at a pitch" decoding="async" ><figcaption><strong>Baseball</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:2023-04-08_kyle_schwarber_swinging.jpg">Zach McHoul</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:50% 42%"><img data-src="/arena-photos/soccer.webp" alt="Players challenge for the ball in a soccer match" decoding="async" ><figcaption><strong>Soccer</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Soccer_match.jpg">AngusConnaltyPhotos</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:53% 35%"><img data-src="/arena-photos/hockey.webp" alt="Trevor van Riemsdyk skates with the puck" decoding="async" ><figcaption><strong>Hockey</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Forward_Trevor_van_Riemsdyk.jpg">All-Pro Reels</a> · <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a> · resized and cropped</span></figcaption></figure><button type="button" class="arena-pause" aria-pressed="false" hidden>Pause photos</button></div></section><div class="bar" id="levels" role="group" aria-label="Competition level">
 <button class="sport" type="button" data-level="pro" aria-pressed="true">Professional</button>
 <button class="sport" type="button" data-level="college" aria-pressed="false">College</button>
@@ -186,7 +199,7 @@
   <p id="calendarTotals"></p>
   <div class="calendar-grid" id="calendarGrid"></div>
   <p id="calendarDay" aria-live="polite"></p>
-</dialog><details id="daily" style="margin:8px 0 16px;border:1px solid #344768;border-radius:13px;background:#101b30"><summary style="cursor:pointer;padding:12px 16px;font-weight:650">AI Picks &amp; Results (not Practice Bets)</summary><div style="padding:0 16px 16px"><h2 style="font-size:16px"></h2><div data-daily aria-live="polite"></div></div></details><div class="ticker"><span>◈ DATA INTEGRITY FIRST &nbsp; · &nbsp; VERIFIED FIXTURES REQUIRED &nbsp; · &nbsp; INJURY &amp; FORM ANALYSIS COMING WITH DATA INTEGRATION &nbsp; · &nbsp; NO UNVERIFIED PREDICTIONS &nbsp; · &nbsp; </span></div><main class="layout"><section class="panel"><div class="label">01 / MATCHUP INTELLIGENCE</div><h2 id="title">Basketball command center</h2><div class="actions"><label for="day" class="meta">GAME DATE</label><input id="day" type="date" style="background:#172641;color:white;border:1px solid #4b6487;border-radius:9px;padding:10px;font-size:16px"><button id="refresh" type="button">↻ Refresh</button></div><p id="feedStatus" class="meta" aria-live="polite">Connecting to sports feeds…</p><div class="game-list" id="games"><div class="loading">Loading verified fixtures…</div></div><div class="grid"><div class="stat"><small>VERIFIED FIXTURES</small><strong id="count">—</strong><small>For selected date</small></div><div class="stat"><small>DATA PROVIDER</small><strong style="font-size:16px">ESPN</strong><small>Public scoreboard</small></div><div class="stat"><small>FEED STATUS</small><strong id="feedHealth" style="font-size:17px;color:#f4c16c">LOADING</strong><small>Source-dependent</small></div></div></section><aside class="panel"><div class="label">02 / AI EVIDENCE ENGINE</div><div class="matchup-analysis-header"><h2>Why would a team win?</h2><span id="matchupStake" class="matchup-stake" role="status" hidden></span></div><p class="muted" id="analysis">Select a verified upcoming matchup to inspect team records, available evidence, and an explicitly labeled baseline estimate. No unsupported claims about injuries or recent form.</p><div id="evidence"></div><section class="consensus" aria-label="Prediction factors"><div class="label">PREDICTION FACTORS</div><h2>What drives the pick?</h2><p class="muted" id="factorStatus">Select a matchup to see what drives its forecast.</p><canvas id="factorGlobe" aria-hidden="true" style="display:none;width:100%;height:220px;touch-action:pan-y"></canvas><div id="factorRows"></div></section><hr style="border:0;border-top:1px solid #304260;margin:22px 0"><div class="label">03 / PERFORMANCE AUDIT</div><h2>Accountable predictions</h2><p class="muted" id="accuracy">No evaluated predictions yet. Accuracy is not claimed without saved pregame forecasts and official final results.</p></aside></main><footer>SPORTSIQ AI · Public sports feed from ESPN · Baseline estimates are not validated AI predictions</footer></div><script>
+</dialog><details id="daily" style="margin:8px 0 16px;border:1px solid #344768;border-radius:13px;background:#101b30"><summary style="cursor:pointer;padding:12px 16px;font-weight:650">AI Picks &amp; Results (not Practice Bets)</summary><div style="padding:0 16px 16px"><h2 style="font-size:16px"></h2><div data-daily aria-live="polite"></div></div></details><div class="ticker"><span>◈ DATA INTEGRITY FIRST &nbsp; · &nbsp; VERIFIED FIXTURES REQUIRED &nbsp; · &nbsp; INJURY &amp; FORM ANALYSIS COMING WITH DATA INTEGRATION &nbsp; · &nbsp; NO UNVERIFIED PREDICTIONS &nbsp; · &nbsp; </span></div><main class="layout"><section class="panel"><div class="label">01 / MATCHUP INTELLIGENCE</div><h2 id="title">Basketball command center</h2><div class="actions"><label for="day" class="meta">GAME DATE</label><input id="day" type="date" style="background:#172641;color:white;border:1px solid #4b6487;border-radius:9px;padding:10px;font-size:16px"><button id="refresh" type="button">↻ Refresh</button></div><p id="feedStatus" class="meta" aria-live="polite">Connecting to sports feeds…</p><div class="game-list" id="games"><div class="loading">Loading verified fixtures…</div></div><div class="grid"><div class="stat"><small>VERIFIED FIXTURES</small><strong id="count">—</strong><small>For selected date</small></div><div class="stat"><small>DATA PROVIDER</small><strong style="font-size:16px">ESPN</strong><small>Public scoreboard</small></div><div class="stat"><small>FEED STATUS</small><strong id="feedHealth" style="font-size:17px;color:#f4c16c">LOADING</strong><small>Source-dependent</small></div></div><section class="signal-map" id="signalMap" aria-labelledby="signalTitle"><header><div><div class="label">MODEL INPUTS</div><h3 id="signalTitle">Prediction Signal Map</h3></div><button type="button" id="signalPause" hidden>Pause animation</button></header><p class="muted" id="signalStatus" role="status">Select a matchup to see its data sources and prediction factors.</p><canvas class="signal-orb" id="signalOrb" aria-hidden="true"></canvas><ul class="signal-cards" id="signalCards"></ul></section></section><aside class="panel"><div class="label">02 / AI EVIDENCE ENGINE</div><div class="matchup-analysis-header"><h2>Why would a team win?</h2><span id="matchupStake" class="matchup-stake" role="status" hidden></span></div><p class="muted" id="analysis">Select a verified upcoming matchup to inspect team records, available evidence, and an explicitly labeled baseline estimate. No unsupported claims about injuries or recent form.</p><div id="evidence"></div><section class="consensus" aria-label="Prediction factors"><div class="label">PREDICTION FACTORS</div><h2>What drives the pick?</h2><p class="muted" id="factorStatus">Select a matchup to see what drives its forecast.</p><canvas id="factorGlobe" aria-hidden="true" style="display:none;width:100%;height:220px;touch-action:pan-y"></canvas><div id="factorRows"></div></section><hr style="border:0;border-top:1px solid #304260;margin:22px 0"><div class="label">03 / PERFORMANCE AUDIT</div><h2>Accountable predictions</h2><p class="muted" id="accuracy">No evaluated predictions yet. Accuracy is not claimed without saved pregame forecasts and official final results.</p></aside></main><footer>SPORTSIQ AI · Public sports feed from ESPN · Baseline estimates are not validated AI predictions</footer></div><script>
 const reel=document.querySelector('.arena-reel');
 const shots=Array.from(reel.querySelectorAll('.arena-shot'));
 const pausePhotos=reel.querySelector('.arena-pause');
@@ -338,6 +351,127 @@ factorGlobe.addEventListener('pointermove',event=>{
   globeTilt = ((event.clientY-bounds.top)/bounds.height-.5)*1.5;
   scheduleFactorGlobe();
 });
+
+const signalOrb = document.getElementById('signalOrb');
+const signalContext = signalOrb.getContext('2d');
+const signalCards = document.getElementById('signalCards');
+const signalPause = document.getElementById('signalPause');
+const signalStatus = document.getElementById('signalStatus');
+const signalSources = {
+  'Season record': 'ESPN team records',
+  'Home / away': 'ESPN matchup and venue',
+  'Head-to-head': 'ESPN team schedules',
+  'Recent form': 'ESPN team schedules',
+  'Key players out': 'ESPN injury reports and scoring leaders',
+  'Recent form and rest': 'Recent scores and game dates',
+  'Pregame moneyline': 'Pregame odds captured from ESPN'
+};
+const signalStars = Array.from({length:180}, (_, index) => {
+  const y = 1 - (2 * index + 1) / 180;
+  const ring = Math.sqrt(1 - y * y);
+  return [Math.cos(index * 2.399963) * ring, y, Math.sin(index * 2.399963) * ring];
+});
+const signalColors = {active:'#79e9ff', pilot:'#ffcb7c'};
+let signalInputs = [], signalFrame = 0, signalVisible = false, signalPaused = false, signalTime = 0;
+function refreshSignalMap(){
+  const factorRows = document.getElementById('factorRows');
+  signalInputs = Array.from(factorRows.children, row => ({
+    name: row.children[0].textContent,
+    value: row.children[1].textContent,
+    detail: row.children[2].textContent
+  }));
+  const pilotCount = signalInputs.filter(input => input.value === 'Pilot').length;
+  const used = signalInputs.filter(input => Number.parseFloat(input.value) > 0).length;
+  signalStatus.textContent = signalInputs.length
+    ? used + ' used in this pick · ' + pilotCount + ' in pilot'
+    : document.getElementById('factorStatus').textContent;
+  signalCards.replaceChildren(...signalInputs.map(({name,value,detail}) => {
+    const item = document.createElement('li');
+    if (value === 'Pilot') item.dataset.pilot = '';
+    const title = document.createElement('strong');
+    title.textContent = name;
+    const source = document.createElement('small');
+    source.className = 'signal-source';
+    const status = value === 'Pilot' ? 'Pilot' : value === '0%' ? 'No contribution' : value + ' of pick edge';
+    source.textContent = status + ' · ' + (signalSources[name] || 'Matchup evidence');
+    const explanation = document.createElement('small');
+    explanation.textContent = detail;
+    item.append(title, source, explanation);
+    return item;
+  }));
+  scheduleSignalOrb();
+}
+function scheduleSignalOrb(){
+  if (signalVisible && signalContext && !signalFrame) signalFrame = requestAnimationFrame(drawSignalOrb);
+}
+function drawSignalOrb(time){
+  signalFrame = 0;
+  if (!signalVisible) return;
+  const width = signalOrb.clientWidth, height = signalOrb.clientHeight;
+  const scale = Math.min(devicePixelRatio || 1, 2);
+  const pixelsWide = Math.round(width * scale), pixelsHigh = Math.round(height * scale);
+  if (signalOrb.width !== pixelsWide || signalOrb.height !== pixelsHigh){
+    signalOrb.width = pixelsWide;
+    signalOrb.height = pixelsHigh;
+  }
+  const ctx = signalContext;
+  ctx.setTransform(scale,0,0,scale,0,0);
+  ctx.clearRect(0,0,width,height);
+  const moving = !signalPaused && !globeMotion.matches;
+  if (moving) signalTime = time / 1000;
+  const cx = width / 2, cy = height / 2, radius = Math.min(height * .34, width * .27);
+  const spin = signalTime * .38, cos = Math.cos(spin), sin = Math.sin(spin);
+  ctx.strokeStyle = '#6ec7f342';
+  for (const ring of [1.08,1.24]){
+    ctx.beginPath(); ctx.arc(cx,cy,radius*ring,0,2*Math.PI); ctx.stroke();
+  }
+  for (const [x,y,z] of signalStars){
+    const depth = x*sin + z*cos;
+    const px = cx + radius*(x*cos - z*sin);
+    const py = cy + radius*(y*.92 - depth*.34);
+    ctx.fillStyle = depth > 0 ? '#a5ecff' : '#4d87aa';
+    ctx.globalAlpha = .55 + .4*depth;
+    ctx.fillRect(px,py,depth > 0 ? 2 : 1.4,depth > 0 ? 2 : 1.4);
+  }
+  ctx.globalAlpha = 1;
+  signalInputs.forEach(({value}, index) => {
+    const left = index % 2 === 0;
+    const count = Math.ceil((signalInputs.length - (left ? 0 : 1)) / 2);
+    const edgeY = height * (Math.floor(index/2)+1) / (count+1);
+    const edgeX = left ? width*.075 : width*.925;
+    const hubX = cx + (left ? -1 : 1)*radius*.78;
+    const hubY = cy + (edgeY-cy)*.35;
+    const color = value === 'Pilot' ? signalColors.pilot : value === '0%' ? '#7793aa' : signalColors.active;
+    ctx.beginPath(); ctx.moveTo(edgeX,edgeY); ctx.lineTo(hubX,hubY);
+    ctx.strokeStyle = color + '99'; ctx.stroke();
+    const phase = moving ? (signalTime*.52 + index*.23)%1 : .5;
+    ctx.fillStyle = color;
+    ctx.beginPath();
+    ctx.arc(edgeX+(hubX-edgeX)*phase,edgeY+(hubY-edgeY)*phase,3,0,2*Math.PI);
+    ctx.fill();
+  });
+  if (moving) scheduleSignalOrb();
+}
+signalPause.hidden = globeMotion.matches || !signalContext;
+signalPause.addEventListener('click',()=>{
+  signalPaused = !signalPaused;
+  signalPause.textContent = signalPaused ? 'Resume animation' : 'Pause animation';
+  scheduleSignalOrb();
+});
+globeMotion.addEventListener('change',()=>{
+  signalPause.hidden = globeMotion.matches || !signalContext;
+  scheduleSignalOrb();
+});
+new IntersectionObserver(([entry])=>{
+  signalVisible = entry.isIntersecting;
+  scheduleSignalOrb();
+}).observe(signalOrb);
+new ResizeObserver(scheduleSignalOrb).observe(signalOrb);
+const signalObserver = new MutationObserver(refreshSignalMap);
+signalObserver.observe(document.getElementById('factorRows'),{childList:true,subtree:true,characterData:true});
+signalObserver.observe(document.getElementById('factorStatus'),{childList:true,characterData:true,subtree:true});
+refreshSignalMap();
+
 function showPredictionFactors(game){
   const rows=document.getElementById('factorRows');
   const status=document.getElementById('factorStatus');
