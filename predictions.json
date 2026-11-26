@@ -32,6 +32,17 @@
     ],
     "team": "Nebraska Cornhuskers"
   },
+  "Basketball/college/401902282": {
+    "recorded": "2026-11-26T05:29:03.592433+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Butler Bulldogs"
+  },
   "Basketball/college/401906761": {
     "recorded": "2026-11-16T16:28:17.718024+00:00",
     "result": "Yes",
@@ -397,7 +408,7 @@
   },
   "Basketball/college/401909568": {
     "recorded": "2026-11-24T10:27:08.371131+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Basketball",
@@ -474,7 +485,7 @@
   },
   "Basketball/college/401909720": {
     "recorded": "2026-11-24T10:27:08.371125+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -579,6 +590,17 @@
       "Basketball",
       "college",
       "2026-11-23"
+    ],
+    "team": "Kansas Jayhawks"
+  },
+  "Basketball/college/401909789": {
+    "recorded": "2026-11-26T05:29:03.592458+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
     ],
     "team": "Kansas Jayhawks"
   },
@@ -738,7 +760,7 @@
   },
   "Basketball/college/401911028": {
     "recorded": "2026-11-24T10:27:08.371154+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -757,6 +779,17 @@
       "2026-11-25"
     ],
     "team": "Miami (OH) RedHawks"
+  },
+  "Basketball/college/401911030": {
+    "recorded": "2026-11-26T05:29:03.592472+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Indiana Hoosiers"
   },
   "Basketball/college/401911188": {
     "recorded": "2026-11-14T23:55:54.205502+00:00",
@@ -802,6 +835,17 @@
     ],
     "team": "Fordham Rams"
   },
+  "Basketball/college/401911212": {
+    "recorded": "2026-11-26T05:29:03.592448+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "George Washington Revolutionaries"
+  },
   "Basketball/college/401911232": {
     "recorded": "2026-11-17T08:31:15.812440+00:00",
     "result": "No",
@@ -826,7 +870,7 @@
   },
   "Basketball/college/401911241": {
     "recorded": "2026-11-24T10:27:08.371123+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -1022,6 +1066,17 @@
     ],
     "team": "James Madison Dukes"
   },
+  "Basketball/college/401911380": {
+    "recorded": "2026-11-26T05:29:03.592489+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "East Tennessee State Buccaneers"
+  },
   "Basketball/college/401911393": {
     "recorded": "2026-11-17T08:31:15.812437+00:00",
     "result": "Yes",
@@ -1112,7 +1167,7 @@
   },
   "Basketball/college/401911522": {
     "recorded": "2026-11-24T10:27:08.371160+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -1131,6 +1186,17 @@
       "2026-11-26"
     ],
     "team": "UC Davis Aggies"
+  },
+  "Basketball/college/401911524": {
+    "recorded": "2026-11-26T05:29:03.592508+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Pacific Tigers"
   },
   "Basketball/college/401911534": {
     "recorded": "2026-11-18T08:32:54.666737+00:00",
@@ -1176,6 +1242,17 @@
     ],
     "team": "American University Eagles"
   },
+  "Basketball/college/401912213": {
+    "recorded": "2026-11-26T05:29:03.592445+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "American University Eagles"
+  },
   "Basketball/college/401912230": {
     "recorded": "2026-11-16T06:28:39.368195+00:00",
     "result": "Yes",
@@ -1209,6 +1286,17 @@
     ],
     "team": "North Carolina Tar Heels"
   },
+  "Basketball/college/401912711": {
+    "recorded": "2026-11-26T05:29:03.592487+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "North Carolina Tar Heels"
+  },
   "Basketball/college/401913102": {
     "recorded": "2026-11-22T08:51:55.498928+00:00",
     "result": "Yes",
@@ -1239,6 +1327,17 @@
       "Basketball",
       "college",
       "2026-11-23"
+    ],
+    "team": "Illinois Fighting Illini"
+  },
+  "Basketball/college/401913531": {
+    "recorded": "2026-11-26T05:29:03.592469+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
     ],
     "team": "Illinois Fighting Illini"
   },
@@ -1442,7 +1541,7 @@
   },
   "Basketball/college/401917182": {
     "recorded": "2026-11-24T10:27:08.371105+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Basketball",
@@ -1607,7 +1706,7 @@
   },
   "Basketball/college/401917545": {
     "recorded": "2026-11-24T10:27:08.371168+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -1871,7 +1970,7 @@
   },
   "Basketball/college/401918960": {
     "recorded": "2026-11-24T10:27:08.371151+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -1893,7 +1992,7 @@
   },
   "Basketball/college/401918971": {
     "recorded": "2026-11-24T10:27:08.371148+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Basketball",
@@ -2056,6 +2155,17 @@
     ],
     "team": "Wichita State Shockers"
   },
+  "Basketball/college/401919033": {
+    "recorded": "2026-11-26T05:29:03.592512+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Wichita State Shockers"
+  },
   "Basketball/college/401919042": {
     "recorded": "2026-11-24T10:27:08.371065+00:00",
     "result": "Yes",
@@ -2132,6 +2242,17 @@
       "2026-11-20"
     ],
     "team": "Missouri Tigers"
+  },
+  "Basketball/college/401919786": {
+    "recorded": "2026-11-26T05:29:03.592421+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Le Moyne Dolphins"
   },
   "Basketball/college/401919807": {
     "recorded": "2026-11-15T06:31:27.615373+00:00",
@@ -2256,7 +2377,7 @@
   },
   "Basketball/college/401920076": {
     "recorded": "2026-11-24T10:27:08.371145+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -2300,7 +2421,7 @@
   },
   "Basketball/college/401920138": {
     "recorded": "2026-11-24T10:27:08.371157+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Basketball",
@@ -2355,7 +2476,7 @@
   },
   "Basketball/college/401920237": {
     "recorded": "2026-11-24T10:27:08.371113+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Basketball",
@@ -2388,7 +2509,7 @@
   },
   "Basketball/college/401920299": {
     "recorded": "2026-11-24T10:27:08.371120+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Basketball",
@@ -2496,6 +2617,17 @@
     ],
     "team": "Virginia Tech Hokies"
   },
+  "Basketball/college/401920382": {
+    "recorded": "2026-11-26T05:29:03.592464+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Virginia Tech Hokies"
+  },
   "Basketball/college/401920413": {
     "recorded": "2026-11-18T08:32:54.666662+00:00",
     "result": "Yes",
@@ -2548,6 +2680,17 @@
       "Basketball",
       "college",
       "2026-11-25"
+    ],
+    "team": "Virginia Cavaliers"
+  },
+  "Basketball/college/401920429": {
+    "recorded": "2026-11-26T05:29:03.592371+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
     ],
     "team": "Virginia Cavaliers"
   },
@@ -2740,7 +2883,7 @@
   },
   "Basketball/college/401920549": {
     "recorded": "2026-11-25T14:21:00.528601+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Basketball",
@@ -2751,7 +2894,7 @@
   },
   "Basketball/college/401920550": {
     "recorded": "2026-11-25T14:21:00.528638+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -2947,6 +3090,17 @@
     ],
     "team": "Northwestern Wildcats"
   },
+  "Basketball/college/401920737": {
+    "recorded": "2026-11-26T05:29:03.592506+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Northwestern Wildcats"
+  },
   "Basketball/college/401920742": {
     "recorded": "2026-11-23T12:36:39.320140+00:00",
     "result": "No",
@@ -2991,6 +3145,17 @@
     ],
     "team": "Delaware Blue Hens"
   },
+  "Basketball/college/401920774": {
+    "recorded": "2026-11-26T05:29:03.592439+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Hofstra Pride"
+  },
   "Basketball/college/401920808": {
     "recorded": "2026-11-15T14:41:29.346879+00:00",
     "result": "Yes",
@@ -3004,12 +3169,23 @@
   },
   "Basketball/college/401920809": {
     "recorded": "2026-11-24T10:27:08.371061+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Basketball",
       "college",
       "2026-11-25"
+    ],
+    "team": "Texas A&M Aggies"
+  },
+  "Basketball/college/401920810": {
+    "recorded": "2026-11-26T05:29:03.592462+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
     ],
     "team": "Texas A&M Aggies"
   },
@@ -3059,7 +3235,7 @@
   },
   "Basketball/college/401920847": {
     "recorded": "2026-11-24T10:27:08.371142+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -3067,6 +3243,17 @@
       "2026-11-25"
     ],
     "team": "UNC Wilmington Seahawks"
+  },
+  "Basketball/college/401920848": {
+    "recorded": "2026-11-26T05:29:03.592393+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Liberty Flames"
   },
   "Basketball/college/401920857": {
     "recorded": "2026-11-16T16:28:17.717975+00:00",
@@ -3169,7 +3356,7 @@
   },
   "Basketball/college/401920916": {
     "recorded": "2026-11-24T10:27:08.371139+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Basketball",
@@ -3455,7 +3642,7 @@
   },
   "Basketball/college/401921108": {
     "recorded": "2026-11-24T10:27:08.371137+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Basketball",
@@ -3585,6 +3772,17 @@
     ],
     "team": "Drexel Dragons"
   },
+  "Basketball/college/401921185": {
+    "recorded": "2026-11-26T05:29:03.592478+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Pennsylvania Quakers"
+  },
   "Basketball/college/401921205": {
     "recorded": "2026-11-21T08:17:18.631706+00:00",
     "result": "Yes",
@@ -3673,6 +3871,17 @@
     ],
     "team": "Navy Midshipmen"
   },
+  "Basketball/college/401921224": {
+    "recorded": "2026-11-26T05:29:03.592418+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Fairfield Stags"
+  },
   "Basketball/college/401921266": {
     "recorded": "2026-11-23T12:36:39.320127+00:00",
     "result": "No",
@@ -3694,6 +3903,28 @@
       "2026-11-15"
     ],
     "team": "UAlbany Great Danes"
+  },
+  "Basketball/college/401921416": {
+    "recorded": "2026-11-26T05:29:03.592401+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "UMass Lowell River Hawks"
+  },
+  "Basketball/college/401921417": {
+    "recorded": "2026-11-26T05:29:03.592436+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "La Salle Explorers"
   },
   "Basketball/college/401921418": {
     "recorded": "2026-11-19T13:55:32.295593+00:00",
@@ -3785,7 +4016,7 @@
   },
   "Basketball/college/401921670": {
     "recorded": "2026-11-24T10:27:08.371085+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -3994,7 +4225,7 @@
   },
   "Basketball/college/401921713": {
     "recorded": "2026-11-25T14:21:00.528648+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Basketball",
@@ -4016,7 +4247,7 @@
   },
   "Basketball/college/401921716": {
     "recorded": "2026-11-25T04:11:17.893746+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Basketball",
@@ -4190,6 +4421,17 @@
     ],
     "team": "Missouri Tigers"
   },
+  "Basketball/college/401921818": {
+    "recorded": "2026-11-26T05:29:03.592442+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Missouri Tigers"
+  },
   "Basketball/college/401921826": {
     "recorded": "2026-11-16T16:28:17.718035+00:00",
     "result": "Yes",
@@ -4198,6 +4440,17 @@
       "Basketball",
       "college",
       "2026-11-17"
+    ],
+    "team": "Vanderbilt Commodores"
+  },
+  "Basketball/college/401921827": {
+    "recorded": "2026-11-26T05:29:03.592410+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
     ],
     "team": "Vanderbilt Commodores"
   },
@@ -4335,7 +4588,7 @@
   },
   "Basketball/college/401922253": {
     "recorded": "2026-11-24T10:27:08.371116+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Basketball",
@@ -4343,6 +4596,17 @@
       "2026-11-25"
     ],
     "team": "West Florida Argonauts"
+  },
+  "Basketball/college/401922264": {
+    "recorded": "2026-11-26T05:29:03.592503+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Idaho Vandals"
   },
   "Basketball/college/401922283": {
     "recorded": "2026-11-17T08:31:15.812294+00:00",
@@ -4368,7 +4632,7 @@
   },
   "Basketball/college/401922285": {
     "recorded": "2026-11-24T10:27:08.371133+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -4630,6 +4894,28 @@
     ],
     "team": "Liberty Flames"
   },
+  "Basketball/college/401924738": {
+    "recorded": "2026-11-26T05:29:03.592428+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "UNC Wilmington Seahawks"
+  },
+  "Basketball/college/401924810": {
+    "recorded": "2026-11-26T05:29:03.592398+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Vermont Catamounts"
+  },
   "Basketball/college/401924844": {
     "recorded": "2026-11-19T13:55:32.295666+00:00",
     "result": "No",
@@ -4640,6 +4926,17 @@
       "2026-11-20"
     ],
     "team": "Delaware State Hornets"
+  },
+  "Basketball/college/401924845": {
+    "recorded": "2026-11-26T05:29:03.592455+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Lafayette Leopards"
   },
   "Basketball/college/401924858": {
     "recorded": "2026-11-14T20:08:19.350971+00:00",
@@ -4698,7 +4995,7 @@
   },
   "Basketball/college/401924897": {
     "recorded": "2026-11-24T10:27:08.371166+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -4775,7 +5072,7 @@
   },
   "Basketball/college/401925050": {
     "recorded": "2026-11-24T10:27:08.371074+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Basketball",
@@ -4907,7 +5204,7 @@
   },
   "Basketball/college/401925688": {
     "recorded": "2026-11-24T10:27:08.371110+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -4915,6 +5212,17 @@
       "2026-11-25"
     ],
     "team": "Texas State Bobcats"
+  },
+  "Basketball/college/401925703": {
+    "recorded": "2026-11-26T05:29:03.592492+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Houston Cougars"
   },
   "Basketball/college/401925709": {
     "recorded": "2026-11-20T11:42:29.405595+00:00",
@@ -5026,6 +5334,17 @@
     ],
     "team": "App State Mountaineers"
   },
+  "Basketball/college/401925829": {
+    "recorded": "2026-11-26T05:29:03.592499+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "North Texas Mean Green"
+  },
   "Basketball/college/401925864": {
     "recorded": "2026-11-15T06:31:27.615369+00:00",
     "result": "Yes",
@@ -5061,7 +5380,7 @@
   },
   "Basketball/college/401925880": {
     "recorded": "2026-11-24T10:27:08.371163+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -5105,7 +5424,7 @@
   },
   "Basketball/college/401925917": {
     "recorded": "2026-11-24T10:27:08.371108+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Basketball",
@@ -5204,7 +5523,7 @@
   },
   "Basketball/college/401926065": {
     "recorded": "2026-11-24T10:27:08.371102+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -5345,6 +5664,17 @@
     ],
     "team": "UT Martin Skyhawks"
   },
+  "Basketball/college/401926756": {
+    "recorded": "2026-11-26T05:29:03.592484+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "UC Santa Barbara Gauchos"
+  },
   "Basketball/college/401926772": {
     "recorded": "2026-11-15T23:58:14.852902+00:00",
     "result": "Yes",
@@ -5397,6 +5727,17 @@
       "Basketball",
       "college",
       "2026-11-20"
+    ],
+    "team": "Jacksonville State Gamecocks"
+  },
+  "Basketball/college/401926783": {
+    "recorded": "2026-11-26T05:29:03.592516+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
     ],
     "team": "Jacksonville State Gamecocks"
   },
@@ -5664,6 +6005,28 @@
     ],
     "team": "Arkansas State Red Wolves"
   },
+  "Basketball/college/401928468": {
+    "recorded": "2026-11-26T05:29:03.592425+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Texas State Bobcats"
+  },
+  "Basketball/college/401928624": {
+    "recorded": "2026-11-26T05:29:03.592496+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Missouri State Bears"
+  },
   "Basketball/college/401928789": {
     "recorded": "2026-11-15T14:41:30.307375+00:00",
     "result": "Yes",
@@ -5917,6 +6280,17 @@
     ],
     "team": "Colorado State Rams"
   },
+  "Basketball/college/401929181": {
+    "recorded": "2026-11-26T05:29:03.592415+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Fresno State Bulldogs"
+  },
   "Basketball/college/401929192": {
     "recorded": "2026-11-15T14:41:29.346895+00:00",
     "result": "Yes",
@@ -5983,6 +6357,28 @@
     ],
     "team": "Boston College Eagles"
   },
+  "Basketball/college/401929283": {
+    "recorded": "2026-11-26T05:29:03.592452+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Boston College Eagles"
+  },
+  "Basketball/college/401929284": {
+    "recorded": "2026-11-26T05:29:03.592481+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Georgia Bulldogs"
+  },
   "Basketball/college/401929285": {
     "recorded": "2026-11-23T12:36:39.320027+00:00",
     "result": "No",
@@ -6004,6 +6400,17 @@
       "2026-11-23"
     ],
     "team": "Belmont Bruins"
+  },
+  "Basketball/college/401929288": {
+    "recorded": "2026-11-26T05:29:03.592407+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Wake Forest Demon Deacons"
   },
   "Basketball/college/401929351": {
     "recorded": "2026-11-23T12:36:39.320182+00:00",
@@ -6225,6 +6632,17 @@
     ],
     "team": "Howard Bison"
   },
+  "Basketball/college/401933055": {
+    "recorded": "2026-11-26T05:29:03.592474+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "South Carolina Upstate Spartans"
+  },
   "Basketball/college/401934189": {
     "recorded": "2026-11-14T20:08:19.410977+00:00",
     "result": "Yes",
@@ -6381,7 +6799,7 @@
   },
   "Basketball/pro/401909317": {
     "recorded": "2026-11-24T10:26:48.805652+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -6392,7 +6810,7 @@
   },
   "Basketball/pro/401909318": {
     "recorded": "2026-11-24T10:26:48.805689+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Basketball",
@@ -6403,7 +6821,7 @@
   },
   "Basketball/pro/401909319": {
     "recorded": "2026-11-24T10:26:48.805698+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -6414,7 +6832,7 @@
   },
   "Basketball/pro/401909320": {
     "recorded": "2026-11-24T10:26:48.805703+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Basketball",
@@ -6425,7 +6843,7 @@
   },
   "Basketball/pro/401909321": {
     "recorded": "2026-11-24T10:26:48.805711+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -6436,7 +6854,7 @@
   },
   "Basketball/pro/401909322": {
     "recorded": "2026-11-24T10:26:48.805715+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Basketball",
@@ -6447,7 +6865,7 @@
   },
   "Basketball/pro/401909323": {
     "recorded": "2026-11-24T10:26:48.805718+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -6458,7 +6876,7 @@
   },
   "Basketball/pro/401909324": {
     "recorded": "2026-11-24T10:26:48.805723+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -6477,6 +6895,127 @@
       "2026-11-25"
     ],
     "team": "San Antonio Spurs"
+  },
+  "Basketball/pro/401909326": {
+    "recorded": "2026-11-26T05:28:51.683199+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "New York Knicks"
+  },
+  "Basketball/pro/401909327": {
+    "recorded": "2026-11-26T05:28:51.683230+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Detroit Pistons"
+  },
+  "Basketball/pro/401909328": {
+    "recorded": "2026-11-26T05:28:51.683235+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Philadelphia 76ers"
+  },
+  "Basketball/pro/401909329": {
+    "recorded": "2026-11-26T05:28:51.683238+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Toronto Raptors"
+  },
+  "Basketball/pro/401909330": {
+    "recorded": "2026-11-26T05:28:51.683241+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Boston Celtics"
+  },
+  "Basketball/pro/401909331": {
+    "recorded": "2026-11-26T05:28:51.683244+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Minnesota Timberwolves"
+  },
+  "Basketball/pro/401909332": {
+    "recorded": "2026-11-26T05:28:51.683246+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Dallas Mavericks"
+  },
+  "Basketball/pro/401909333": {
+    "recorded": "2026-11-26T05:28:51.683248+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "San Antonio Spurs"
+  },
+  "Basketball/pro/401909334": {
+    "recorded": "2026-11-26T05:28:51.683250+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Basketball",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Denver Nuggets"
+  },
+  "Basketball/pro/401909335": {
+    "recorded": "2026-11-26T05:28:51.683257+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "LA Clippers"
+  },
+  "Basketball/pro/401909336": {
+    "recorded": "2026-11-26T05:28:51.683259+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Basketball",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Portland Trail Blazers"
   },
   "Basketball/pro/401909980": {
     "recorded": "2026-11-14T20:07:03.953834+00:00",
@@ -7314,6 +7853,39 @@
     ],
     "team": "Texas Longhorns"
   },
+  "Football/college/401856756": {
+    "recorded": "2026-11-26T05:28:52.387935+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Football",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Texas Longhorns"
+  },
+  "Football/college/401856759": {
+    "recorded": "2026-11-26T05:28:52.387923+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Football",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Florida Gators"
+  },
+  "Football/college/401856762": {
+    "recorded": "2026-11-26T05:28:52.387904+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Football",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Ole Miss Rebels"
+  },
   "Football/college/401856857": {
     "recorded": "2026-11-14T20:07:08.254292+00:00",
     "result": "No",
@@ -7467,6 +8039,17 @@
       "2026-11-26"
     ],
     "team": "Texas Tech Red Raiders"
+  },
+  "Football/college/401856880": {
+    "recorded": "2026-11-26T05:28:52.387942+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Football",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Utah Utes"
   },
   "Football/college/401856882": {
     "recorded": "2026-11-14T20:07:08.254326+00:00",
@@ -7831,6 +8414,28 @@
     ],
     "team": "Indiana Hoosiers"
   },
+  "Football/college/401858536": {
+    "recorded": "2026-11-26T05:28:52.387874+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Football",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Iowa Hawkeyes"
+  },
+  "Football/college/401858544": {
+    "recorded": "2026-11-26T05:28:52.387938+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Football",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Wisconsin Badgers"
+  },
   "Football/college/401860914": {
     "recorded": "2026-11-14T20:07:08.254297+00:00",
     "result": "Yes",
@@ -8040,6 +8645,28 @@
     ],
     "team": "UTSA Roadrunners"
   },
+  "Football/college/401862838": {
+    "recorded": "2026-11-26T05:28:52.387926+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Football",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Memphis Tigers"
+  },
+  "Football/college/401862840": {
+    "recorded": "2026-11-26T05:28:52.387909+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Football",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "UTSA Roadrunners"
+  },
   "Football/college/401864536": {
     "recorded": "2026-11-14T20:07:08.254274+00:00",
     "result": "Yes",
@@ -8150,6 +8777,28 @@
     ],
     "team": "Air Force Falcons"
   },
+  "Football/college/401864546": {
+    "recorded": "2026-11-26T05:28:52.387932+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Football",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "New Mexico Lobos"
+  },
+  "Football/college/401864549": {
+    "recorded": "2026-11-26T05:28:52.387929+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Football",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "North Dakota State Bison"
+  },
   "Football/college/401866464": {
     "recorded": "2026-11-16T06:27:36.280254+00:00",
     "result": "Yes",
@@ -8238,6 +8887,28 @@
     ],
     "team": "Western Michigan Broncos"
   },
+  "Football/college/401866472": {
+    "recorded": "2026-11-26T05:28:52.387912+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Football",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Buffalo Bulls"
+  },
+  "Football/college/401866473": {
+    "recorded": "2026-11-26T05:28:52.387916+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Football",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Toledo Rockets"
+  },
   "Football/college/401869928": {
     "recorded": "2026-11-14T20:07:08.254301+00:00",
     "result": "No",
@@ -8257,6 +8928,17 @@
       "Football",
       "college",
       "2026-11-21"
+    ],
+    "team": "App State Mountaineers"
+  },
+  "Football/college/401869930": {
+    "recorded": "2026-11-26T05:28:52.387920+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Football",
+      "college",
+      "2026-11-27"
     ],
     "team": "App State Mountaineers"
   },
@@ -8713,7 +9395,7 @@
   },
   "Football/pro/401873079": {
     "recorded": "2026-11-24T10:26:49.501833+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Football",
@@ -8755,6 +9437,17 @@
     ],
     "team": "Buffalo Bills"
   },
+  "Football/pro/401873083": {
+    "recorded": "2026-11-26T05:28:52.881255+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Football",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Denver Broncos"
+  },
   "Hockey/college/401904349": {
     "recorded": "2026-11-20T11:42:21.708819+00:00",
     "result": "Yes",
@@ -8776,6 +9469,17 @@
       "2026-11-22"
     ],
     "team": "Princeton Tigers"
+  },
+  "Hockey/college/401904351": {
+    "recorded": "2026-11-26T05:28:55.094806+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Holy Cross Crusaders"
   },
   "Hockey/college/401904381": {
     "recorded": "2026-11-23T12:36:24.431431+00:00",
@@ -8842,6 +9546,28 @@
       "2026-11-14"
     ],
     "team": "Niagara Purple Eagles"
+  },
+  "Hockey/college/401904466": {
+    "recorded": "2026-11-26T05:28:55.094775+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Niagara Purple Eagles"
+  },
+  "Hockey/college/401904483": {
+    "recorded": "2026-11-26T05:28:55.094812+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Clarkson Golden Knights"
   },
   "Hockey/college/401904504": {
     "recorded": "2026-11-14T20:07:10.657919+00:00",
@@ -8944,7 +9670,7 @@
   },
   "Hockey/college/401904562": {
     "recorded": "2026-11-24T10:26:49.802490+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Hockey",
@@ -8997,6 +9723,17 @@
     ],
     "team": "Northern Michigan Wildcats"
   },
+  "Hockey/college/401904611": {
+    "recorded": "2026-11-26T05:28:55.094777+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Michigan Wolverines"
+  },
   "Hockey/college/401904632": {
     "recorded": "2026-11-14T20:07:10.657916+00:00",
     "result": "Yes",
@@ -9029,6 +9766,17 @@
       "2026-11-21"
     ],
     "team": "Michigan Tech Huskies"
+  },
+  "Hockey/college/401904663": {
+    "recorded": "2026-11-26T05:28:55.094764+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Minnesota Golden Gophers"
   },
   "Hockey/college/401904678": {
     "recorded": "2026-11-14T20:07:10.657963+00:00",
@@ -9095,6 +9843,17 @@
       "2026-11-21"
     ],
     "team": "Boston University Terriers"
+  },
+  "Hockey/college/401904716": {
+    "recorded": "2026-11-26T05:28:55.094771+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Denver Pioneers"
   },
   "Hockey/college/401904744": {
     "recorded": "2026-11-14T20:07:10.657895+00:00",
@@ -9195,6 +9954,17 @@
     ],
     "team": "Merrimack Warriors"
   },
+  "Hockey/college/401904828": {
+    "recorded": "2026-11-26T05:28:55.094718+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Providence Friars"
+  },
   "Hockey/college/401904846": {
     "recorded": "2026-11-14T20:07:10.657875+00:00",
     "result": "No",
@@ -9272,6 +10042,17 @@
     ],
     "team": "Colorado College Tigers"
   },
+  "Hockey/college/401904900": {
+    "recorded": "2026-11-26T05:28:55.094824+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Colorado College Tigers"
+  },
   "Hockey/college/401904920": {
     "recorded": "2026-11-19T13:55:22.711412+00:00",
     "result": "Yes",
@@ -9294,6 +10075,17 @@
     ],
     "team": "Minnesota Duluth Bulldogs"
   },
+  "Hockey/college/401904922": {
+    "recorded": "2026-11-26T05:28:55.094828+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Arizona State Sun Devils"
+  },
   "Hockey/college/401904943": {
     "recorded": "2026-11-14T20:07:10.657911+00:00",
     "result": "Yes",
@@ -9302,6 +10094,17 @@
       "Hockey",
       "college",
       "2026-11-14"
+    ],
+    "team": "Miami (OH) RedHawks"
+  },
+  "Hockey/college/401904944": {
+    "recorded": "2026-11-26T05:28:55.094786+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
     ],
     "team": "Miami (OH) RedHawks"
   },
@@ -9371,6 +10174,17 @@
     ],
     "team": "North Dakota Fighting Hawks"
   },
+  "Hockey/college/401905015": {
+    "recorded": "2026-11-26T05:28:55.094819+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "North Dakota Fighting Hawks"
+  },
   "Hockey/college/401905030": {
     "recorded": "2026-11-19T13:55:22.711396+00:00",
     "result": "No",
@@ -9404,6 +10218,28 @@
     ],
     "team": "Minnesota Duluth Bulldogs"
   },
+  "Hockey/college/401905051": {
+    "recorded": "2026-11-26T05:28:55.094789+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Yale Bulldogs"
+  },
+  "Hockey/college/401905061": {
+    "recorded": "2026-11-26T05:28:55.094793+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Vermont Catamounts"
+  },
   "Hockey/college/401905070": {
     "recorded": "2026-11-19T13:55:22.711422+00:00",
     "result": "Yes",
@@ -9436,6 +10272,17 @@
       "2026-11-14"
     ],
     "team": "Minnesota Golden Gophers"
+  },
+  "Hockey/college/401905095": {
+    "recorded": "2026-11-26T05:28:55.094815+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Dartmouth Big Green"
   },
   "Hockey/college/401905121": {
     "recorded": "2026-11-14T20:07:10.657935+00:00",
@@ -9481,6 +10328,28 @@
     ],
     "team": "Colgate Raiders"
   },
+  "Hockey/college/401905162": {
+    "recorded": "2026-11-26T05:28:55.094752+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "UConn Huskies"
+  },
+  "Hockey/college/401912360": {
+    "recorded": "2026-11-26T05:28:55.094798+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Army Black Knights"
+  },
   "Hockey/college/401912369": {
     "recorded": "2026-11-19T13:55:22.711405+00:00",
     "result": "No",
@@ -9502,6 +10371,17 @@
       "2026-11-21"
     ],
     "team": "Lindenwood Lions"
+  },
+  "Hockey/college/401912388": {
+    "recorded": "2026-11-26T05:28:55.094758+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Notre Dame Fighting Irish"
   },
   "Hockey/college/401912397": {
     "recorded": "2026-11-19T13:55:22.711375+00:00",
@@ -9525,6 +10405,28 @@
     ],
     "team": "Union Dutchmen"
   },
+  "Hockey/college/401912399": {
+    "recorded": "2026-11-26T05:28:55.094803+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Union Dutchmen"
+  },
+  "Hockey/college/401912412": {
+    "recorded": "2026-11-26T05:28:55.094762+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Merrimack Warriors"
+  },
   "Hockey/college/401912428": {
     "recorded": "2026-11-19T13:55:22.711378+00:00",
     "result": "No",
@@ -9546,6 +10448,17 @@
       "2026-11-21"
     ],
     "team": "Yale Bulldogs"
+  },
+  "Hockey/college/401912438": {
+    "recorded": "2026-11-26T05:28:55.094768+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Hockey",
+      "college",
+      "2026-11-27"
+    ],
+    "team": "Princeton Tigers"
   },
   "Hockey/college/401912446": {
     "recorded": "2026-11-14T20:07:10.657937+00:00",
@@ -10495,7 +11408,7 @@
   },
   "Hockey/pro/401892781": {
     "recorded": "2026-11-24T10:26:50.512594+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Hockey",
@@ -10506,7 +11419,7 @@
   },
   "Hockey/pro/401892782": {
     "recorded": "2026-11-24T10:26:50.512614+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Hockey",
@@ -10517,7 +11430,7 @@
   },
   "Hockey/pro/401892783": {
     "recorded": "2026-11-24T10:26:50.512619+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Hockey",
@@ -10528,7 +11441,7 @@
   },
   "Hockey/pro/401892784": {
     "recorded": "2026-11-24T10:26:50.512621+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Hockey",
@@ -10539,7 +11452,7 @@
   },
   "Hockey/pro/401892785": {
     "recorded": "2026-11-24T10:26:50.512623+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Hockey",
@@ -10550,7 +11463,7 @@
   },
   "Hockey/pro/401892786": {
     "recorded": "2026-11-24T10:26:50.512626+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Hockey",
@@ -10561,7 +11474,7 @@
   },
   "Hockey/pro/401892787": {
     "recorded": "2026-11-24T10:26:50.512629+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Hockey",
@@ -10572,7 +11485,7 @@
   },
   "Hockey/pro/401892788": {
     "recorded": "2026-11-24T10:26:50.512631+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Hockey",
@@ -10583,7 +11496,7 @@
   },
   "Hockey/pro/401892789": {
     "recorded": "2026-11-24T10:26:50.512633+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Hockey",
@@ -10594,7 +11507,7 @@
   },
   "Hockey/pro/401892790": {
     "recorded": "2026-11-24T10:26:50.512644+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Hockey",
@@ -10605,7 +11518,7 @@
   },
   "Hockey/pro/401892791": {
     "recorded": "2026-11-24T10:26:50.512648+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Hockey",
@@ -10616,7 +11529,7 @@
   },
   "Hockey/pro/401892792": {
     "recorded": "2026-11-24T10:26:50.512651+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Hockey",
@@ -10638,7 +11551,7 @@
   },
   "Hockey/pro/401892794": {
     "recorded": "2026-11-24T10:26:50.512655+00:00",
-    "result": null,
+    "result": "No",
     "side": "home",
     "slate": [
       "Hockey",
@@ -10646,6 +11559,171 @@
       "2026-11-25"
     ],
     "team": "Seattle Kraken"
+  },
+  "Hockey/pro/401892795": {
+    "recorded": "2026-11-26T05:28:54.682219+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Boston Bruins"
+  },
+  "Hockey/pro/401892796": {
+    "recorded": "2026-11-26T05:28:54.682244+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "New Jersey Devils"
+  },
+  "Hockey/pro/401892797": {
+    "recorded": "2026-11-26T05:28:54.682249+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Nashville Predators"
+  },
+  "Hockey/pro/401892798": {
+    "recorded": "2026-11-26T05:28:54.682253+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Hockey",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Dallas Stars"
+  },
+  "Hockey/pro/401892799": {
+    "recorded": "2026-11-26T05:28:54.682257+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Tampa Bay Lightning"
+  },
+  "Hockey/pro/401892800": {
+    "recorded": "2026-11-26T05:28:54.682260+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Philadelphia Flyers"
+  },
+  "Hockey/pro/401892801": {
+    "recorded": "2026-11-26T05:28:54.682264+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Hockey",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Florida Panthers"
+  },
+  "Hockey/pro/401892802": {
+    "recorded": "2026-11-26T05:28:54.682267+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Columbus Blue Jackets"
+  },
+  "Hockey/pro/401892803": {
+    "recorded": "2026-11-26T05:28:54.682270+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Minnesota Wild"
+  },
+  "Hockey/pro/401892804": {
+    "recorded": "2026-11-26T05:28:54.682274+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Anaheim Ducks"
+  },
+  "Hockey/pro/401892805": {
+    "recorded": "2026-11-26T05:28:54.682277+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Hockey",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Vegas Golden Knights"
+  },
+  "Hockey/pro/401892806": {
+    "recorded": "2026-11-26T05:28:54.682280+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Hockey",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "New York Rangers"
+  },
+  "Hockey/pro/401892807": {
+    "recorded": "2026-11-26T05:28:54.682283+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "New York Islanders"
+  },
+  "Hockey/pro/401892808": {
+    "recorded": "2026-11-26T05:28:54.682286+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Buffalo Sabres"
+  },
+  "Hockey/pro/401892809": {
+    "recorded": "2026-11-26T05:28:54.682290+00:00",
+    "result": null,
+    "side": "home",
+    "slate": [
+      "Hockey",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Edmonton Oilers"
   },
   "Soccer/college/401929687": {
     "recorded": "2026-11-14T20:07:05.761104+00:00",
@@ -11262,6 +12340,17 @@
       "2026-11-21"
     ],
     "team": "Aston Villa"
+  },
+  "Soccer/pro/401879225": {
+    "recorded": "2026-11-26T05:28:57.082569+00:00",
+    "result": null,
+    "side": "away",
+    "slate": [
+      "Soccer",
+      "pro",
+      "2026-11-27"
+    ],
+    "team": "Chelsea"
   },
   "Soccer/pro/401879232": {
     "recorded": "2026-11-20T11:42:25.315597+00:00",
