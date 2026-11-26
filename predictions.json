@@ -1695,7 +1695,7 @@
   },
   "Basketball/college/401917544": {
     "recorded": "2026-11-24T10:27:08.371173+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Basketball",
@@ -4027,7 +4027,7 @@
   },
   "Basketball/college/401921671": {
     "recorded": "2026-11-25T14:21:00.528646+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Basketball",
@@ -4038,7 +4038,7 @@
   },
   "Basketball/college/401921672": {
     "recorded": "2026-11-25T14:21:00.528653+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Basketball",
@@ -6227,7 +6227,7 @@
   },
   "Basketball/college/401929005": {
     "recorded": "2026-11-24T10:27:08.371176+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Basketball",
@@ -6887,7 +6887,7 @@
   },
   "Basketball/pro/401909325": {
     "recorded": "2026-11-24T10:26:48.805726+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Basketball",
@@ -11540,7 +11540,7 @@
   },
   "Hockey/pro/401892793": {
     "recorded": "2026-11-24T10:26:50.512660+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Hockey",
