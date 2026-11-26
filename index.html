@@ -450,6 +450,30 @@ function drawSignalOrb(time){
     ctx.arc(edgeX+(hubX-edgeX)*phase,edgeY+(hubY-edgeY)*phase,3,0,2*Math.PI);
     ctx.fill();
   });
+  ctx.font = '600 11px system-ui, sans-serif';
+  ctx.textBaseline = 'middle';
+  signalInputs.forEach(({name,value}, index) => {
+    const left = index % 2 === 0;
+    const count = Math.ceil((signalInputs.length - (left ? 0 : 1)) / 2);
+    const edgeY = height * (Math.floor(index/2)+1) / (count+1);
+    const pilot = value === 'Pilot';
+    const source = signalSources[name]?.includes('ESPN') ? 'ESPN' : 'Scores & dates';
+    const caption = source + ' · ' + (pilot ? 'Pilot' : value === '0%' ? 'No edge' : value);
+    const cycle = (signalTime / 5 + index / Math.max(signalInputs.length, 1)) % 1;
+    ctx.globalAlpha = moving ? Math.max(0, Math.min(1, cycle * 9, (1-cycle)*9)) : 1;
+    const maxText = Math.max(1, width/2-22);
+    const boxWidth = Math.min(maxText, Math.max(ctx.measureText(name).width,ctx.measureText(caption).width)) + 12;
+    const inset = Math.max(5,width*.075-5);
+    const x = left ? inset : width - inset - boxWidth;
+    const y = edgeY - 37;
+    ctx.fillStyle = '#091523';
+    ctx.fillRect(x,y,boxWidth,32);
+    ctx.fillStyle = '#eef8ff';
+    ctx.fillText(name,x+6,y+9,boxWidth-12);
+    ctx.fillStyle = pilot ? signalColors.pilot : signalColors.active;
+    ctx.fillText(caption,x+6,y+23,boxWidth-12);
+  });
+  ctx.globalAlpha = 1;
   if (moving) scheduleSignalOrb();
 }
 signalPause.hidden = globeMotion.matches || !signalContext;
