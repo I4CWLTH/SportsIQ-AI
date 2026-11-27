@@ -2993,7 +2993,7 @@
   },
   "Basketball/college/401920429": {
     "recorded": "2026-11-26T05:29:03.592371+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "away",
     "slate": [
       "Basketball",
@@ -3653,7 +3653,7 @@
   },
   "Basketball/college/401920848": {
     "recorded": "2026-11-26T05:29:03.592393+00:00",
-    "result": null,
+    "result": "No",
     "side": "away",
     "slate": [
       "Basketball",
@@ -11562,7 +11562,7 @@
   },
   "Hockey/college/401904828": {
     "recorded": "2026-11-26T05:28:55.094718+00:00",
-    "result": null,
+    "result": "Yes",
     "side": "home",
     "slate": [
       "Hockey",
