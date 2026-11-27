@@ -364,7 +364,8 @@ const signalSources = {
   'Recent form': 'ESPN team schedules',
   'Key players out': 'ESPN injury reports and scoring leaders',
   'Recent form and rest': 'Recent scores and game dates',
-  'Pregame moneyline': 'Pregame odds captured from ESPN'
+  'Pregame moneyline': 'Pregame odds captured from ESPN',
+  'Matchup Advantage': 'Opponent-specific style data (pilot)'
 };
 const signalStars = Array.from({length:180}, (_, index) => {
   const y = 1 - (2 * index + 1) / 180;
@@ -457,7 +458,7 @@ function drawSignalOrb(time){
     const count = Math.ceil((signalInputs.length - (left ? 0 : 1)) / 2);
     const edgeY = height * (Math.floor(index/2)+1) / (count+1);
     const pilot = value === 'Pilot';
-    const source = signalSources[name]?.includes('ESPN') ? 'ESPN' : 'Scores & dates';
+    const source = name === 'Matchup Advantage' ? 'Team style' : signalSources[name]?.includes('ESPN') ? 'ESPN' : 'Scores & dates';
     const caption = source + ' · ' + (pilot ? 'Pilot' : value === '0%' ? 'No edge' : value);
     const cycle = (signalTime / 5 + index / Math.max(signalInputs.length, 1)) % 1;
     ctx.globalAlpha = moving ? Math.max(0, Math.min(1, cycle * 9, (1-cycle)*9)) : 1;
@@ -516,6 +517,7 @@ function showPredictionFactors(game){
     addPredictionFactor(rows,'Key players out','Pilot','Collecting injury reports and scoring-leader production. Affects pilot estimates after training.');
     addPredictionFactor(rows,'Recent form and rest','Pilot','Capturing recent scoring margins and time since the last game.');
     addPredictionFactor(rows,'Pregame moneyline','Pilot','Testing a model with odds alongside a model without odds.');
+    addPredictionFactor(rows,'Matchup Advantage','Pilot','Proposed comparison of offensive strengths against opposing defensive weaknesses (paint, perimeter and rebounding). Awaiting validated style data; no live pick weight.');
   }
 }
 function addPredictionFactor(rows,name,weight,detail){
