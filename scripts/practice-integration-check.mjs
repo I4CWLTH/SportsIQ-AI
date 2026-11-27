@@ -1,0 +1,23 @@
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {Script} from 'node:vm';
+
+const html=readFileSync('index.html','utf8');
+const server=readFileSync('server.js','utf8');
+const accounts=readFileSync('practice-accounts.js','utf8');
+const scripts=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)];
+assert.ok(scripts.length,'Expected browser application script');
+for(let i=0;i<scripts.length;i++)new Script(scripts[i][1],{filename:'inline-'+i+'.js'});
+assert.match(html,/id="practiceAccount"/);
+assert.match(html,/async function renderPracticeHistory\(/);
+assert.match(html,/function renderPracticeCalendar\(/);
+assert.match(html,/await practiceRequest\('place'/);
+assert.match(html,/await practiceRequest\('cancel'/);
+assert.match(html,/readBrowserTickets\(/);
+assert.doesNotMatch(html,/localStorage\.setItem\(practiceKey/);
+assert.match(server,/if\(await practiceAccounts\(req,res,u,send,games\)\)return/);
+assert.match(accounts,/account_id=\$1/);
+assert.match(accounts,/RESEND_API_KEY/);
+assert.match(accounts,/SameSite=Lax/);
+assert.match(accounts,/The game has started or the ticket cannot be safely verified/);
+console.log('Practice integration static checks passed; live email/database tests still required.');

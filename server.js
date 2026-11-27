@@ -1,3 +1,4 @@
+import {practiceAccounts} from './practice-accounts.js';
 import http from 'node:http';
 import {readFileSync} from 'node:fs';
 const sports=['Basketball','Football','Baseball','Soccer','Hockey','Cricket'];
@@ -200,7 +201,9 @@ if(arenaPhotos.has(u.pathname)){
   res.writeHead(200,{'content-type':'image/webp','cache-control':'public, max-age=86400'});
   return res.end(arenaPhotos.get(u.pathname));
 }
-const send=(code,obj)=>{res.writeHead(code,{'content-type':'application/json; charset=utf-8','cache-control':'no-store'});res.end(JSON.stringify(obj))};const basketballPlayers=u.pathname.match(/^\/api\/(nba|mens-college-basketball)\/(roster|player-stats)$/);
+const send=(code,obj)=>{res.writeHead(code,{'content-type':'application/json; charset=utf-8','cache-control':'no-store'});res.end(JSON.stringify(obj))};
+if(await practiceAccounts(req,res,u,send,games))return;
+const basketballPlayers=u.pathname.match(/^\/api\/(nba|mens-college-basketball)\/(roster|player-stats)$/);
 if(basketballPlayers?.[2]==='player-stats'){
   const id=u.searchParams.get('player')||'';
   if(!/^\d{1,12}$/.test(id))return send(400,{error:'Invalid player ID'});
