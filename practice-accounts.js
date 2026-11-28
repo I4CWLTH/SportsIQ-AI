@@ -1,24 +1,19 @@
-import {createHash, randomBytes, randomUUID} from 'node:crypto';
+import {randomUUID} from 'node:crypto';
+import {initializeApp} from 'firebase-admin/app';
+import {getAuth} from 'firebase-admin/auth';
 import pg from 'pg';
 
-const {DATABASE_URL, RESEND_API_KEY, PRACTICE_FROM_EMAIL, PUBLIC_ORIGIN} = process.env;
-const ready = Boolean(DATABASE_URL && RESEND_API_KEY && PRACTICE_FROM_EMAIL && PUBLIC_ORIGIN);
+const {DATABASE_URL, PUBLIC_ORIGIN, FIREBASE_PROJECT_ID, FIREBASE_API_KEY, FIREBASE_APP_ID, FIREBASE_AUTH_DOMAIN} = process.env;
+const ready = Boolean(DATABASE_URL && PUBLIC_ORIGIN && FIREBASE_PROJECT_ID && FIREBASE_API_KEY && FIREBASE_APP_ID);
 const pool = ready ? new pg.Pool({connectionString: DATABASE_URL, max: 5}) : null;
-const digest = value => createHash('sha256').update(value).digest('hex');
-const token = () => randomBytes(32).toString('base64url');
-const cookie = (value, age) => '__Host-practice='+value+'; Path=/; Max-Age='+age+'; Secure; HttpOnly; SameSite=Lax';
+const auth = ready ? getAuth(initializeApp({projectId: FIREBASE_PROJECT_ID})) : null;
 let schema;
 const initialize = () => schema ??= pool.query(`
 CREATE TABLE IF NOT EXISTS practice_accounts (
   id uuid PRIMARY KEY, email text UNIQUE NOT NULL, imported boolean NOT NULL DEFAULT false
 );
-CREATE TABLE IF NOT EXISTS practice_tokens (
-  hash text PRIMARY KEY, email text NOT NULL, expires timestamptz NOT NULL
-);
-CREATE INDEX IF NOT EXISTS practice_token_email ON practice_tokens(email,expires);
-CREATE TABLE IF NOT EXISTS practice_sessions (
-  hash text PRIMARY KEY, account_id uuid NOT NULL REFERENCES practice_accounts(id), expires timestamptz NOT NULL
-);
+ALTER TABLE practice_accounts ADD COLUMN IF NOT EXISTS firebase_uid text;
+CREATE UNIQUE INDEX IF NOT EXISTS practice_account_firebase_uid ON practice_accounts(firebase_uid);
 CREATE TABLE IF NOT EXISTS practice_tickets (
   account_id uuid NOT NULL REFERENCES practice_accounts(id), id uuid NOT NULL,
   data jsonb NOT NULL, PRIMARY KEY(account_id,id)
@@ -73,66 +68,33 @@ export async function practiceAccounts(req,res,url,send,loadGames){
   const route=url.pathname.slice('/api/practice/'.length);
   res.setHeader('Referrer-Policy','no-referrer');
   try{
-    await initialize();
+    if(route==='config'&&req.method==='GET'){
+      send(200,{
+        projectId:FIREBASE_PROJECT_ID,apiKey:FIREBASE_API_KEY,appId:FIREBASE_APP_ID,
+        authDomain:FIREBASE_AUTH_DOMAIN||FIREBASE_PROJECT_ID+'.firebaseapp.com'
+      });return true;
+    }
     if(req.method==='POST'&&req.headers.origin!==PUBLIC_ORIGIN){
       send(403,{error:'Invalid request origin.'});return true;
     }
-    if(route==='request'&&req.method==='POST'){
-      const {email:raw}=await body(req);
-      const email=typeof raw==='string'?raw.trim().toLowerCase():'';
-      if(email.length>254||!/^\S+@[^\s@]+\.[^\s@]+$/.test(email)){
-        send(400,{error:'Enter a valid email address.'});return true;
-      }
-      const secret=token(),hash=digest(secret);
-      const issued=await transaction(async db=>{
-        await db.query('SELECT pg_advisory_xact_lock(hashtext($1))',[email]);
-        const recent=await db.query("SELECT 1 FROM practice_tokens WHERE email=$1 AND expires>now()+interval '13 minutes'",[email]);
-        if(recent.rowCount)return false;
-        await db.query("SELECT pg_advisory_xact_lock(74263109)");
-        const volume=await db.query("SELECT count(*)::int AS count FROM practice_tokens WHERE expires>now()+interval '14 minutes'");
-        if(volume.rows[0].count>=10)return false;
-        await db.query("INSERT INTO practice_tokens VALUES($1,$2,now()+interval '15 minutes')",[hash,email]);
-        return true;
-      });
-      if(issued){
-        const link=new URL('/#practice-sign-in='+secret,PUBLIC_ORIGIN).href;
-        try{
-          const response=await fetch('https://api.resend.com/emails',{
-            method:'POST',signal:AbortSignal.timeout(10000),
-            headers:{Authorization:'Bearer '+RESEND_API_KEY,'Content-Type':'application/json'},
-            body:JSON.stringify({from:PRACTICE_FROM_EMAIL,to:[email],subject:'Sign in to Sports IQ Practice Bets',
-              text:'Open this link and choose Complete sign-in. It expires in 15 minutes.\n\n'+link}),
-          });
-          if(!response.ok)throw Error('Email unavailable');
-        }catch(error){await pool.query('DELETE FROM practice_tokens WHERE hash=$1',[hash]);throw error}
-      }
-      send(200,{message:'Check your inbox for a sign-in link. If you just requested one, use the previous email.'});
-      return true;
+    const bearer=req.headers.authorization?.match(/^Bearer ([^ ]+)$/);
+    let identity;
+    if(bearer){
+      try{identity=await auth.verifyIdToken(bearer[1])}catch{}
     }
-    if(route==='verify'&&req.method==='POST'){
-      const {code}=await body(req);
-      if(typeof code!=='string'||!/^[-_\w]{43}$/.test(code)){send(400,{error:'Invalid sign-in link.'});return true}
-      const session=token();
-      const account=await transaction(async db=>{
-        const used=await db.query('DELETE FROM practice_tokens WHERE hash=$1 AND expires>now() RETURNING email',[digest(code)]);
-        if(!used.rowCount)return null;
-        const {email}=used.rows[0];
-        const user=await db.query('INSERT INTO practice_accounts(id,email) VALUES($1,$2) ON CONFLICT(email) DO UPDATE SET email=excluded.email RETURNING id',[randomUUID(),email]);
-        await db.query("INSERT INTO practice_sessions VALUES($1,$2,now()+interval '30 days')",[digest(session),user.rows[0].id]);
-        return user.rows[0].id;
-      });
-      if(!account){send(400,{error:'This link expired or was already used.'});return true}
-      res.setHeader('Set-Cookie',cookie(session,2592000));
-      send(200,{ok:true});return true;
+    if(!identity){send(401,{error:'Sign in to save practice bets.'});return true}
+    if(!identity.email_verified||typeof identity.email!=='string'){
+      send(403,{error:'Verify your email before using Practice Bets.'});return true;
     }
-    const session=(req.headers.cookie||'').match(/(?:^|;\s*)__Host-practice=([-_\w]{43})(?:;|$)/)?.[1];
-    const user=session&&(await pool.query(`SELECT a.id,a.email,a.imported FROM practice_accounts a
-      JOIN practice_sessions s ON s.account_id=a.id WHERE s.hash=$1 AND s.expires>now()`,[digest(session)])).rows[0];
-    if(!user){send(401,{error:'Sign in to save practice bets.'});return true}
-    if(route==='logout'&&req.method==='POST'){
-      await pool.query('DELETE FROM practice_sessions WHERE hash=$1',[digest(session)]);
-      res.setHeader('Set-Cookie',cookie('',0));send(200,{ok:true});return true;
-    }
+    await initialize();
+    const email=identity.email.trim().toLowerCase();
+    const existing=await pool.query('SELECT id,email,imported FROM practice_accounts WHERE firebase_uid=$1',[identity.uid]);
+    const user=existing.rows[0]||(await pool.query(`
+      INSERT INTO practice_accounts(id,email,firebase_uid) VALUES($1,$2,$3)
+      ON CONFLICT(email) DO UPDATE SET firebase_uid=excluded.firebase_uid
+      WHERE practice_accounts.firebase_uid IS NULL OR practice_accounts.firebase_uid=excluded.firebase_uid
+      RETURNING id,email,imported`,[randomUUID(),email,identity.uid])).rows[0];
+    if(!user){send(409,{error:'This practice account is already linked to another sign-in.'});return true}
     if(route==='ledger'&&req.method==='GET'){
       await grade(await tickets(pool,user.id),loadGames,user.id);
       const rows=await tickets(pool,user.id);

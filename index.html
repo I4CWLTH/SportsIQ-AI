@@ -937,50 +937,66 @@ function readBrowserTickets(){
   if(!Array.isArray(bets)||bets.some(b=>!b||typeof b.pick!=='string'||typeof b.matchup!=='string'||!Number.isInteger(b.units)||b.units<1))throw Error('Invalid practice history');
   return bets;
 }
+let practiceAuth;
+function getPracticeAuth(){
+  if(!practiceAuth){
+    practiceAuth=(async()=>{
+      const response=await fetch('/api/practice/config',{cache:'no-store'});
+      if(!response.ok)throw Error('Practice sign-in is temporarily unavailable.');
+      const config=await response.json();
+      const [app,sdk]=await Promise.all([
+        import('https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js'),
+        import('https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js')
+      ]);
+      const auth=sdk.getAuth(app.initializeApp(config));
+      await auth.authStateReady();
+      return {auth,sdk};
+    })().catch(error=>{practiceAuth=undefined;throw error});
+  }
+  return practiceAuth;
+}
 async function practiceRequest(route,input){
-  const response=await fetch('/api/practice/'+route,input===undefined?{cache:'no-store'}:{
-    method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(input)
-  });
+  const {auth}=await getPracticeAuth();
+  const user=auth.currentUser;
+  if(!user?.emailVerified)throw Object.assign(Error('Sign in with your verified email.'),{status:401});
+  const headers={Authorization:'Bearer '+await user.getIdToken()};
+  const options={headers,cache:'no-store'};
+  if(input!==undefined){
+    headers['Content-Type']='application/json';
+    Object.assign(options,{method:'POST',body:JSON.stringify(input)});
+  }
+  const response=await fetch('/api/practice/'+route,options);
   const data=await response.json();
   if(!response.ok)throw Object.assign(Error(data.error),{status:response.status});
   return data;
 }
 function renderPracticeAccount(){
-  const code=new URLSearchParams(location.hash.slice(1)).get('practice-sign-in');
   practiceAccountBox.replaceChildren();
-  const showAuth = Boolean(code) || !practiceAccount;
-  practiceAccountBox.dataset.view = showAuth ? 'auth' : 'account';
-  if (showAuth) {
-    const heading = document.createElement('h2');
-    heading.className = 'practice-auth-title';
-    heading.textContent = code ? 'Complete your sign-in' : 'Sign in with your email';
-    const description = document.createElement('p');
-    description.className = 'practice-auth-description';
-    description.textContent = code
-      ? 'Continue to your Sports IQ Practice Bets account.'
-      : 'We’ll email you a link to create an account or sign in to Practice Bets.';
-    practiceAccountBox.append(heading, description);
-  }
-  const message=document.createElement('p');message.setAttribute('role','status');
+  practiceAccountBox.dataset.view=practiceAccount?'account':'auth';
+  const message=document.createElement('p');
+  message.setAttribute('role','status');
   const button=(label,action)=>{
-    const control=document.createElement('button');control.type='button';control.textContent=label;
+    const control=document.createElement('button');
+    control.type='button';
+    control.textContent=label;
     control.onclick=async()=>{
-      control.disabled=true;message.textContent='';
+      control.disabled=true;
+      message.textContent='';
       try{await action()}catch(error){message.textContent=error.message}
       finally{control.disabled=false}
     };
     practiceAccountBox.append(control);
   };
-  if(code){
-    button('Complete sign-in',async()=>{
-      await practiceRequest('verify',{code});
-      history.replaceState(null,'',location.pathname+location.search);
+  if(practiceAccount){
+    const account=document.createElement('p');
+    account.textContent='Signed in as '+practiceAccount.email;
+    practiceAccountBox.append(account);
+    button('Sign out',async()=>{
+      const {auth,sdk}=await getPracticeAuth();
+      await sdk.signOut(auth);
+      practiceAccount=null;
       await renderPracticeHistory();
     });
-    document.getElementById('practiceHistory').open=true;
-  }else if(practiceAccount){
-    const account=document.createElement('p');account.textContent='Signed in as '+practiceAccount.email;practiceAccountBox.append(account);
-    button('Sign out',async()=>{await practiceRequest('logout',{});practiceAccount=null;await renderPracticeHistory()});
     let old=[];
     try{old=readBrowserTickets()}catch{}
     if(old.length&&!practiceAccount.imported)button('Import browser tickets',async()=>{
@@ -988,16 +1004,53 @@ function renderPracticeAccount(){
       await renderPracticeHistory();
     });
   }else{
+    const heading=document.createElement('h2');
+    heading.className='practice-auth-title';
+    heading.textContent='Sports IQ Practice Bets sign-in';
     const form=document.createElement('form');
-    form.innerHTML='<label>Email address <input name="email" type="email" autocomplete="email" required maxlength="254"></label> <button type="submit">Send sign-in link</button>';
+    form.innerHTML='<label>Email address <input name="email" type="email" autocomplete="email" required maxlength="254"></label> <label>Password <input name="password" type="password" autocomplete="current-password" required></label> <button type="submit" value="signin">Sign in</button> <button type="submit" value="register">Create account</button>';
     form.onsubmit=async event=>{
       event.preventDefault();
-      const submit=form.querySelector('button');submit.disabled=true;
-      try{message.textContent=(await practiceRequest('request',{email:form.elements.email.value})).message}
-      catch(error){message.textContent=error.message}
-      finally{submit.disabled=false}
+      const controls=[...form.querySelectorAll('button')];
+      controls.forEach(control=>control.disabled=true);
+      message.textContent='';
+      const email=form.elements.email.value.trim();
+      const password=form.elements.password.value;
+      try{
+        const {auth,sdk}=await getPracticeAuth();
+        if(event.submitter?.value==='register'){
+          const {user}=await sdk.createUserWithEmailAndPassword(auth,email,password);
+          await sdk.sendEmailVerification(user);
+          await sdk.signOut(auth);
+          message.textContent='Check your inbox, verify your email, then sign in.';
+          return;
+        }
+        const {user}=await sdk.signInWithEmailAndPassword(auth,email,password);
+        if(!user.emailVerified){
+          await sdk.signOut(auth);
+          message.textContent='Verify your email before signing in.';
+          return;
+        }
+        await renderPracticeHistory();
+      }catch(error){
+        const messages={
+          'auth/invalid-credential':'Check your email and password.',
+          'auth/weak-password':'Choose a password that meets the account requirements.',
+          'auth/email-already-in-use':'An account may already exist. Try signing in or resetting your password.',
+          'auth/too-many-requests':'Too many attempts. Try again later.'
+        };
+        message.textContent=messages[error.code]||'Unable to complete that request. Try again.';
+      }finally{controls.forEach(control=>control.disabled=false)}
     };
-    practiceAccountBox.append(form);
+    practiceAccountBox.append(heading,form);
+    button('Reset password',async()=>{
+      const field=form.elements.email;
+      if(!field.reportValidity())return;
+      const {auth,sdk}=await getPracticeAuth();
+      try{await sdk.sendPasswordResetEmail(auth,field.value.trim())}
+      catch(error){if(error.code!=='auth/user-not-found')throw Error('Unable to request a reset. Try again.')}
+      message.textContent='If an account exists for that email, check your inbox for reset instructions.';
+    });
   }
   practiceAccountBox.append(message);
 }
