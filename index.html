@@ -191,7 +191,7 @@
 </style></head><body><div class="shell"><header class="top"><div class="logo">SPORTSIQ <b>AI</b> <span style="font-size:11px;color:#9aabca;letter-spacing:2px">/ ARENA</span></div><div class="status"><i class="pulse"></i> INTELLIGENCE PLATFORM · PREVIEW</div></header><section class="hero"><div class="arena-hero-copy"><div class="eyebrow">THE NEXT GENERATION OF SPORTS INTELLIGENCE</div><h1>See beyond<br><span>the scoreboard.</span></h1><p class="sub">A new command center for matchup intelligence, evidence-backed forecasts, and transparent performance tracking. No invented games. No fictional odds.</p></div><div class="arena-reel" aria-label="Sports action photographs"><figure class="arena-shot active" aria-hidden="false" style="--focus:50% 30%"><img src="/arena-photos/basketball.webp" alt="Malcolm Thomas rises for a dunk" decoding="async" fetchpriority="high"><figcaption><strong>Basketball</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Malcolm_Thomas_dunking.jpg">SD Dirk</a> · <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:52% 45%"><img data-src="/arena-photos/football.webp" alt="Wayne Knight runs into the end zone" decoding="async" ><figcaption><strong>Football</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Wayne_Knight_touchdown_at_UCLA_Football_2026.jpg">Luis Ochea</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:50% 46%"><img data-src="/arena-photos/baseball.webp" alt="Kyle Schwarber swings at a pitch" decoding="async" ><figcaption><strong>Baseball</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:2023-04-08_kyle_schwarber_swinging.jpg">Zach McHoul</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:50% 42%"><img data-src="/arena-photos/soccer.webp" alt="Players challenge for the ball in a soccer match" decoding="async" ><figcaption><strong>Soccer</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Soccer_match.jpg">AngusConnaltyPhotos</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · resized and cropped</span></figcaption></figure><figure class="arena-shot" aria-hidden="true" style="--focus:53% 35%"><img data-src="/arena-photos/hockey.webp" alt="Trevor van Riemsdyk skates with the puck" decoding="async" ><figcaption><strong>Hockey</strong><span>Photo: <a href="https://commons.wikimedia.org/wiki/File:Forward_Trevor_van_Riemsdyk.jpg">All-Pro Reels</a> · <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC BY-SA 2.0</a> · resized and cropped</span></figcaption></figure><button type="button" class="arena-pause" aria-pressed="false" hidden>Pause photos</button></div></section><div class="bar" id="levels" role="group" aria-label="Competition level">
 <button class="sport" type="button" data-level="pro" aria-pressed="true">Professional</button>
 <button class="sport" type="button" data-level="college" aria-pressed="false">College</button>
-</div><nav class="bar" id="sports" aria-label="Choose sport"></nav><details id="practiceHistory" style="margin:8px 0 16px;border:1px solid #344768;border-radius:13px;background:#101b30"><summary style="cursor:pointer;padding:12px"><span class="practice-heading">Practice Bets <span id="practiceCountdown"></span></span></summary><div style="padding:0 12px 12px"><p class="practice-notice">🎰 Practice-only money. Not real wagers or cash payouts. These are your selected practice tickets, which may differ from Sports IQ's saved AI predictions. Practice win/loss and AI prediction accuracy are separate records. Results update from official final scores.</p><button type="button" id="openPracticeCalendar"><span class="practice-calendar-icon" aria-hidden="true"></span>P&amp;L Calendar</button><div id="practiceTotals" class="practice-totals" aria-live="polite"></div><div id="practiceEntries" aria-live="polite"></div></div></details>
+</div><nav class="bar" id="sports" aria-label="Choose sport"></nav><details id="practiceHistory" style="margin:8px 0 16px;border:1px solid #344768;border-radius:13px;background:#101b30"><summary style="cursor:pointer;padding:12px"><span class="practice-heading">Practice Bets <span id="practiceCountdown"></span></span></summary><div style="padding:0 12px 12px"><p class="practice-notice">🎰 Practice-only money. Not real wagers or cash payouts. These are your selected practice tickets, which may differ from Sports IQ's saved AI predictions. Practice win/loss and AI prediction accuracy are separate records. Results update from official final scores.</p><button type="button" id="openPracticeCalendar"><span class="practice-calendar-icon" aria-hidden="true"></span>P&amp;L Calendar</button><div id="practiceTotals" class="practice-totals" aria-live="polite"></div><div id="practiceAccount" class="evidence" aria-live="polite"></div><div id="practiceEntries" aria-live="polite"></div></div></details>
 <dialog id="practiceCalendar" aria-labelledby="calendarTitle">
   <header class="calendar-bar"><h2 id="calendarTitle">Practice P&amp;L</h2><form method="dialog"><button aria-label="Close calendar">Close</button></form></header>
   <p id="calendarBalance" aria-live="polite"></p>
@@ -1089,10 +1089,130 @@ updateView();
 const practiceKey = 'sportsiq.practiceBets.v1';
 const practiceEntries = document.getElementById('practiceEntries');
 const usd = amount => new Intl.NumberFormat('en-US',{style:'currency',currency:'USD'}).format(amount);
-function readPracticeBets(){
+let practiceAccount=null;
+const practiceAccountBox=document.getElementById('practiceAccount');
+const readPracticeBets=()=>practiceAccount?.tickets||[];
+function readBrowserTickets(){
   const bets=JSON.parse(localStorage.getItem(practiceKey)??'[]');
   if(!Array.isArray(bets)||bets.some(b=>!b||typeof b.pick!=='string'||typeof b.matchup!=='string'||!Number.isInteger(b.units)||b.units<1))throw Error('Invalid practice history');
   return bets;
+}
+let practiceAuth;
+function getPracticeAuth(){
+  if(!practiceAuth){
+    practiceAuth=(async()=>{
+      const response=await fetch('/api/practice/config',{cache:'no-store'});
+      if(!response.ok)throw Error('Practice sign-in is temporarily unavailable.');
+      const config=await response.json();
+      const [app,sdk]=await Promise.all([
+        import('https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js'),
+        import('https://www.gstatic.com/firebasejs/11.10.0/firebase-auth.js')
+      ]);
+      const auth=sdk.getAuth(app.initializeApp(config));
+      await auth.authStateReady();
+      return {auth,sdk};
+    })().catch(error=>{practiceAuth=undefined;throw error});
+  }
+  return practiceAuth;
+}
+async function practiceRequest(route,input){
+  const {auth}=await getPracticeAuth();
+  const user=auth.currentUser;
+  if(!user?.emailVerified)throw Object.assign(Error('Sign in with your verified email.'),{status:401});
+  const headers={Authorization:'Bearer '+await user.getIdToken()};
+  const options={headers,cache:'no-store'};
+  if(input!==undefined){
+    headers['Content-Type']='application/json';
+    Object.assign(options,{method:'POST',body:JSON.stringify(input)});
+  }
+  const response=await fetch('/api/practice/'+route,options);
+  const data=await response.json();
+  if(!response.ok)throw Object.assign(Error(data.error),{status:response.status});
+  return data;
+}
+function renderPracticeAccount(){
+  practiceAccountBox.replaceChildren();
+  practiceAccountBox.dataset.view=practiceAccount?'account':'auth';
+  const message=document.createElement('p');
+  message.setAttribute('role','status');
+  const button=(label,action)=>{
+    const control=document.createElement('button');
+    control.type='button';
+    control.textContent=label;
+    control.onclick=async()=>{
+      control.disabled=true;
+      message.textContent='';
+      try{await action()}catch(error){message.textContent=error.message}
+      finally{control.disabled=false}
+    };
+    practiceAccountBox.append(control);
+  };
+  if(practiceAccount){
+    const account=document.createElement('p');
+    account.textContent='Signed in as '+practiceAccount.email;
+    practiceAccountBox.append(account);
+    button('Sign out',async()=>{
+      const {auth,sdk}=await getPracticeAuth();
+      await sdk.signOut(auth);
+      practiceAccount=null;
+      await renderPracticeHistory();
+    });
+    let old=[];
+    try{old=readBrowserTickets()}catch{}
+    if(old.length&&!practiceAccount.imported)button('Import browser tickets',async()=>{
+      await practiceRequest('import',{tickets:old.slice(0,200)});
+      await renderPracticeHistory();
+    });
+  }else{
+    const heading=document.createElement('h2');
+    heading.className='practice-auth-title';
+    heading.textContent='Sports IQ Practice Bets sign-in';
+    const form=document.createElement('form');
+    form.innerHTML='<label>Email address <input name="email" type="email" autocomplete="email" required maxlength="254"></label> <label>Password <input name="password" type="password" autocomplete="current-password" required></label> <button type="submit" value="signin">Sign in</button> <button type="submit" value="register">Create account</button>';
+    form.onsubmit=async event=>{
+      event.preventDefault();
+      const controls=[...form.querySelectorAll('button')];
+      controls.forEach(control=>control.disabled=true);
+      message.textContent='';
+      const email=form.elements.email.value.trim();
+      const password=form.elements.password.value;
+      try{
+        const {auth,sdk}=await getPracticeAuth();
+        if(event.submitter?.value==='register'){
+          const {user}=await sdk.createUserWithEmailAndPassword(auth,email,password);
+          await sdk.sendEmailVerification(user);
+          await sdk.signOut(auth);
+          message.textContent='Check your inbox, verify your email, then sign in.';
+          return;
+        }
+        const {user}=await sdk.signInWithEmailAndPassword(auth,email,password);
+        if(!user.emailVerified){
+          await sdk.signOut(auth);
+          message.textContent='Verify your email before signing in.';
+          return;
+        }
+        await renderPracticeHistory();
+      }catch(error){
+        const messages={
+          'auth/invalid-credential':'Check your email and password.',
+          'auth/weak-password':'Choose a password that meets the account requirements.',
+          'auth/email-already-in-use':'An account may already exist. Try signing in or resetting your password.',
+          'auth/too-many-requests':'Too many attempts. Try again later.'
+        };
+        message.textContent=messages[error.code]||'Unable to complete that request. Try again.';
+      }finally{controls.forEach(control=>control.disabled=false)}
+    };
+    practiceAccountBox.append(heading,form);
+    button('Reset password',async()=>{
+      const field=form.elements.email;
+      if(!field.reportValidity())return;
+      const {auth,sdk}=await getPracticeAuth();
+      try{await sdk.sendPasswordResetEmail(auth,field.value.trim())}
+      catch(error){if(error.code!=='auth/user-not-found')throw Error('Unable to request a reset. Try again.')}
+      message.textContent='If an account exists for that email, check your inbox for reset instructions.';
+    });
+  }
+  practiceAccountBox.append(message);
 }
 function updateCountdown(){
   const first=items.reduce((earliest,game)=>{
@@ -1131,24 +1251,7 @@ function updateBetBadges(){
 }
 const startingBalance=10000;
 let knownResults=new Map();
-function practiceBalance(bets){
-  return startingBalance+bets.reduce((total,bet)=>{
-    const result=bet.result||knownResults.get(bet.ticketId||bet.placedAt);
-    if(bet.canceledAt||result==='push')return total;
-    return total+(result==='win'?bet.units:-bet.units);
-  },0);
-}
-async function updatePracticeLedger(change){
-  const update=()=>{
-    const bets=readPracticeBets();
-    change(bets);
-    localStorage.setItem(practiceKey,JSON.stringify(bets));
-  };
-  if(navigator.locks)await navigator.locks.request(practiceKey,update);
-  else update();
-  updateBetBadges();
-  renderPracticeHistory();
-}
+function practiceBalance(_bets){return practiceAccount?.balance??startingBalance;}
 async function fetchPracticeGame(bet){
   if(!bet.gameId||!bet.sport||!bet.level)return null;
   try{
@@ -1299,20 +1402,31 @@ async function renderPracticeHistory(){
   if(!practiceEntries.children.length)practiceEntries.textContent='🎰 Updating the practice ledger…';
   const totals=document.getElementById('practiceTotals');
   try{
-    const bets=readPracticeBets().filter(bet=>!bet.canceledAt);
-    totals.textContent='Available practice balance '+usd(practiceBalance(bets));
-    await gradePracticeBets(bets);
+    let account;
+    try{account=await practiceRequest('ledger')}catch(error){if(error.status!==401)throw error}
     if(request!==practiceRender)return;
+    practiceAccount=account||null;
+    renderPracticeAccount();
+    updateBetBadges();
+    if(!account){
+      calendarBets=[];
+      renderPracticeCalendar();
+      practiceEntries.textContent='Sign up or sign in to save practice bets.';
+      totals.textContent='';
+      return;
+    }
+    const bets=account.tickets.filter(bet=>!bet.canceledAt);
     knownResults=new Map(bets.filter(b=>b.result).map(b=>[b.ticketId||b.placedAt,b.result]));
-    calendarBets=bets;
+    calendarBets=bets.filter(bet=>!bet.imported);
     renderPracticeCalendar();
     const expandedDays=new Set([...practiceEntries.querySelectorAll('.practice-day[open]')].map(group=>group.dataset.key));
     practiceEntries.replaceChildren();
-    const stake=bets.reduce((n,b)=>n+b.units,0);
-    const wins=bets.filter(b=>b.result==='win').length;
-    const losses=bets.filter(b=>b.result==='loss').length;
-    const profit=bets.reduce((n,b)=>n+(b.result==='win'?b.units:b.result==='loss'?-b.units:0),0);
-    totals.innerHTML='Available practice balance <b>'+usd(practiceBalance(bets))+'</b> · Total simulated stake <b>'+usd(stake)+'</b> · Record '+wins+'W / '+losses+'L · Net ';
+    const verified=bets.filter(b=>!b.imported);
+    const stake=verified.reduce((n,b)=>n+b.units,0);
+    const wins=verified.filter(b=>b.result==='win').length;
+    const losses=verified.filter(b=>b.result==='loss').length;
+    const profit=verified.reduce((n,b)=>n+(b.result==='win'?b.units:b.result==='loss'?-b.units:0),0);
+    totals.innerHTML='Available practice balance <b>'+usd(account.balance)+'</b> · Total simulated stake <b>'+usd(stake)+'</b> · Record '+wins+'W / '+losses+'L · Net ';
     const net=document.createElement('b');net.style.color=profit<0?'#ff6b7e':'#58ffa3';net.textContent=(profit>0?'+':'')+usd(profit);totals.append(net);
     const disclaimer=document.createElement('small');disclaimer.style.display='block';disclaimer.style.marginTop='6px';
     disclaimer.textContent='Practice ticket outcomes (your selected teams), not AI prediction accuracy. Daily groups use the game date in Eastern Time; pending tickets do not count as wins or losses.';
@@ -1365,7 +1479,7 @@ async function renderPracticeHistory(){
     }
     if(!bets.length)practiceEntries.textContent='No practice bets placed. Choose a future game to play.';
   }catch{
-    if(request===practiceRender){if(practiceCalendar.open)document.getElementById('calendarDay').textContent='Practice history is unavailable.';practiceEntries.textContent='Practice bet history is unavailable in this browser.';totals.textContent='No practice totals available.'}
+    if(request===practiceRender){if(practiceCalendar.open)document.getElementById('calendarDay').textContent='Practice history is unavailable.';practiceEntries.textContent='Practice accounts are temporarily unavailable.';totals.textContent='No practice totals available.'}
   }
 }
 function renderPracticeTicket(bet){
@@ -1374,17 +1488,14 @@ function renderPracticeTicket(bet){
   const team=document.createElement('strong');team.textContent='🎟️ '+bet.pick+' to win';
   const amount=document.createElement('span');amount.className='practice-money';amount.textContent=usd(bet.units);
   const amountGroup=document.createElement('div');amountGroup.className='ticket-amount';amountGroup.append(amount);
-  if(!isSettledPracticeBet(bet)){
+  if(!bet.imported&&!isSettledPracticeBet(bet)&&bet.kickoff&&Date.parse(bet.kickoff)>Date.now()){
     const cancel=document.createElement('button');
     cancel.type='button';cancel.textContent='Cancel Bet';amountGroup.append(cancel);
     cancel.onclick=async()=>{
       cancel.disabled=true;
       try{
-        await updatePracticeLedger(current=>{
-          const ticket=current.find(b=>!b.canceledAt&&(bet.ticketId?b.ticketId===bet.ticketId:
-            b.placedAt===bet.placedAt&&b.gameId===bet.gameId&&b.pick===bet.pick&&b.units===bet.units&&b.matchup===bet.matchup));
-          if(ticket&&!isSettledPracticeBet(ticket)&&!knownResults.has(ticket.ticketId||ticket.placedAt))ticket.canceledAt=new Date().toISOString();
-        });
+        await practiceRequest('cancel',{ticketId:bet.ticketId});
+        await renderPracticeHistory();
       }catch(error){cancel.disabled=false;result.textContent=error.message}
     };
   }
@@ -1394,6 +1505,7 @@ function renderPracticeTicket(bet){
   result.className='practice-result '+(bet.result==='win'?'win':bet.result==='loss'?'loss':'pending');
   result.textContent=bet.result==='win'?'🏆 WON · +'+usd(bet.units):bet.result==='loss'?'✖ LOST · -'+usd(bet.units):bet.result==='push'?'↔ PUSH · '+usd(0):bet.gameId?'⏳ Pending final score':'⏳ Legacy bet · result unavailable';
   row.append(result);
+  if(bet.imported){const legacy=document.createElement('small');legacy.textContent='Imported browser history · excluded from verified balance and totals';row.append(legacy)}
   if(bet.finalScore){const score=document.createElement('small');score.textContent='Final score: '+bet.finalScore+' (away – home)';row.append(score)}
   return row;
 }
@@ -1431,17 +1543,15 @@ function showPracticeBet(game){
     const submit=form.querySelector('button[type=submit]');
     submit.disabled=true;
     try{
-      const graded=readPracticeBets();
-      await gradePracticeBets(graded);
-      await updatePracticeLedger(bets=>{
-        if(Date.parse(game.date)<=Date.now())throw Error('This matchup has already started.');
-        const outcomes=new Map(graded.filter(b=>b.result).map(b=>[b.ticketId||b.placedAt,b.result]));
-        const balance=practiceBalance(bets.map(b=>({...b,result:outcomes.get(b.ticketId||b.placedAt)})));
-        if(amount>balance)throw Error('Insufficient practice balance.');
-        bets.unshift({pick:game[side.value].name,units:amount,matchup:game.away.name+' vs '+game.home.name,
-        ticketId:crypto.randomUUID(),gameId:String(game.id),sport,level:competition,date:slateDate,kickoff:game.date,
-        placedAt:new Date().toISOString()});
-      });
+      if(!practiceAccount){
+        document.getElementById('practiceHistory').open=true;
+        practiceAccountBox.querySelector('input')?.focus();
+        message.textContent='Sign up or sign in to save practice bets.';
+        return;
+      }
+      await practiceRequest('place',{ticketId:crypto.randomUUID(),gameId:String(game.id),sport,
+        level:competition,date:slateDate,side:side.value,units:amount});
+      await renderPracticeHistory();
     }catch(error){message.textContent=error.message;return}
     finally{submit.disabled=false}
     document.getElementById('practiceHistory').open=true;message.dataset.saved='';message.textContent='✓ Practice ticket saved!';
@@ -1449,7 +1559,7 @@ function showPracticeBet(game){
   analysis.after(form);
 }
 setInterval(updateCountdown,1000);
-window.addEventListener('storage',event=>{if(event.key===practiceKey){updateBetBadges();renderPracticeHistory()}});
+// Previous local browser tickets remain available for optional one-time import.
 renderPracticeHistory();
 document.getElementById('practiceHistory').addEventListener('toggle',e=>{if(e.target.open)renderPracticeHistory()});
 setInterval(()=>{if(document.getElementById('practiceHistory').open)renderPracticeHistory()},120000);
